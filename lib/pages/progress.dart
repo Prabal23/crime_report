@@ -76,6 +76,12 @@ class _ProgressPageState extends State<ProgressPage> {
                   ],
                 ),
               ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProgressPage()),
+                );
+              },
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(

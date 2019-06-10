@@ -104,7 +104,7 @@ class SplashScreenState extends State<MyHomePage> with SingleTickerProviderState
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 300,
+                height: 350,
                 color: mainheader,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
