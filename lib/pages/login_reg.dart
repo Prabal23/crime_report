@@ -1,3 +1,4 @@
+import 'package:crime_report/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
@@ -11,8 +12,8 @@ class LogRegPage extends StatefulWidget {
 }
 
 class _LogRegPageState extends State<LogRegPage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
+  // final scaffoldKey = GlobalKey<ScaffoldState>();
+  // final formKey = GlobalKey<FormState>();
   TextEditingController _textNameController = TextEditingController();
   TextEditingController _textSurNameController = TextEditingController();
   TextEditingController _textPassController = TextEditingController();
@@ -24,7 +25,7 @@ class _LogRegPageState extends State<LogRegPage> {
   TextEditingController _textYearController = TextEditingController();
   String name = '', surname = '', password = '', _radioGender = '';
   String rName = '', rSurname = '', rEmail = '', rNewpass = '', rConpass = '';
-  String day = '', month = '', year = '';
+  String day = '', month = '', year = '', type = '';
   List _day =
   ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
    "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22",
@@ -32,8 +33,12 @@ class _LogRegPageState extends State<LogRegPage> {
   List _months =
   ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  List _user_type =
+  ["Attorney", "Magistrate", "Candidate Attorney", "Civil Servant",
+  "Government Worker", "Legal Aid", "General Public"];
   List<DropdownMenuItem<String>> _dropDownDayItems;
   List<DropdownMenuItem<String>> _dropDownMonthItems;
+  List<DropdownMenuItem<String>> _dropDownTypeItems;
 
   void _handleRadioValueChange(String value) {
     setState(() {
@@ -58,6 +63,9 @@ class _LogRegPageState extends State<LogRegPage> {
 
       _dropDownMonthItems = getDropDownMonthItems();
       month = _dropDownMonthItems[0].value;
+
+      _dropDownTypeItems = getDropDownTypeItems();
+      type = _dropDownTypeItems[0].value;
 
       super.initState();
   }
@@ -84,11 +92,42 @@ class _LogRegPageState extends State<LogRegPage> {
     return items1;
   }
 
+  List<DropdownMenuItem<String>> getDropDownTypeItems() {
+    List<DropdownMenuItem<String>> items2 = new List();
+    for (String type in _user_type) {
+      items2.add(new DropdownMenuItem(
+          value: type,
+          child: new Text(type, style: TextStyle(fontSize: 17, color: Colors.white),)
+      ));
+    }
+    return items2;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: PreferredSize(
+      //   preferredSize: Size.fromHeight(150.0),
+      //   child: AppBar(
+      //     //backgroundColor: Theme.of(context).secondaryHeaderColor,
+      //     backgroundColor: mainheader,
+      //     title: Container(
+      //           width: MediaQuery.of(context).size.width,
+      //           height: 150,
+      //           child: Container(
+      //             child: Container(
+      //               child: CircleAvatar(
+      //                 backgroundColor: Colors.transparent,
+      //                 child: Image.asset('assets/logo.png',),
+      //               ),
+      //             )
+      //           ),
+      //         ),
+      //   ),
+      // ),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).secondaryHeaderColor,
+        //backgroundColor: Colors.transparent
+        backgroundColor: mainheader,
         title: Text("Crime Report")
       ),
       body: SingleChildScrollView(
@@ -109,15 +148,15 @@ class _LogRegPageState extends State<LogRegPage> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 120,
-                color: Theme.of(context).accentColor,
+                height: 100,
+                color: subheader,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       "YOUR COMPANY APP TITLE",
-                      style: TextStyle(fontSize: 22, color: Colors.black38),
+                      style: TextStyle(fontSize: 18, color: Colors.black38),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,7 +182,7 @@ class _LogRegPageState extends State<LogRegPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 380,
-                color: Theme.of(context).secondaryHeaderColor,
+                color: mainheader,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center, 
@@ -263,7 +302,7 @@ class _LogRegPageState extends State<LogRegPage> {
                           Container(
                             width: 150,
                             child: RaisedButton(
-                              color: Colors.black,
+                              color: blackbutton,
                               child: Text(
                                 "Login",
                                 style: TextStyle(fontSize: 20, color: Colors.white),
@@ -529,21 +568,50 @@ class _LogRegPageState extends State<LogRegPage> {
                       padding: EdgeInsets.only(left: 10),
                       color: Colors.black,
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        //crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            width: 250,
+                            //width: 80,
                             child: Text(
-                              "Are you an? Attorney",
-                              style: TextStyle(fontSize: 20, color: Colors.white),
+                              "Are you an? ",
+                              style: TextStyle(fontSize: 17, color: Colors.white),
                             ),
                           ),
-                          Icon(
-                            Icons.arrow_drop_down, 
-                            color: Colors.white, 
-                            size: 50,
-                          )
+                          Container(
+                            //width: 50,
+                            child: Theme(
+                              data: Theme.of(context).copyWith(
+                              canvasColor: blackbutton
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                style: TextStyle(fontSize: 17, color: Colors.white),
+                                value: type,
+                                items: _dropDownTypeItems,
+                                hint: Text(
+                                  type, 
+                                  style: TextStyle(
+                                    color: Colors.white
+                                  )
+                                ),
+                                iconSize: 40,
+                                iconDisabledColor: Colors.white,
+                                iconEnabledColor: Colors.white,
+                                onChanged: (String value){
+                                  setState(() {
+                                    type = value; 
+                                  });
+                                },
+                              ),
+                            ),
+                            ),
+                          ),
+                          // Icon(
+                          //   Icons.arrow_drop_down, 
+                          //   color: Colors.white, 
+                          //   size: 50,
+                          // )
                         ],
                       ),
                     ),
@@ -570,6 +638,7 @@ class _LogRegPageState extends State<LogRegPage> {
                             padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                             margin: EdgeInsets.only(left: 20, right: 20),  
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Container(
                                   padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -807,7 +876,7 @@ class _LogRegPageState extends State<LogRegPage> {
                             child: Column(
                               children: <Widget>[
                                 RaisedButton(
-                                  color: Theme.of(context).secondaryHeaderColor,
+                                  color: mainheader,
                                   child: Text(
                                     "Sign Up",
                                     style: TextStyle(
@@ -826,24 +895,27 @@ class _LogRegPageState extends State<LogRegPage> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.all(20),
-                      color: Colors.grey,
-                      child: Center(
-                        child: Text(
-                          "EXIT",
-                          style: TextStyle(fontSize: 22, color: Colors.white),
-                        ),
-                      ),
-                    )
                   ],
                 )
               )
             ],
           ),
         ),
-      )
+      ),
+      bottomNavigationBar: 
+      BottomAppBar(
+        child:Container(
+          //alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(20),
+          color: Colors.grey,
+          child: Text(
+            "EXIT",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 22, color: Colors.white,),
+          ),
+        )
+      ),
     );
   }
 }

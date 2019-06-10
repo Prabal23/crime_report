@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:crime_report/pages/terms_con.dart';
+import 'package:crime_report/pages/rep_cat.dart';
 import 'package:crime_report/pages/profile.dart';
+import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/progress.dart';
 
-class TnCPage extends StatefulWidget {
+
+class NotifyDetPage extends StatefulWidget {
   @override
-  _TnCPageState createState() => new _TnCPageState();
+  _NotifyDetPageState createState() => new _NotifyDetPageState();
 }
 
-class _TnCPageState extends State<TnCPage> {
+class _NotifyDetPageState extends State<NotifyDetPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
   
@@ -163,13 +165,18 @@ class _TnCPageState extends State<TnCPage> {
                   children: <Widget>[
                     SizedBox(height: 20,),
                     Text(
-                      "Legal",
+                      "Notifications",
                       style: TextStyle(fontSize: 22, color: Colors.black),
                     ),
                     SizedBox(height: 20,),
-                    Text(
-                      "Terms & Conditions & Privacy Policy",
-                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          '1. "Insert Notifiction Heading"',
+                          style: TextStyle(fontSize: 18, color: Colors.black),
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20,),
                     Text(
@@ -178,10 +185,17 @@ class _TnCPageState extends State<TnCPage> {
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                     SizedBox(height: 20,),
-                    Text(
-                      "Terms and Conditions agreements act as a legal contract between you (the company) who has the website or mobile app and the user who access your website and mobile app. Having a Terms and Conditions agreement is completely optional. No laws require you to have one. Not even the super-strict and wide-reaching General Data Protection Regulation (GDPR). It’s up to you to set the rules and guidelines that the user must agree to. You can think of your Terms and Conditions agreement as the legal agreement where you maintain your rights to exclude users from your app in the event that they abuse your app, where you maintain your legal rights against potential app abusers, and so on. \nTerms and Conditions are also known as Terms of Service or Terms of Use.",
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(fontSize: 15, color: Colors.black),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: 150,
+                      child: Container(
+                        child: Container(
+                          child: CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            child: Image.asset('assets/s3.png'),
+                          ),
+                        )
+                      ),
                     ),
                     SizedBox(height: 30,),
                   ],

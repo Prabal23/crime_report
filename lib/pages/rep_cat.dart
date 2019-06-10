@@ -1,3 +1,4 @@
+import 'package:crime_report/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
@@ -5,6 +6,8 @@ import 'package:redux/redux.dart';
 import 'package:crime_report/pages/main_page.dart';
 import 'package:crime_report/pages/profile.dart';
 import 'package:crime_report/pages/terms_con.dart';
+import 'package:crime_report/pages/notify_page.dart';
+import 'package:crime_report/pages/progress.dart';
 
 class RepCatPage extends StatefulWidget {
   @override
@@ -74,6 +77,12 @@ class _RepCatPageState extends State<RepCatPage> {
                   ],
                 ),
               ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProgressPage()),
+                );
+              },
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
@@ -84,6 +93,12 @@ class _RepCatPageState extends State<RepCatPage> {
                   fontSize: 22
                 ),
               ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotifyPage()),
+                );
+              },
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
@@ -131,7 +146,7 @@ class _RepCatPageState extends State<RepCatPage> {
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).secondaryHeaderColor,
+        backgroundColor: mainheader,
         title: Text("Crime Report")
       ),
       body: SingleChildScrollView(
@@ -152,15 +167,15 @@ class _RepCatPageState extends State<RepCatPage> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 120,
-                color: Theme.of(context).accentColor,
+                height: 100,
+                color: subheader,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       "YOUR COMPANY APP TITLE",
-                      style: TextStyle(fontSize: 22, color: Colors.black38),
+                      style: TextStyle(fontSize: 18, color: Colors.black38),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -186,7 +201,8 @@ class _RepCatPageState extends State<RepCatPage> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 400,
-                color: Theme.of(context).secondaryHeaderColor,
+                color: mainheader,
+                //color: Theme.of(context).secondaryHeaderColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center, 
@@ -379,61 +395,69 @@ class _RepCatPageState extends State<RepCatPage> {
                   ],
                 ),
               ),
+            ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: 
+      BottomAppBar(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Row(
+            children: <Widget>[
               Container(
-                width: MediaQuery.of(context).size.width,
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      color: Colors.black,
-                      padding: EdgeInsets.all(15),
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => MainPage()),
-                          );
-                        },
-                        child: Icon(
-                          Icons.chevron_left, 
-                          color: Colors.white, 
-                          size: 40,
-                        ),
-                      ),
-                    ),
-                    Container(
-                      width: 290,
-                      height: 70,
-                      //transform: Matrix4.translationValues(0.0, 0.0, -140.0),
-                      //margin: EdgeInsets.only(right: 70),
-                      padding: EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          top: BorderSide(width: 2.0, color: Colors.black),
-                          bottom: BorderSide(width: 2.0, color: Colors.black),
-                          right: BorderSide(width: 2.0, color: Colors.black),
-                          left: BorderSide(width: 2.0, color: Colors.black),
-                        ),
-                        borderRadius: BorderRadius.circular(0),
-                        color: Colors.grey, 
-                      ),
-                      child: Center(
-                        child: Text(
-                          "EXIT",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20.6,
-                            //fontWeight: FontWeight.bold
-                          )
-                        ),
-                      ),
-                    ),
-                  ],
+                color: Colors.black,
+                padding: EdgeInsets.all(15),
+                child: BackButton(
+                  color: Colors.white,
+                ),
+                // child: GestureDetector(
+                //   onTap: (){
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => MainPage()),
+                //     );
+                //   },
+                //   child: Icon(
+                //     Icons.chevron_left, 
+                //     color: Colors.white, 
+                //     size: 40,
+                //   ),
+                // ),
+              ),
+              Container(
+                width: 282,
+                //margin: EdgeInsets.only(right: 78),
+                //transform: Matrix4.translationValues(0.0, 0.0, -78.0),
+                height: 78.25,
+                //transform: Matrix4.translationValues(0.0, 0.0, -140.0),
+                //margin: EdgeInsets.only(right: 70),
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                  border: Border(
+                    top: BorderSide(width: 2.0, color: Colors.black),
+                    bottom: BorderSide(width: 2.0, color: Colors.black),
+                    right: BorderSide(width: 2.0, color: Colors.black),
+                    left: BorderSide(width: 2.0, color: Colors.black),
+                  ),
+                  borderRadius: BorderRadius.circular(0),
+                  color: Colors.grey, 
+                ),
+                child: Center(
+                  child: Text(
+                    "EXIT",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.6,
+                      //fontWeight: FontWeight.bold
+                    )
+                  ),
                 ),
               ),
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

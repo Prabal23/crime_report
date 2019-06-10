@@ -1,11 +1,17 @@
+import 'package:crime_report/main.dart';
 import 'package:crime_report/pages/rep_cat.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:crime_report/pages/main_page.dart';
+import 'package:crime_report/pages/rep_cat.dart';
 import 'package:crime_report/pages/profile.dart';
 import 'package:crime_report/pages/terms_con.dart';
+import 'package:crime_report/pages/notify_page.dart';
+import 'package:crime_report/pages/notify_det.dart';
+import 'package:crime_report/pages/progress.dart';
+import 'package:crime_report/pages/terms_con.dart';
+import 'package:crime_report/pages/notify_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -13,8 +19,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
+  // final scaffoldKey = GlobalKey<ScaffoldState>();
+  // final formKey = GlobalKey<FormState>();
   TextEditingController _textNameController = TextEditingController();
   TextEditingController _textSurNameController = TextEditingController();
   TextEditingController _textPassController = TextEditingController();
@@ -26,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController _textYearController = TextEditingController();
   String name = '', surname = '', password = '', _radioGender = '';
   String rName = '', rSurname = '', rEmail = '', rNewpass = '', rConpass = '';
-  String day = '', month = '', year = '';
+  String day = '', month = '', year = '', type = '';
   List _day =
   ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
    "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22",
@@ -34,8 +40,12 @@ class _ProfilePageState extends State<ProfilePage> {
   List _months =
   ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  List _user_type =
+  ["Attorney", "Magistrate", "Candidate Attorney", "Civil Servant",
+  "Government Worker", "Legal Aid", "General Public"];
   List<DropdownMenuItem<String>> _dropDownDayItems;
   List<DropdownMenuItem<String>> _dropDownMonthItems;
+  List<DropdownMenuItem<String>> _dropDownTypeItems;
 
   void _handleRadioValueChange(String value) {
     setState(() {
@@ -61,6 +71,9 @@ class _ProfilePageState extends State<ProfilePage> {
       _dropDownMonthItems = getDropDownMonthItems();
       month = _dropDownMonthItems[0].value;
 
+      _dropDownTypeItems = getDropDownTypeItems();
+      type = _dropDownTypeItems[0].value;
+
       super.initState();
   }
 
@@ -84,6 +97,17 @@ class _ProfilePageState extends State<ProfilePage> {
       ));
     }
     return items1;
+  }
+
+  List<DropdownMenuItem<String>> getDropDownTypeItems() {
+    List<DropdownMenuItem<String>> items2 = new List();
+    for (String type in _user_type) {
+      items2.add(new DropdownMenuItem(
+          value: type,
+          child: new Text(type, style: TextStyle(fontSize: 17, color: Colors.white),)
+      ));
+    }
+    return items2;
   }
 
   @override
@@ -145,6 +169,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   ],
                 ),
               ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProgressPage()),
+                );
+              },
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
@@ -155,6 +185,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   fontSize: 22
                 ),
               ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => NotifyPage()),
+                );
+              },
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
@@ -202,7 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).secondaryHeaderColor,
+        backgroundColor: mainheader,
         title: Text("Crime Report")
       ),
       body: SingleChildScrollView(
@@ -238,7 +274,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           backgroundImage: AssetImage('assets/prabal.jpg'),
                         ),
                         decoration: new BoxDecoration(
-                          color: Theme.of(context).accentColor, // border color
+                          color: subheader, // border color
                           shape: BoxShape.circle,
                         ),
                       ),
@@ -435,21 +471,50 @@ class _ProfilePageState extends State<ProfilePage> {
                       padding: EdgeInsets.only(left: 10),
                       color: Colors.black,
                       child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                        //crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Container(
-                            width: 250,
+                            //width: 80,
                             child: Text(
-                              "Are you an? Attorney",
-                              style: TextStyle(fontSize: 20, color: Colors.white),
+                              "Are you an? ",
+                              style: TextStyle(fontSize: 17, color: Colors.white),
                             ),
                           ),
-                          Icon(
-                            Icons.arrow_drop_down, 
-                            color: Colors.white, 
-                            size: 50,
-                          )
+                          Container(
+                            //width: 50,
+                            child: Theme(
+                              data: Theme.of(context).copyWith(
+                              canvasColor: blackbutton
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                style: TextStyle(fontSize: 17, color: Colors.white),
+                                value: type,
+                                items: _dropDownTypeItems,
+                                hint: Text(
+                                  type, 
+                                  style: TextStyle(
+                                    color: Colors.white
+                                  )
+                                ),
+                                iconSize: 40,
+                                iconDisabledColor: Colors.white,
+                                iconEnabledColor: Colors.white,
+                                onChanged: (String value){
+                                  setState(() {
+                                    type = value; 
+                                  });
+                                },
+                              ),
+                            ),
+                            ),
+                          ),
+                          // Icon(
+                          //   Icons.arrow_drop_down, 
+                          //   color: Colors.white, 
+                          //   size: 50,
+                          // )
                         ],
                       ),
                     ),
@@ -476,6 +541,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
                             margin: EdgeInsets.only(left: 20, right: 20),  
                             child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Container(
                                   padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
@@ -713,7 +779,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             child: Column(
                               children: <Widget>[
                                 RaisedButton(
-                                  color: Theme.of(context).secondaryHeaderColor,
+                                  color: mainheader,
                                   child: Text(
                                     "Sign Up",
                                     style: TextStyle(
@@ -732,39 +798,28 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      padding: EdgeInsets.all(20),
-                      color: Colors.black,
-                      child: Center(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: (){
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(builder: (context) => RepCatPage()),
-                                // );
-                              },
-                              child: Icon(
-                                Icons.chevron_left, 
-                                color: Colors.white, 
-                                size: 40,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
                   ],
                 )
               )
             ],
           ),
         ),
-      )
+      ),
+      bottomNavigationBar: 
+      BottomAppBar(
+        child: Container(
+          padding: EdgeInsets.all(15),
+          color: blackbutton,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              BackButton(
+                color: Colors.white,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

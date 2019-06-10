@@ -4,6 +4,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:crime_report/pages/login_reg.dart';
 
+import '../main.dart';
+
 class MyHomePage extends StatefulWidget {
 
   @override
@@ -46,7 +48,8 @@ class SplashScreenState extends State<MyHomePage> with SingleTickerProviderState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).secondaryHeaderColor,
+        //backgroundColor: Theme.of(context).secondaryHeaderColor,
+        backgroundColor: mainheader,
         title: Text("Crime Report")
       ),
       body: SingleChildScrollView(
@@ -67,15 +70,16 @@ class SplashScreenState extends State<MyHomePage> with SingleTickerProviderState
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 120,
-                color: Theme.of(context).accentColor,
+                height: 100,
+                //color: Theme.of(context).accentColor,
+                color: subheader,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       "YOUR COMPANY APP TITLE",
-                      style: TextStyle(fontSize: 22, color: Colors.black38),
+                      style: TextStyle(fontSize: 18, color: Colors.black38),
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,7 +105,7 @@ class SplashScreenState extends State<MyHomePage> with SingleTickerProviderState
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: 300,
-                color: Theme.of(context).secondaryHeaderColor,
+                color: mainheader,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center, 

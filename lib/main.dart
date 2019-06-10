@@ -7,7 +7,12 @@ import 'package:crime_report/pages/home.dart';
 
 void main() => runApp(new MyApp());
 
-Color header = Color(0xFFdd00ff);
+Color mainheader = Color(0xFF00746b);
+Color subheader = Color(0xFFd2ebe8);
+Color subheader1 = Color(0xFFd2ebe8);
+Color canvas = Color(0xFFeaebf0);
+Color greybutton = Color(0xFF464646);
+Color blackbutton = Color(0xFF000000);
 
 class MyApp extends StatelessWidget {
   @override
@@ -24,8 +29,8 @@ class MyApp extends StatelessWidget {
         // primarySwatch: Colors.grey,
         // brightness: Brightness.light,
         accentColor: Colors.blue[100],
-        //canvasColor: header
-        canvasColor: Colors.grey[200]
+        canvasColor: canvas
+        //canvasColor: Colors.grey[200]
       ),
       home: MyHomePage()
     );

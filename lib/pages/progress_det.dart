@@ -3,17 +3,20 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:crime_report/pages/terms_con.dart';
+import 'package:crime_report/pages/rep_cat.dart';
 import 'package:crime_report/pages/profile.dart';
+import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
+import 'package:crime_report/pages/notify_det.dart';
 import 'package:crime_report/pages/progress.dart';
+import 'package:crime_report/pages/follow_up.dart';
 
-class TnCPage extends StatefulWidget {
+class ProgressDetPage extends StatefulWidget {
   @override
-  _TnCPageState createState() => new _TnCPageState();
+  _ProgressDetPageState createState() => new _ProgressDetPageState();
 }
 
-class _TnCPageState extends State<TnCPage> {
+class _ProgressDetPageState extends State<ProgressDetPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
   
@@ -150,38 +153,111 @@ class _TnCPageState extends State<TnCPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.white,
           child: Column(
             children: <Widget>[
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(left: 20, right: 20),
-                color: Colors.white,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 20,),
                     Text(
-                      "Legal",
+                      "Report Progress",
                       style: TextStyle(fontSize: 22, color: Colors.black),
                     ),
                     SizedBox(height: 20,),
-                    Text(
-                      "Terms & Conditions & Privacy Policy",
-                      style: TextStyle(fontSize: 18, color: Colors.black),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              '1. Report/Complaint: "Insert Number"',
+                              style: TextStyle(fontSize: 18, color: Colors.black),
+                            ),
+                            Row(
+                              children: <Widget>[
+                                SizedBox(height: 5),
+                                Text(
+                                  'Situation',
+                                  style: TextStyle(fontSize: 18, color: Colors.black),
+                                ),
+                                SizedBox(width: 5),
+                                CircleAvatar(
+                                  backgroundColor: Colors.red,
+                                  radius: 8,
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                     SizedBox(height: 20,),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Province\nNumber of days in System\nOrder Number\nAttending Person\nExternal Supplier Appointed\nAddress\nGPS\nResolved",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 5),
                     Text(
-                      "Terms and Conditions agreements act as a legal contract between you (the company) who has the website or mobile app and the user who access your website and mobile app. Having a Terms and Conditions agreement is completely optional. No laws require you to have one. Not even the super-strict and wide-reaching General Data Protection Regulation (GDPR). It’s up to you to set the rules and guidelines that the user must agree to. You can think of your Terms and Conditions agreement as the legal agreement where you maintain your rights to exclude users from your app in the event that they abuse your app, where you maintain your legal rights against potential app abusers, and so on. \nTerms and Conditions are also known as Terms of Service or Terms of Use.",
+                      "*All relevant info related to report/complaint if anything missed above",
                       textAlign: TextAlign.justify,
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
                     SizedBox(height: 20,),
-                    Text(
-                      "Terms and Conditions agreements act as a legal contract between you (the company) who has the website or mobile app and the user who access your website and mobile app. Having a Terms and Conditions agreement is completely optional. No laws require you to have one. Not even the super-strict and wide-reaching General Data Protection Regulation (GDPR). It’s up to you to set the rules and guidelines that the user must agree to. You can think of your Terms and Conditions agreement as the legal agreement where you maintain your rights to exclude users from your app in the event that they abuse your app, where you maintain your legal rights against potential app abusers, and so on. \nTerms and Conditions are also known as Terms of Service or Terms of Use.",
-                      textAlign: TextAlign.justify,
-                      style: TextStyle(fontSize: 15, color: Colors.black),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      //height: 150,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            //width: 140,
+                            color: mainheader,
+                            child: 
+                            FlatButton(
+                              onPressed: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => FollowUpPage()),
+                                );
+                              },
+                              child: Text(
+                                "Follow up",
+                                style: TextStyle(fontSize: 18, color: Colors.white),
+                              ),
+                            )
+                          ),
+                          SizedBox(width: 10),
+                          Container(
+                            padding: EdgeInsets.all(5),
+                            //width: 140,
+                            color: mainheader,
+                            child: 
+                            FlatButton(
+                              onPressed: (){
+
+                              },
+                              child: Text(
+                                "Problem fixed,\nthank you",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 18, color: Colors.white),
+                              ),
+                            )
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(height: 30,),
                   ],
