@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:crime_report/pages/login_reg.dart';
-
+import 'package:crime_report/pages/routeAnimation.dart';
 import '../main.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -21,6 +21,7 @@ class SplashScreenState extends State<MyHomePage> with SingleTickerProviderState
 
   @override
   void initState() {
+    CircularProgressIndicator();
     super.initState();
 
     //loadData();
@@ -41,7 +42,8 @@ class SplashScreenState extends State<MyHomePage> with SingleTickerProviderState
   }
 
   onDoneLoading() async {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LogRegPage()));
+    Navigator.pushReplacement( context, SlideLeftRoute(page: LogRegPage()));
+    //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LogRegPage()));
   }
 
   @override

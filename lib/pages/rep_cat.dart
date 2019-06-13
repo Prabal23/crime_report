@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-import 'package:crime_report/pages/main_page.dart';
+import 'package:crime_report/pages/routeAnimation.dart';
 import 'package:crime_report/pages/profile.dart';
 import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
@@ -233,10 +233,11 @@ class _RepCatPageState extends State<RepCatPage> {
                                   child: Container(
                                     child: GestureDetector(
                                       onTap: (){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => ReportScreen()),
-                                        );
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute(builder: (context) => ReportScreen()),
+                                        // );
+                                        Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
                                       },
                                       child: Text(
                                         "Service 1",
@@ -254,10 +255,7 @@ class _RepCatPageState extends State<RepCatPage> {
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
                                     onTap: (){
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => ReportScreen()),
-                                      );
+                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Water &\nSanitation",
@@ -290,10 +288,7 @@ class _RepCatPageState extends State<RepCatPage> {
                                   child: Container(
                                     child: GestureDetector(
                                       onTap: (){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(builder: (context) => ReportScreen()),
-                                        );
+                                        Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
                                       },
                                       child: Text(
                                           "Service 2",
@@ -311,10 +306,7 @@ class _RepCatPageState extends State<RepCatPage> {
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
                                     onTap: (){
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => ReportScreen()),
-                                      );
+                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Electricity",
@@ -357,10 +349,7 @@ class _RepCatPageState extends State<RepCatPage> {
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
                                     onTap: (){
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => ReportScreen()),
-                                      );
+                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Service 3",
@@ -377,10 +366,7 @@ class _RepCatPageState extends State<RepCatPage> {
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
                                     onTap: (){
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => ReportScreen()),
-                                      );
+                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Waste &\nEnvironment",
@@ -412,10 +398,7 @@ class _RepCatPageState extends State<RepCatPage> {
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
                                     onTap: (){
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => ReportScreen()),
-                                      );
+                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                         "Service 4",
@@ -432,10 +415,7 @@ class _RepCatPageState extends State<RepCatPage> {
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
                                     onTap: (){
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => ReportScreen()),
-                                      );
+                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Legal &\nComplaints",

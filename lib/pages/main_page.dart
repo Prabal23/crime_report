@@ -2,6 +2,8 @@ import 'package:crime_report/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:crime_report/pages/routeAnimation.dart';
+import 'package:crime_report/pages/login_reg.dart';
 import 'package:crime_report/pages/rep_cat.dart';
 import 'package:crime_report/pages/profile.dart';
 import 'package:crime_report/pages/terms_con.dart';
@@ -14,8 +16,8 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final scaffoldKey = GlobalKey<ScaffoldState>();
-  final formKey = GlobalKey<FormState>();
+  // final scaffoldKey = GlobalKey<ScaffoldState>();
+  // final formKey = GlobalKey<FormState>();
   
   @override
   Widget build(BuildContext context) {
@@ -208,8 +210,9 @@ class _MainPageState extends State<MainPage> {
                   children: <Widget>[
                     SizedBox(height: 30),
                     Text("Hello,", style: TextStyle(fontSize: 20, color: Colors.white)),
-                    Text("Insert Name and Surname", style: TextStyle(fontSize: 20, color: Colors.white)),
-                    Text("and Work Code", style: TextStyle(fontSize: 20, color: Colors.white)),
+                    //TextField(controller:  _textNameController),
+                    Text( name + " " + surname , style: TextStyle(fontSize: 20, color: Colors.white)),
+                    Text("Work Code :  " + password, style: TextStyle(fontSize: 20, color: Colors.white)),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 200,
@@ -344,9 +347,24 @@ class _MainPageState extends State<MainPage> {
                       margin: EdgeInsets.only(left: 20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Text(
                             "*If Location is OFF, turn on before start reporting",
+                            style: TextStyle(color: Colors.white)
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 5,),
+                    Container(
+                      margin: EdgeInsets.only(left: 20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            location,
                             style: TextStyle(color: Colors.white)
                           ),
                         ],
@@ -420,10 +438,11 @@ class _MainPageState extends State<MainPage> {
                 child: Center(
                   child: GestureDetector(
                     onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RepCatPage()),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => RepCatPage()),
+                      // );
+                      Navigator.push( context, SlideLeftRoute(page: RepCatPage()));
                     },
                     child: Text(
                       "START REPORTING",

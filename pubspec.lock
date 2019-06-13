@@ -67,6 +67,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.11"
+  geocoder:
+    dependency: "direct main"
+    description:
+      name: geocoder
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2"
   image_picker:
     dependency: "direct main"
     description:
@@ -74,6 +81,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.12+1"
+  intl:
+    dependency: "direct main"
+    description:
+      name: intl
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.15.8"
+  location:
+    dependency: "direct main"
+    description:
+      name: location
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.4.1"
   matcher:
     dependency: transitive
     description:

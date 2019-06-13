@@ -18,6 +18,7 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   TextEditingController _textController = new TextEditingController();
+  TextEditingController _textController1 = new TextEditingController();
   String text = '', prob = '';
   List _problems =
   ["Burst Pipe", "Flood"];
@@ -27,6 +28,7 @@ class _ReportScreenState extends State<ReportScreen> {
     void initState() {
       _dropDownProblemItems = getDropDownproblemItems();
       prob = _dropDownProblemItems[0].value;
+      _textController.text = address;
 
       super.initState();
   }
@@ -240,7 +242,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              'Autofil Name',
+                              name,
                               style: TextStyle(color: Colors.white, fontSize: 15)
                             ),
                           ],
@@ -252,7 +254,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              'Autofil Surname',
+                              surname,
                               style: TextStyle(color: Colors.white, fontSize: 15)
                             ),
                           ],
@@ -264,7 +266,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              'Autofil Password',
+                              password,
                               style: TextStyle(color: Colors.white, fontSize: 15)
                             ),
                           ],
@@ -526,7 +528,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         ),
                         child: TextField(
                           autofocus: false,
-                          controller: _textController,
+                          controller: _textController1,
                           decoration: InputDecoration(
                             hintText: "Notes: any additional info you feel is necessary*",
                             border: InputBorder.none,
@@ -544,7 +546,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Autofil date",
+                              "Current Date : " + date,
                               style: TextStyle(color: Colors.white)
                             ),
                           ],
@@ -555,7 +557,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Autofil time",
+                              "Current Time : " + time,
                               style: TextStyle(color: Colors.white)
                             ),
                           ],
@@ -566,7 +568,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Autofil GPS Coordinates",
+                              location,
                               style: TextStyle(color: Colors.white)
                             ),
                           ],

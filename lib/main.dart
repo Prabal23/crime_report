@@ -13,6 +13,8 @@ Color subheader1 = Color(0xFFd2ebe8);
 Color canvas = Color(0xFFeaebf0);
 Color greybutton = Color(0xFF464646);
 Color blackbutton = Color(0xFF000000);
+String name = '', surname = '', password = '', location = '', address = '';
+String date = '', time = '';
 
 class MyApp extends StatelessWidget {
   @override
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
         // buttonColor: Colors.black,
         // primarySwatch: Colors.grey,
         // brightness: Brightness.light,
-        accentColor: Colors.blue[100],
+        accentColor: mainheader,
         canvasColor: canvas
         //canvasColor: Colors.grey[200]
       ),
