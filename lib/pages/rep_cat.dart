@@ -445,6 +445,7 @@ class _RepCatPageState extends State<RepCatPage> {
         child: Container(
           width: MediaQuery.of(context).size.width,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Container(
                 color: Colors.black,
@@ -466,32 +467,34 @@ class _RepCatPageState extends State<RepCatPage> {
                 //   ),
                 // ),
               ),
-              Container(
-                width: 282,
-                //margin: EdgeInsets.only(right: 78),
-                //transform: Matrix4.translationValues(0.0, 0.0, -78.0),
-                height: 78.25,
-                //transform: Matrix4.translationValues(0.0, 0.0, -140.0),
-                //margin: EdgeInsets.only(right: 70),
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(width: 2.0, color: Colors.black),
-                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                    right: BorderSide(width: 2.0, color: Colors.black),
-                    left: BorderSide(width: 2.0, color: Colors.black),
+              Expanded(
+                child: Container(
+                  //width: 282,
+                  //margin: EdgeInsets.only(right: 78),
+                  //transform: Matrix4.translationValues(0.0, 0.0, -78.0),
+                  height: 78.25,
+                  //transform: Matrix4.translationValues(0.0, 0.0, -140.0),
+                  //margin: EdgeInsets.only(right: 70),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(width: 2.0, color: Colors.black),
+                      bottom: BorderSide(width: 2.0, color: Colors.black),
+                      right: BorderSide(width: 2.0, color: Colors.black),
+                      left: BorderSide(width: 2.0, color: Colors.black),
+                    ),
+                    borderRadius: BorderRadius.circular(0),
+                    color: Colors.grey, 
                   ),
-                  borderRadius: BorderRadius.circular(0),
-                  color: Colors.grey, 
-                ),
-                child: Center(
-                  child: Text(
-                    "EXIT",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.6,
-                      //fontWeight: FontWeight.bold
-                    )
+                  child: Center(
+                    child: Text(
+                      "EXIT",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.6,
+                        //fontWeight: FontWeight.bold
+                      )
+                    ),
                   ),
                 ),
               ),

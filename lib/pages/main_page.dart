@@ -226,7 +226,7 @@ class _MainPageState extends State<MainPage> {
                             child: CircleAvatar(
                               radius: 60.0,
                               backgroundColor: Colors.transparent,
-                              backgroundImage: AssetImage('assets/prabal.jpg'),
+                              backgroundImage: AssetImage('assets/person.png'),
                             ),
                             decoration: new BoxDecoration(
                               color: subheader,
@@ -235,26 +235,31 @@ class _MainPageState extends State<MainPage> {
                             ),
                           ),
                           SizedBox(width: 25),
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(width: 2.0, color: Colors.black),
-                                bottom: BorderSide(width: 2.0, color: Colors.black),
-                                right: BorderSide(width: 2.0, color: Colors.black),
-                                left: BorderSide(width: 2.0, color: Colors.black),
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push( context, SlideLeftRoute(page: LogRegPage()));
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(width: 2.0, color: Colors.black),
+                                  bottom: BorderSide(width: 2.0, color: Colors.black),
+                                  right: BorderSide(width: 2.0, color: Colors.black),
+                                  left: BorderSide(width: 2.0, color: Colors.black),
+                                ),
+                                borderRadius: BorderRadius.circular(0),
+                                color: subheader
+                                //color: Theme.of(context).accentColor, 
                               ),
-                              borderRadius: BorderRadius.circular(0),
-                              color: subheader
-                              //color: Theme.of(context).accentColor, 
-                            ),
-                            child: Text(
-                              "Login as a different person?",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 12.5,
-                                fontStyle: FontStyle.italic
-                              )
+                              child: Text(
+                                "Login as a different person?",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 12.5,
+                                  fontStyle: FontStyle.italic
+                                )
+                              ),
                             ),
                           ),
                         ],
@@ -356,20 +361,20 @@ class _MainPageState extends State<MainPage> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 5,),
-                    Container(
-                      margin: EdgeInsets.only(left: 20),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            location,
-                            style: TextStyle(color: Colors.white)
-                          ),
-                        ],
-                      ),
-                    ),
+                    //SizedBox(height: 5,),
+                    // Container(
+                    //   margin: EdgeInsets.only(left: 20),
+                    //   child: Row(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     mainAxisAlignment: MainAxisAlignment.start,
+                    //     children: <Widget>[
+                    //       Text(
+                    //         location,
+                    //         style: TextStyle(color: Colors.white)
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     SizedBox(height: 50,)
                   ],
                 ),
@@ -422,35 +427,37 @@ class _MainPageState extends State<MainPage> {
                   ),
                 ),
               ),
-              Container(
-                height: 70,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(width: 2.0, color: Colors.black),
-                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                    right: BorderSide(width: 2.0, color: Colors.black),
-                    left: BorderSide(width: 2.0, color: Colors.black),
+              Expanded(
+                child: Container(
+                  height: 70,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(width: 2.0, color: Colors.black),
+                      bottom: BorderSide(width: 2.0, color: Colors.black),
+                      right: BorderSide(width: 2.0, color: Colors.black),
+                      left: BorderSide(width: 2.0, color: Colors.black),
+                    ),
+                    borderRadius: BorderRadius.circular(0),
+                    color: Colors.black, 
                   ),
-                  borderRadius: BorderRadius.circular(0),
-                  color: Colors.black, 
-                ),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: (){
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => RepCatPage()),
-                      // );
-                      Navigator.push( context, SlideLeftRoute(page: RepCatPage()));
-                    },
-                    child: Text(
-                      "START REPORTING",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20
-                        //fontWeight: FontWeight.bold
-                      )
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: (){
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => RepCatPage()),
+                        // );
+                        Navigator.push( context, SlideLeftRoute(page: RepCatPage()));
+                      },
+                      child: Text(
+                        "START REPORTING",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20
+                          //fontWeight: FontWeight.bold
+                        )
+                      ),
                     ),
                   ),
                 ),

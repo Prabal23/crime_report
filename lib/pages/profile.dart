@@ -271,7 +271,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: CircleAvatar(
                           radius: 60.0,
                           backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage('assets/prabal.jpg'),
+                          backgroundImage: AssetImage('assets/person.png'),
                         ),
                         decoration: new BoxDecoration(
                           color: subheader, // border color
@@ -472,7 +472,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Colors.black,
                       child: Row(
                         //crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Container(
                             //width: 80,
@@ -487,25 +487,27 @@ class _ProfilePageState extends State<ProfilePage> {
                               data: Theme.of(context).copyWith(
                               canvasColor: blackbutton
                             ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton(
-                                style: TextStyle(fontSize: 17, color: Colors.white),
-                                value: type,
-                                items: _dropDownTypeItems,
-                                hint: Text(
-                                  type, 
-                                  style: TextStyle(
-                                    color: Colors.white
-                                  )
+                            child: Expanded(
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton(
+                                  style: TextStyle(fontSize: 17, color: Colors.white),
+                                  value: type,
+                                  items: _dropDownTypeItems,
+                                  hint: Text(
+                                    type, 
+                                    style: TextStyle(
+                                      color: Colors.white
+                                    )
+                                  ),
+                                  iconSize: 40,
+                                  iconDisabledColor: Colors.white,
+                                  iconEnabledColor: Colors.white,
+                                  onChanged: (String value){
+                                    setState(() {
+                                      type = value; 
+                                    });
+                                  },
                                 ),
-                                iconSize: 40,
-                                iconDisabledColor: Colors.white,
-                                iconEnabledColor: Colors.white,
-                                onChanged: (String value){
-                                  setState(() {
-                                    type = value; 
-                                  });
-                                },
                               ),
                             ),
                             ),

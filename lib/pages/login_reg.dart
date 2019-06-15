@@ -659,7 +659,7 @@ class _LogRegPageState extends State<LogRegPage> {
                           color: Colors.black,
                           child: Row(
                             //crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Container(
                                 //width: 80,
@@ -674,25 +674,27 @@ class _LogRegPageState extends State<LogRegPage> {
                                   data: Theme.of(context).copyWith(
                                   canvasColor: blackbutton
                                 ),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(
-                                    style: TextStyle(fontSize: 17, color: Colors.white),
-                                    value: type,
-                                    items: _dropDownTypeItems,
-                                    hint: Text(
-                                      type, 
-                                      style: TextStyle(
-                                        color: Colors.white
-                                      )
+                                child: Expanded(
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                      style: TextStyle(fontSize: 17, color: Colors.white),
+                                      value: type,
+                                      items: _dropDownTypeItems,
+                                      hint: Text(
+                                        type, 
+                                        style: TextStyle(
+                                          color: Colors.white
+                                        )
+                                      ),
+                                      iconSize: 40,
+                                      iconDisabledColor: Colors.white,
+                                      iconEnabledColor: Colors.white,
+                                      onChanged: (String value){
+                                        setState(() {
+                                          type = value; 
+                                        });
+                                      },
                                     ),
-                                    iconSize: 40,
-                                    iconDisabledColor: Colors.white,
-                                    iconEnabledColor: Colors.white,
-                                    onChanged: (String value){
-                                      setState(() {
-                                        type = value; 
-                                      });
-                                    },
                                   ),
                                 ),
                                 ),
@@ -1030,6 +1032,7 @@ class _LogRegPageState extends State<LogRegPage> {
         var first = addresses.first;
         //address = "${first.featureName} & ${first.addressLine} & ${first.adminArea}";
         address = "${first.addressLine}";
+        country = "${first.countryName}";
         location = curLocation['latitude'].toString() + ", " + curLocation['longitude'].toString();
       }
 }

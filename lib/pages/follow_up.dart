@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:crime_report/main.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:intl/intl.dart';
 import 'package:redux/redux.dart';
 import 'package:crime_report/pages/rep_cat.dart';
 import 'package:crime_report/pages/profile.dart';
@@ -18,7 +21,31 @@ class FollowUpPage extends StatefulWidget {
 
 class _FollowUpPageState extends State<FollowUpPage> {
   TextEditingController _textController = new TextEditingController();
-  String text = '';
+  String text = '', situation = '', prob_status = '', runningTime = '';
+  bool green = true, yellow = false, orange = false, red = false;
+  bool not_fixed = true, adeq_fixed = false;
+
+  @override
+  void initState() {
+    // final DateTime curTime = DateTime.now();
+    // DateFormat("hh:mm:ss").format(curTime);
+    runningTime = _formatDateTime(DateTime.now());
+    Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    super.initState();
+  }
+
+  void _getTime() {
+    final DateTime now = DateTime.now();
+    final String formattedDateTime = _formatDateTime(now);
+    setState(() {
+      runningTime = formattedDateTime;
+    });
+  }
+
+  String _formatDateTime(DateTime dateTime) {
+    return DateFormat('hh:mm:ss').format(dateTime);
+  }
+  
   @override
   Widget build(BuildContext context) {
     Drawer drawer = new Drawer(
@@ -233,14 +260,32 @@ class _FollowUpPageState extends State<FollowUpPage> {
                             'Problem still not fixed',
                             style: TextStyle(color: Colors.white, fontSize: 17)
                           ),
-                          Container(
-                            height: 20,
-                            width: 20,
-                            color: Colors.white,
-                            child: Icon(
-                              Icons.done, 
-                              color: Colors.black, 
-                              size: 20,
+                          GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                not_fixed = true;
+                                adeq_fixed = false;
+                                prob_status = '1';
+                              });
+                            },
+                            child: (not_fixed == true && adeq_fixed == false) ? Container(
+                              height: 20,
+                              width: 20,
+                              color: Colors.white,
+                              child: Icon(
+                                Icons.done, 
+                                color: Colors.black, 
+                                size: 20,
+                              ),
+                            ) : Container(
+                              height: 20,
+                              width: 20,
+                              color: Colors.white,
+                              child: Icon(
+                                Icons.done, 
+                                color: Colors.grey, 
+                                size: 20,
+                              ),
                             ),
                           ),
                         ],
@@ -258,14 +303,32 @@ class _FollowUpPageState extends State<FollowUpPage> {
                             'Problem not fixed adequately',
                             style: TextStyle(color: Colors.white, fontSize: 17)
                           ),
-                          Container(
-                            height: 20,
-                            width: 20,
-                            color: Colors.white,
-                            child: Icon(
-                              Icons.done, 
-                              color: Colors.black, 
-                              size: 20,
+                          GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                not_fixed = false;
+                                adeq_fixed = true;
+                                prob_status = '2';
+                              });
+                            },
+                            child: (not_fixed == false && adeq_fixed == true) ? Container(
+                              height: 20,
+                              width: 20,
+                              color: Colors.white,
+                              child: Icon(
+                                Icons.done, 
+                                color: Colors.black, 
+                                size: 20,
+                              ),
+                            ) : Container(
+                              height: 20,
+                              width: 20,
+                              color: Colors.white,
+                              child: Icon(
+                                Icons.done, 
+                                color: Colors.grey, 
+                                size: 20,
+                              ),
                             ),
                           ),
                         ],
@@ -308,7 +371,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         //mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Autofil Name',
+                            name,
                             style: TextStyle(color: Colors.white, fontSize: 15)
                           ),
                         ],
@@ -321,7 +384,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         //mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Autofil Surname',
+                            surname,
                             style: TextStyle(color: Colors.white, fontSize: 15)
                           ),
                         ],
@@ -334,7 +397,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         //mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            'Autofil Password',
+                            password,
                             style: TextStyle(color: Colors.white, fontSize: 15)
                           ),
                         ],
@@ -369,7 +432,28 @@ class _FollowUpPageState extends State<FollowUpPage> {
                               )
                             ),
                           ),
-                          Container(
+                          (location == '' || address == '') 
+                          ? Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(width: 2.0, color: Colors.black),
+                                  bottom: BorderSide(width: 2.0, color: Colors.black),
+                                  right: BorderSide(width: 2.0, color: Colors.black),
+                                  left: BorderSide(width: 2.0, color: Colors.black),
+                                ),
+                                borderRadius: BorderRadius.circular(0),
+                                color: Colors.grey, 
+                              ),
+                              child: Text(
+                                "ON",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 19,
+                                  //fontWeight: FontWeight.bold
+                                )
+                              ),
+                            ) : Container(
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               border: Border(
@@ -399,7 +483,37 @@ class _FollowUpPageState extends State<FollowUpPage> {
                               ],
                             ),
                           ),
-                          Container(
+                          (location == '' || address == '') 
+                          ? Container(
+                              padding: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(width: 2.0, color: Colors.black),
+                                  bottom: BorderSide(width: 2.0, color: Colors.black),
+                                  right: BorderSide(width: 2.0, color: Colors.black),
+                                  left: BorderSide(width: 2.0, color: Colors.black),
+                                ),
+                                borderRadius: BorderRadius.circular(0),
+                                color: Colors.black, 
+                              ),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    "OFF",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 19,
+                                      //fontWeight: FontWeight.bold
+                                    )
+                                  ),
+                                  Icon(
+                                    Icons.done, 
+                                    color: Colors.white, 
+                                    size: 20,
+                                  ),
+                                ],
+                              ),
+                            ) : Container(
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               border: Border(
@@ -507,7 +621,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Autofil addres from previous report",
+                            address,
                             style: TextStyle(color: Colors.white)
                           ),
                         ],
@@ -532,7 +646,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Autofil date",
+                            "Date : " + date,
                             style: TextStyle(color: Colors.white)
                           ),
                         ],
@@ -544,7 +658,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Autofil time",
+                            "Time : " + runningTime + " (" + country + " standard time)",
                             style: TextStyle(color: Colors.white)
                           ),
                         ],
@@ -556,7 +670,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Autofil GPS Coordinates",
+                            "Location Cordinates : " + location,
                             style: TextStyle(color: Colors.white)
                           ),
                         ],
@@ -591,76 +705,132 @@ class _FollowUpPageState extends State<FollowUpPage> {
                               )
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(width: 2.0, color: Colors.black),
-                                bottom: BorderSide(width: 2.0, color: Colors.black),
-                                right: BorderSide(width: 2.0, color: Colors.black),
-                                left: BorderSide(width: 2.0, color: Colors.black),
+                          GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                green = true;
+                                yellow = false;
+                                orange = false;
+                                red = false;
+                                situation = '1';
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(width: 2.0, color: Colors.black),
+                                  bottom: BorderSide(width: 2.0, color: Colors.black),
+                                  right: BorderSide(width: 2.0, color: Colors.black),
+                                  left: BorderSide(width: 2.0, color: Colors.black),
+                                ),
+                                borderRadius: BorderRadius.circular(0),
+                                color: Colors.green, 
                               ),
-                              borderRadius: BorderRadius.circular(0),
-                              color: Colors.green, 
-                            ),
-                            child: Icon(
-                              Icons.done, 
-                              color: Colors.white, 
-                              size: 20,
+                              child: (green == true && yellow == false && orange == false && red == false) ?  Icon(
+                                Icons.done, 
+                                color: Colors.white, 
+                                size: 20,
+                              ) : Container(
+                                  width: 10,
+                                  height: 10,
+                              ),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(width: 2.0, color: Colors.black),
-                                bottom: BorderSide(width: 2.0, color: Colors.black),
-                                right: BorderSide(width: 2.0, color: Colors.black),
-                                left: BorderSide(width: 2.0, color: Colors.black),
+                          GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                green = false;
+                                yellow = true;
+                                orange = false;
+                                red = false;
+                                situation = '2';
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(width: 2.0, color: Colors.black),
+                                  bottom: BorderSide(width: 2.0, color: Colors.black),
+                                  right: BorderSide(width: 2.0, color: Colors.black),
+                                  left: BorderSide(width: 2.0, color: Colors.black),
+                                ),
+                                borderRadius: BorderRadius.circular(0),
+                                color: Colors.yellow, 
                               ),
-                              borderRadius: BorderRadius.circular(0),
-                              color: Colors.yellow, 
-                            ),
-                            child: Icon(
-                              Icons.done, 
-                              color: Colors.black, 
-                              size: 20,
+                              child: (green == false && yellow == true && orange == false && red == false) ? Icon(
+                                Icons.done, 
+                                color: Colors.black, 
+                                size: 20,
+                              ) : Container(
+                                  width: 10,
+                                  height: 10,
+                              ),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(width: 2.0, color: Colors.black),
-                                bottom: BorderSide(width: 2.0, color: Colors.black),
-                                right: BorderSide(width: 2.0, color: Colors.black),
-                                left: BorderSide(width: 2.0, color: Colors.black),
+                          GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                green = false;
+                                yellow = false;
+                                orange = true;
+                                red = false;
+                                situation = '3';
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(width: 2.0, color: Colors.black),
+                                  bottom: BorderSide(width: 2.0, color: Colors.black),
+                                  right: BorderSide(width: 2.0, color: Colors.black),
+                                  left: BorderSide(width: 2.0, color: Colors.black),
+                                ),
+                                borderRadius: BorderRadius.circular(0),
+                                color: Colors.orange, 
                               ),
-                              borderRadius: BorderRadius.circular(0),
-                              color: Colors.orange, 
-                            ),
-                            child: Icon(
-                              Icons.done, 
-                              color: Colors.white, 
-                              size: 20,
+                              child: (green == false && yellow == false && orange == true && red == false) ? Icon(
+                                Icons.done, 
+                                color: Colors.white, 
+                                size: 20,
+                              ) : Container(
+                                  width: 10,
+                                  height: 10,
+                              ),
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top: BorderSide(width: 2.0, color: Colors.black),
-                                bottom: BorderSide(width: 2.0, color: Colors.black),
-                                right: BorderSide(width: 2.0, color: Colors.black),
-                                left: BorderSide(width: 2.0, color: Colors.black),
+                          GestureDetector(
+                            onTap: (){
+                              setState(() {
+                                green = false;
+                                yellow = false;
+                                orange = false;
+                                red = true;
+                                situation = '4';
+                              });
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  top: BorderSide(width: 2.0, color: Colors.black),
+                                  bottom: BorderSide(width: 2.0, color: Colors.black),
+                                  right: BorderSide(width: 2.0, color: Colors.black),
+                                  left: BorderSide(width: 2.0, color: Colors.black),
+                                ),
+                                borderRadius: BorderRadius.circular(0),
+                                color: Colors.red, 
                               ),
-                              borderRadius: BorderRadius.circular(0),
-                              color: Colors.red, 
-                            ),
-                            child: Icon(
-                              Icons.done, 
-                              color: Colors.white, 
-                              size: 20,
+                              child: (green == false && yellow == false && orange == false && red == true) ? Icon(
+                                Icons.done, 
+                                color: Colors.white, 
+                                size: 20,
+                              ) : Container(
+                                  width: 10,
+                                  height: 10,
+                              ),
                             ),
                           ),
                         ],
