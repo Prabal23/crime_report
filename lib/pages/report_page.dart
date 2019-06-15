@@ -12,7 +12,6 @@ import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/progress.dart';
 import 'package:crime_report/pages/main_page.dart';
 
-
 class ReportScreen extends StatefulWidget {
   @override
   _ReportScreenState createState() => new _ReportScreenState();
@@ -21,20 +20,23 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
   TextEditingController _textController = new TextEditingController();
   TextEditingController _textController1 = new TextEditingController();
-  String text = '', prob = '', situation = '', prob_status = '', runningTime = '';
+  String text = '',
+      prob = '',
+      situation = '',
+      prob_status = '',
+      runningTime = '';
   bool green = true, yellow = false, orange = false, red = false;
-  List _problems =
-  ["Burst Pipe", "Flood"];
+  List _problems = ["Burst Pipe", "Flood"];
   List<DropdownMenuItem<String>> _dropDownProblemItems;
 
   @override
-    void initState() {
-      _dropDownProblemItems = getDropDownproblemItems();
-      prob = _dropDownProblemItems[0].value;
-      _textController.text = address;
-      runningTime = _formatDateTime(DateTime.now());
-      Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
-      super.initState();
+  void initState() {
+    _dropDownProblemItems = getDropDownproblemItems();
+    prob = _dropDownProblemItems[0].value;
+    _textController.text = address;
+    runningTime = _formatDateTime(DateTime.now());
+    Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    super.initState();
   }
 
   void _getTime() {
@@ -54,8 +56,10 @@ class _ReportScreenState extends State<ReportScreen> {
     for (String problems in _problems) {
       items.add(new DropdownMenuItem(
           value: problems,
-          child: new Text(problems, style: TextStyle(fontSize: 17, color: Colors.white),)
-      ));
+          child: new Text(
+            problems,
+            style: TextStyle(fontSize: 17, color: Colors.white),
+          )));
     }
     return items;
   }
@@ -73,8 +77,8 @@ class _ReportScreenState extends State<ReportScreen> {
                 children: <Widget>[
                   Container(
                     child: Icon(
-                      Icons.menu, 
-                      color: Colors.white, 
+                      Icons.menu,
+                      color: Colors.white,
                       size: 40,
                     ),
                   ),
@@ -84,13 +88,10 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
             ListTile(
               title: Text(
-                "Profile", 
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                "Profile",
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProfilePage()),
@@ -104,10 +105,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   children: <Widget>[
                     Text(
                       "Report Progress",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                     Container(
                       transform: Matrix4.translationValues(-15.0, -10.0, 0.0),
@@ -119,7 +117,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   ],
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProgressPage()),
@@ -130,12 +128,9 @@ class _ReportScreenState extends State<ReportScreen> {
             ListTile(
               title: Text(
                 "Notifications",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => NotifyPage()),
@@ -146,26 +141,20 @@ class _ReportScreenState extends State<ReportScreen> {
             ListTile(
               title: Text(
                 "",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: Text(
                 "Log Out",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TnCPage()),
@@ -173,25 +162,21 @@ class _ReportScreenState extends State<ReportScreen> {
                 },
                 child: Text(
                   "Legal v1.01",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
           ],
         ),
-      ), 
+      ),
     );
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(
-        //backgroundColor: Colors.transparent
-        backgroundColor: mainheader,
-        title: Text("Crime Report")
-      ),
+          //backgroundColor: Colors.transparent
+          backgroundColor: mainheader,
+          title: Text("Crime Report")),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -200,13 +185,12 @@ class _ReportScreenState extends State<ReportScreen> {
                 width: MediaQuery.of(context).size.width,
                 height: 150,
                 child: Container(
-                  child: Container(
-                    child: CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      child: Image.asset('assets/logo.png'),
-                    ),
-                  )
-                ),
+                    child: Container(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    child: Image.asset('assets/logo.png'),
+                  ),
+                )),
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -224,18 +208,42 @@ class _ReportScreenState extends State<ReportScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Incidents | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Complaints | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Assets |", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                        Text(
+                          "Incidents | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Complaints | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Assets |",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Maintenance | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Assessments | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Reporting |", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                        Text(
+                          "Maintenance | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Assessments | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Reporting |",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )
                       ],
                     ),
                   ],
@@ -249,7 +257,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   margin: EdgeInsets.only(right: 20, left: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center, 
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: 20),
                       Container(
@@ -257,10 +265,9 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              name,
-                              style: TextStyle(color: Colors.white, fontSize: 15)
-                            ),
+                            Text(name,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15)),
                           ],
                         ),
                       ),
@@ -269,10 +276,9 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              surname,
-                              style: TextStyle(color: Colors.white, fontSize: 15)
-                            ),
+                            Text(surname,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15)),
                           ],
                         ),
                       ),
@@ -281,10 +287,9 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              password,
-                              style: TextStyle(color: Colors.white, fontSize: 15)
-                            ),
+                            Text(password,
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15)),
                           ],
                         ),
                       ),
@@ -299,125 +304,136 @@ class _ReportScreenState extends State<ReportScreen> {
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
                                 border: Border(
-                                  top: BorderSide(width: 2.0, color: Colors.black),
-                                  bottom: BorderSide(width: 2.0, color: Colors.black),
-                                  right: BorderSide(width: 2.0, color: Colors.black),
-                                  left: BorderSide(width: 2.0, color: Colors.black),
+                                  top: BorderSide(
+                                      width: 2.0, color: Colors.black),
+                                  bottom: BorderSide(
+                                      width: 2.0, color: Colors.black),
+                                  right: BorderSide(
+                                      width: 2.0, color: Colors.black),
+                                  left: BorderSide(
+                                      width: 2.0, color: Colors.black),
                                 ),
                                 borderRadius: BorderRadius.circular(0),
-                                color: subheader, 
+                                color: subheader,
                               ),
-                              child: Text(
-                                "Location Detect",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.bold
-                                )
-                              ),
-                            ),
-                            (location == '' || address == '') 
-                            ? Container(
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(width: 2.0, color: Colors.black),
-                                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                                    right: BorderSide(width: 2.0, color: Colors.black),
-                                    left: BorderSide(width: 2.0, color: Colors.black),
-                                  ),
-                                  borderRadius: BorderRadius.circular(0),
-                                  color: Colors.grey, 
-                                ),
-                                child: Text(
-                                  "ON",
+                              child: Text("Location Detect",
                                   style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 19,
-                                    //fontWeight: FontWeight.bold
-                                  )
-                                ),
-                              ) : Container(
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(width: 2.0, color: Colors.black),
-                                  bottom: BorderSide(width: 2.0, color: Colors.black),
-                                  right: BorderSide(width: 2.0, color: Colors.black),
-                                  left: BorderSide(width: 2.0, color: Colors.black),
-                                ),
-                                borderRadius: BorderRadius.circular(0),
-                                color: Colors.black, 
-                              ),
-                              child: Row(
-                                children: <Widget>[
-                                  Text(
-                                    "ON",
-                                    style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.black,
                                       fontSize: 19,
-                                      //fontWeight: FontWeight.bold
-                                    )
-                                  ),
-                                  Icon(
-                                    Icons.done, 
-                                    color: Colors.white, 
-                                    size: 20,
-                                  ),
-                                ],
-                              ),
+                                      fontWeight: FontWeight.bold)),
                             ),
-                            (location == '' || address == '') 
-                            ? Container(
-                                padding: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(width: 2.0, color: Colors.black),
-                                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                                    right: BorderSide(width: 2.0, color: Colors.black),
-                                    left: BorderSide(width: 2.0, color: Colors.black),
+                            (location == '' || address == '')
+                                ? Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        bottom: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        right: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        left: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                      ),
+                                      borderRadius: BorderRadius.circular(0),
+                                      color: Colors.grey,
+                                    ),
+                                    child: Text("ON",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 19,
+                                          //fontWeight: FontWeight.bold
+                                        )),
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        bottom: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        right: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        left: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                      ),
+                                      borderRadius: BorderRadius.circular(0),
+                                      color: Colors.black,
+                                    ),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text("ON",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 19,
+                                              //fontWeight: FontWeight.bold
+                                            )),
+                                        Icon(
+                                          Icons.done,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  borderRadius: BorderRadius.circular(0),
-                                  color: Colors.black, 
-                                ),
-                                child: Row(
-                                  children: <Widget>[
-                                    Text(
-                                      "OFF",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        //fontWeight: FontWeight.bold
-                                      )
+                            (location == '' || address == '')
+                                ? Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        bottom: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        right: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        left: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                      ),
+                                      borderRadius: BorderRadius.circular(0),
+                                      color: Colors.black,
                                     ),
-                                    Icon(
-                                      Icons.done, 
-                                      color: Colors.white, 
-                                      size: 20,
+                                    child: Row(
+                                      children: <Widget>[
+                                        Text("OFF",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 19,
+                                              //fontWeight: FontWeight.bold
+                                            )),
+                                        Icon(
+                                          Icons.done,
+                                          color: Colors.white,
+                                          size: 20,
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
-                              ) : Container(
-                              padding: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(width: 2.0, color: Colors.black),
-                                  bottom: BorderSide(width: 2.0, color: Colors.black),
-                                  right: BorderSide(width: 2.0, color: Colors.black),
-                                  left: BorderSide(width: 2.0, color: Colors.black),
-                                ),
-                                borderRadius: BorderRadius.circular(0),
-                                color: Colors.grey, 
-                              ),
-                              child: Text(
-                                "OFF",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 19,
-                                  //fontWeight: FontWeight.bold
-                                )
-                              ),
-                            ),
+                                  )
+                                : Container(
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        top: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        bottom: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        right: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                        left: BorderSide(
+                                            width: 2.0, color: Colors.black),
+                                      ),
+                                      borderRadius: BorderRadius.circular(0),
+                                      color: Colors.grey,
+                                    ),
+                                    child: Text("OFF",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 19,
+                                          //fontWeight: FontWeight.bold
+                                        )),
+                                  ),
                           ],
                         ),
                       ),
@@ -427,35 +443,34 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "*If Location is OFF, turn on before start reporting",
-                              style: TextStyle(color: Colors.white)
-                            ),
+                                "*If Location is OFF, turn on before start reporting",
+                                style: TextStyle(color: Colors.white)),
                           ],
                         ),
                       ),
                       SizedBox(height: 20),
                       Container(
                         color: blackbutton,
-                        padding: EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
+                        padding: EdgeInsets.only(
+                            left: 10, top: 10, bottom: 10, right: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              'Take Photo/s',
-                              style: TextStyle(color: Colors.white, fontSize: 17)
-                            ),
+                            Text('Take Photo/s',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 17)),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Icon(
-                                  Icons.add_box, 
-                                  color: Colors.white, 
+                                  Icons.add_box,
+                                  color: Colors.white,
                                   size: 25,
                                 ),
                                 Icon(
-                                  Icons.camera_enhance, 
-                                  color: Colors.white, 
+                                  Icons.camera_enhance,
+                                  color: Colors.white,
                                   size: 30,
                                 ),
                               ],
@@ -466,17 +481,17 @@ class _ReportScreenState extends State<ReportScreen> {
                       SizedBox(height: 10),
                       Container(
                         color: blackbutton,
-                        padding: EdgeInsets.only(left: 10, top: 10, bottom: 10, right: 10),
+                        padding: EdgeInsets.only(
+                            left: 10, top: 10, bottom: 10, right: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Text(
-                              'Attach Photo/s',
-                              style: TextStyle(color: Colors.white, fontSize: 17)
-                            ),
+                            Text('Attach Photo/s',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 17)),
                             Icon(
-                              Icons.image, 
-                              color: Colors.white, 
+                              Icons.image,
+                              color: Colors.white,
                               size: 25,
                             ),
                           ],
@@ -487,19 +502,20 @@ class _ReportScreenState extends State<ReportScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              "No photos attached or\n5 photos attached",
-                              style: TextStyle(color: Colors.white, fontStyle: FontStyle.italic)
-                            ),
+                            Text("No photos attached or\n5 photos attached",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontStyle: FontStyle.italic)),
                           ],
                         ),
                       ),
                       SizedBox(height: 20),
                       Text(
-                        "The autofilled address below and location is within 20m accuracy, rather type in the address if the address is incorrect (preferable)",
-                        style: TextStyle(color: Colors.white)
+                          "The autofilled address below and location is within 20m accuracy, rather type in the address if the address is incorrect (preferable)",
+                          style: TextStyle(color: Colors.white)),
+                      SizedBox(
+                        height: 10,
                       ),
-                      SizedBox(height: 10,),
                       Container(
                         height: 100,
                         decoration: BoxDecoration(
@@ -510,7 +526,7 @@ class _ReportScreenState extends State<ReportScreen> {
                             left: BorderSide(width: 2.0, color: Colors.black),
                           ),
                           borderRadius: BorderRadius.circular(0),
-                          color: Colors.white, 
+                          color: Colors.white,
                         ),
                         child: TextField(
                           autofocus: false,
@@ -519,7 +535,8 @@ class _ReportScreenState extends State<ReportScreen> {
                             hintText: "Address autofilled*",
                             border: InputBorder.none,
                             //border: OutlineInputBorder(borderRadius: BorderRadius.circular(0), borderSide: BorderSide(color: Colors.black, width: 10.0)),
-                            contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                            contentPadding:
+                                EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                           ),
                           onChanged: (value) {
                             text = value;
@@ -539,50 +556,50 @@ class _ReportScreenState extends State<ReportScreen> {
                               //width: 70,
                               child: Text(
                                 "Problem: ",
-                                style: TextStyle(fontSize: 17, color: Colors.white),
+                                style: TextStyle(
+                                    fontSize: 17, color: Colors.white),
                               ),
                             ),
                             SizedBox(height: 20),
                             Container(
                               //width: 50,
                               child: Theme(
-                                data: Theme.of(context).copyWith(
-                                canvasColor: blackbutton
-                              ),
-                              child: Expanded(
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton(
-                                    style: TextStyle(fontSize: 17, color: Colors.white),
-                                    value: prob,
-                                    items: _dropDownProblemItems,
-                                    hint: Text(
-                                      prob, 
+                                data: Theme.of(context)
+                                    .copyWith(canvasColor: blackbutton),
+                                child: Expanded(
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(
                                       style: TextStyle(
-                                        color: Colors.white
-                                      )
+                                          fontSize: 17, color: Colors.white),
+                                      value: prob,
+                                      items: _dropDownProblemItems,
+                                      hint: Text(prob,
+                                          style:
+                                              TextStyle(color: Colors.white)),
+                                      iconSize: 40,
+                                      iconDisabledColor: Colors.white,
+                                      iconEnabledColor: Colors.white,
+                                      onChanged: (String value) {
+                                        setState(() {
+                                          prob = value;
+                                        });
+                                      },
                                     ),
-                                    iconSize: 40,
-                                    iconDisabledColor: Colors.white,
-                                    iconEnabledColor: Colors.white,
-                                    onChanged: (String value){
-                                      setState(() {
-                                        prob = value; 
-                                      });
-                                    },
                                   ),
                                 ),
                               ),
-                              ),
                             ),
                             // Icon(
-                            //   Icons.arrow_drop_down, 
-                            //   color: Colors.white, 
+                            //   Icons.arrow_drop_down,
+                            //   color: Colors.white,
                             //   size: 50,
                             // )
                           ],
                         ),
                       ),
-                      SizedBox(height: 10,),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Container(
                         height: 130,
                         decoration: BoxDecoration(
@@ -593,16 +610,18 @@ class _ReportScreenState extends State<ReportScreen> {
                             left: BorderSide(width: 2.0, color: Colors.black),
                           ),
                           borderRadius: BorderRadius.circular(0),
-                          color: Colors.white, 
+                          color: Colors.white,
                         ),
                         child: TextField(
                           autofocus: false,
                           controller: _textController1,
                           decoration: InputDecoration(
-                            hintText: "Notes: any additional info you feel is necessary*",
+                            hintText:
+                                "Notes: any additional info you feel is necessary*",
                             border: InputBorder.none,
                             //border: OutlineInputBorder(borderRadius: BorderRadius.circular(0), borderSide: BorderSide(color: Colors.black, width: 10.0)),
-                            contentPadding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                            contentPadding:
+                                EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                           ),
                           onChanged: (value) {
                             text = value;
@@ -614,10 +633,8 @@ class _ReportScreenState extends State<ReportScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              "Date : " + date,
-                              style: TextStyle(color: Colors.white)
-                            ),
+                            Text("Date : " + date,
+                                style: TextStyle(color: Colors.white)),
                           ],
                         ),
                       ),
@@ -626,9 +643,12 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Time : " + runningTime + " (" + country + " standard time)",
-                              style: TextStyle(color: Colors.white)
-                            ),
+                                "Time : " +
+                                    runningTime +
+                                    " (" +
+                                    country +
+                                    " standard time)",
+                                style: TextStyle(color: Colors.white)),
                           ],
                         ),
                       ),
@@ -636,10 +656,8 @@ class _ReportScreenState extends State<ReportScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              "Location Cordinates : " + location,
-                              style: TextStyle(color: Colors.white)
-                            ),
+                            Text("Location Cordinates : " + location,
+                                style: TextStyle(color: Colors.white)),
                           ],
                         ),
                       ),
@@ -654,25 +672,26 @@ class _ReportScreenState extends State<ReportScreen> {
                               padding: EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                 border: Border(
-                                  top: BorderSide(width: 2.0, color: Colors.black),
-                                  bottom: BorderSide(width: 2.0, color: Colors.black),
-                                  right: BorderSide(width: 2.0, color: Colors.black),
-                                  left: BorderSide(width: 2.0, color: Colors.black),
+                                  top: BorderSide(
+                                      width: 2.0, color: Colors.black),
+                                  bottom: BorderSide(
+                                      width: 2.0, color: Colors.black),
+                                  right: BorderSide(
+                                      width: 2.0, color: Colors.black),
+                                  left: BorderSide(
+                                      width: 2.0, color: Colors.black),
                                 ),
                                 borderRadius: BorderRadius.circular(0),
-                                color: subheader, 
+                                color: subheader,
                               ),
-                              child: Text(
-                                "Situation",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.bold
-                                )
-                              ),
+                              child: Text("Situation",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold)),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
                                   green = true;
                                   yellow = false;
@@ -685,26 +704,35 @@ class _ReportScreenState extends State<ReportScreen> {
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   border: Border(
-                                    top: BorderSide(width: 2.0, color: Colors.black),
-                                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                                    right: BorderSide(width: 2.0, color: Colors.black),
-                                    left: BorderSide(width: 2.0, color: Colors.black),
+                                    top: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    bottom: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    right: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    left: BorderSide(
+                                        width: 2.0, color: Colors.black),
                                   ),
                                   borderRadius: BorderRadius.circular(0),
-                                  color: Colors.green, 
+                                  color: Colors.green,
                                 ),
-                                child: (green == true && yellow == false && orange == false && red == false) ?  Icon(
-                                  Icons.done, 
-                                  color: Colors.white, 
-                                  size: 20,
-                                ) : Container(
-                                    width: 10,
-                                    height: 10,
-                                ),
+                                child: (green == true &&
+                                        yellow == false &&
+                                        orange == false &&
+                                        red == false)
+                                    ? Icon(
+                                        Icons.done,
+                                        color: Colors.white,
+                                        size: 20,
+                                      )
+                                    : Container(
+                                        width: 10,
+                                        height: 10,
+                                      ),
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
                                   green = false;
                                   yellow = true;
@@ -717,26 +745,35 @@ class _ReportScreenState extends State<ReportScreen> {
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   border: Border(
-                                    top: BorderSide(width: 2.0, color: Colors.black),
-                                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                                    right: BorderSide(width: 2.0, color: Colors.black),
-                                    left: BorderSide(width: 2.0, color: Colors.black),
+                                    top: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    bottom: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    right: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    left: BorderSide(
+                                        width: 2.0, color: Colors.black),
                                   ),
                                   borderRadius: BorderRadius.circular(0),
-                                  color: Colors.yellow, 
+                                  color: Colors.yellow,
                                 ),
-                                child: (green == false && yellow == true && orange == false && red == false) ? Icon(
-                                  Icons.done, 
-                                  color: Colors.black, 
-                                  size: 20,
-                                ) : Container(
-                                    width: 10,
-                                    height: 10,
-                                ),
+                                child: (green == false &&
+                                        yellow == true &&
+                                        orange == false &&
+                                        red == false)
+                                    ? Icon(
+                                        Icons.done,
+                                        color: Colors.black,
+                                        size: 20,
+                                      )
+                                    : Container(
+                                        width: 10,
+                                        height: 10,
+                                      ),
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
                                   green = false;
                                   yellow = false;
@@ -749,26 +786,35 @@ class _ReportScreenState extends State<ReportScreen> {
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   border: Border(
-                                    top: BorderSide(width: 2.0, color: Colors.black),
-                                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                                    right: BorderSide(width: 2.0, color: Colors.black),
-                                    left: BorderSide(width: 2.0, color: Colors.black),
+                                    top: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    bottom: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    right: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    left: BorderSide(
+                                        width: 2.0, color: Colors.black),
                                   ),
                                   borderRadius: BorderRadius.circular(0),
-                                  color: Colors.orange, 
+                                  color: Colors.orange,
                                 ),
-                                child: (green == false && yellow == false && orange == true && red == false) ? Icon(
-                                  Icons.done, 
-                                  color: Colors.white, 
-                                  size: 20,
-                                ) : Container(
-                                    width: 10,
-                                    height: 10,
-                                ),
+                                child: (green == false &&
+                                        yellow == false &&
+                                        orange == true &&
+                                        red == false)
+                                    ? Icon(
+                                        Icons.done,
+                                        color: Colors.white,
+                                        size: 20,
+                                      )
+                                    : Container(
+                                        width: 10,
+                                        height: 10,
+                                      ),
                               ),
                             ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 setState(() {
                                   green = false;
                                   yellow = false;
@@ -781,22 +827,31 @@ class _ReportScreenState extends State<ReportScreen> {
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                   border: Border(
-                                    top: BorderSide(width: 2.0, color: Colors.black),
-                                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                                    right: BorderSide(width: 2.0, color: Colors.black),
-                                    left: BorderSide(width: 2.0, color: Colors.black),
+                                    top: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    bottom: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    right: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    left: BorderSide(
+                                        width: 2.0, color: Colors.black),
                                   ),
                                   borderRadius: BorderRadius.circular(0),
-                                  color: Colors.red, 
+                                  color: Colors.red,
                                 ),
-                                child: (green == false && yellow == false && orange == false && red == true) ? Icon(
-                                  Icons.done, 
-                                  color: Colors.white, 
-                                  size: 20,
-                                ) : Container(
-                                    width: 10,
-                                    height: 10,
-                                ),
+                                child: (green == false &&
+                                        yellow == false &&
+                                        orange == false &&
+                                        red == true)
+                                    ? Icon(
+                                        Icons.done,
+                                        color: Colors.white,
+                                        size: 20,
+                                      )
+                                    : Container(
+                                        width: 10,
+                                        height: 10,
+                                      ),
                               ),
                             ),
                           ],
@@ -811,8 +866,7 @@ class _ReportScreenState extends State<ReportScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: 
-      BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         child: Container(
           color: Colors.black,
           width: MediaQuery.of(context).size.width,
@@ -826,8 +880,8 @@ class _ReportScreenState extends State<ReportScreen> {
                   color: Colors.white,
                 ),
                 // child: Icon(
-                //   Icons.chevron_left, 
-                //   color: Colors.white, 
+                //   Icons.chevron_left,
+                //   color: Colors.white,
                 //   size: 40,
                 // ),
               ),
@@ -842,17 +896,15 @@ class _ReportScreenState extends State<ReportScreen> {
                     left: BorderSide(width: 2.0, color: Colors.black),
                   ),
                   borderRadius: BorderRadius.circular(0),
-                  color: Colors.grey, 
+                  color: Colors.grey,
                 ),
                 child: Center(
-                  child: Text(
-                    "EXIT",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      //fontWeight: FontWeight.bold
-                    )
-                  ),
+                  child: Text("EXIT",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        //fontWeight: FontWeight.bold
+                      )),
                 ),
               ),
               Expanded(
@@ -866,24 +918,20 @@ class _ReportScreenState extends State<ReportScreen> {
                       left: BorderSide(width: 2.0, color: Colors.black),
                     ),
                     borderRadius: BorderRadius.circular(0),
-                    color: Colors.black, 
+                    color: Colors.black,
                   ),
                   child: Center(
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => MainPage()),
                         );
                       },
-                      child: Text(
-                        "SEND REPORT",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20
-                          //fontWeight: FontWeight.bold
-                        )
-                      ),
+                      child: Text("SEND REPORT",
+                          style: TextStyle(color: Colors.white, fontSize: 20
+                              //fontWeight: FontWeight.bold
+                              )),
                     ),
                   ),
                 ),

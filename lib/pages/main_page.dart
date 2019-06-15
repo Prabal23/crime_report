@@ -18,7 +18,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   // final scaffoldKey = GlobalKey<ScaffoldState>();
   // final formKey = GlobalKey<FormState>();
-  
+
   @override
   Widget build(BuildContext context) {
     Drawer drawer = new Drawer(
@@ -32,8 +32,8 @@ class _MainPageState extends State<MainPage> {
                 children: <Widget>[
                   Container(
                     child: Icon(
-                      Icons.menu, 
-                      color: Colors.white, 
+                      Icons.menu,
+                      color: Colors.white,
                       size: 40,
                     ),
                   ),
@@ -43,13 +43,10 @@ class _MainPageState extends State<MainPage> {
             ),
             ListTile(
               title: Text(
-                "Profile", 
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                "Profile",
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProfilePage()),
@@ -63,10 +60,7 @@ class _MainPageState extends State<MainPage> {
                   children: <Widget>[
                     Text(
                       "Report Progress",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                     Container(
                       transform: Matrix4.translationValues(-15.0, -10.0, 0.0),
@@ -78,7 +72,7 @@ class _MainPageState extends State<MainPage> {
                   ],
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProgressPage()),
@@ -89,12 +83,9 @@ class _MainPageState extends State<MainPage> {
             ListTile(
               title: Text(
                 "Notifications",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => NotifyPage()),
@@ -105,26 +96,20 @@ class _MainPageState extends State<MainPage> {
             ListTile(
               title: Text(
                 "",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: Text(
                 "Log Out",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TnCPage()),
@@ -132,25 +117,21 @@ class _MainPageState extends State<MainPage> {
                 },
                 child: Text(
                   "Legal v1.01",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
           ],
         ),
-      ), 
+      ),
     );
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(
-        //backgroundColor: Colors.transparent
-        backgroundColor: mainheader,
-        title: Text("Crime Report")
-      ),
+          //backgroundColor: Colors.transparent
+          backgroundColor: mainheader,
+          title: Text("Crime Report")),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -159,13 +140,12 @@ class _MainPageState extends State<MainPage> {
                 width: MediaQuery.of(context).size.width,
                 height: 150,
                 child: Container(
-                  child: Container(
-                    child: CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      child: Image.asset('assets/logo.png'),
-                    ),
-                  )
-                ),
+                    child: Container(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    child: Image.asset('assets/logo.png'),
+                  ),
+                )),
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -183,18 +163,42 @@ class _MainPageState extends State<MainPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Incidents | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Complaints | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Assets |", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                        Text(
+                          "Incidents | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Complaints | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Assets |",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Maintenance | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Assessments | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Reporting |", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                        Text(
+                          "Maintenance | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Assessments | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Reporting |",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )
                       ],
                     ),
                   ],
@@ -206,13 +210,16 @@ class _MainPageState extends State<MainPage> {
                 color: mainheader,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center, 
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 30),
-                    Text("Hello,", style: TextStyle(fontSize: 20, color: Colors.white)),
+                    Text("Hello,",
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
                     //TextField(controller:  _textNameController),
-                    Text( name + " " + surname , style: TextStyle(fontSize: 20, color: Colors.white)),
-                    Text("Work Code :  " + password, style: TextStyle(fontSize: 20, color: Colors.white)),
+                    Text(name + " " + surname,
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                    Text("Work Code :  " + password,
+                        style: TextStyle(fontSize: 20, color: Colors.white)),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       height: 200,
@@ -236,30 +243,32 @@ class _MainPageState extends State<MainPage> {
                           ),
                           SizedBox(width: 25),
                           GestureDetector(
-                            onTap: (){
-                              Navigator.push( context, SlideLeftRoute(page: LogRegPage()));
+                            onTap: () {
+                              Navigator.push(
+                                  context, SlideLeftRoute(page: LogRegPage()));
                             },
                             child: Container(
                               padding: EdgeInsets.all(15),
                               decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(width: 2.0, color: Colors.black),
-                                  bottom: BorderSide(width: 2.0, color: Colors.black),
-                                  right: BorderSide(width: 2.0, color: Colors.black),
-                                  left: BorderSide(width: 2.0, color: Colors.black),
-                                ),
-                                borderRadius: BorderRadius.circular(0),
-                                color: subheader
-                                //color: Theme.of(context).accentColor, 
-                              ),
-                              child: Text(
-                                "Login as a different person?",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 12.5,
-                                  fontStyle: FontStyle.italic
-                                )
-                              ),
+                                  border: Border(
+                                    top: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    bottom: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    right: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                    left: BorderSide(
+                                        width: 2.0, color: Colors.black),
+                                  ),
+                                  borderRadius: BorderRadius.circular(0),
+                                  color: subheader
+                                  //color: Theme.of(context).accentColor,
+                                  ),
+                              child: Text("Login as a different person?",
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 12.5,
+                                      fontStyle: FontStyle.italic)),
                             ),
                           ),
                         ],
@@ -276,48 +285,51 @@ class _MainPageState extends State<MainPage> {
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               border: Border(
-                                top: BorderSide(width: 2.0, color: Colors.black),
-                                bottom: BorderSide(width: 2.0, color: Colors.black),
-                                right: BorderSide(width: 2.0, color: Colors.black),
-                                left: BorderSide(width: 2.0, color: Colors.black),
+                                top:
+                                    BorderSide(width: 2.0, color: Colors.black),
+                                bottom:
+                                    BorderSide(width: 2.0, color: Colors.black),
+                                right:
+                                    BorderSide(width: 2.0, color: Colors.black),
+                                left:
+                                    BorderSide(width: 2.0, color: Colors.black),
                               ),
                               borderRadius: BorderRadius.circular(0),
-                              color: subheader, 
+                              color: subheader,
                             ),
-                            child: Text(
-                              "Location Detect",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 19,
-                                fontWeight: FontWeight.bold
-                              )
-                            ),
+                            child: Text("Location Detect",
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 19,
+                                    fontWeight: FontWeight.bold)),
                           ),
                           Container(
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               border: Border(
-                                top: BorderSide(width: 2.0, color: Colors.black),
-                                bottom: BorderSide(width: 2.0, color: Colors.black),
-                                right: BorderSide(width: 2.0, color: Colors.black),
-                                left: BorderSide(width: 2.0, color: Colors.black),
+                                top:
+                                    BorderSide(width: 2.0, color: Colors.black),
+                                bottom:
+                                    BorderSide(width: 2.0, color: Colors.black),
+                                right:
+                                    BorderSide(width: 2.0, color: Colors.black),
+                                left:
+                                    BorderSide(width: 2.0, color: Colors.black),
                               ),
                               borderRadius: BorderRadius.circular(0),
-                              color: Colors.black, 
+                              color: Colors.black,
                             ),
                             child: Row(
                               children: <Widget>[
-                                Text(
-                                  "ON",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 19,
-                                    //fontWeight: FontWeight.bold
-                                  )
-                                ),
+                                Text("ON",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 19,
+                                      //fontWeight: FontWeight.bold
+                                    )),
                                 Icon(
-                                  Icons.done, 
-                                  color: Colors.white, 
+                                  Icons.done,
+                                  color: Colors.white,
                                   size: 20,
                                 ),
                               ],
@@ -327,22 +339,24 @@ class _MainPageState extends State<MainPage> {
                             padding: EdgeInsets.all(15),
                             decoration: BoxDecoration(
                               border: Border(
-                                top: BorderSide(width: 2.0, color: Colors.black),
-                                bottom: BorderSide(width: 2.0, color: Colors.black),
-                                right: BorderSide(width: 2.0, color: Colors.black),
-                                left: BorderSide(width: 2.0, color: Colors.black),
+                                top:
+                                    BorderSide(width: 2.0, color: Colors.black),
+                                bottom:
+                                    BorderSide(width: 2.0, color: Colors.black),
+                                right:
+                                    BorderSide(width: 2.0, color: Colors.black),
+                                left:
+                                    BorderSide(width: 2.0, color: Colors.black),
                               ),
                               borderRadius: BorderRadius.circular(0),
-                              color: Colors.grey, 
+                              color: Colors.grey,
                             ),
-                            child: Text(
-                              "OFF",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 19,
-                                //fontWeight: FontWeight.bold
-                              )
-                            ),
+                            child: Text("OFF",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 19,
+                                  //fontWeight: FontWeight.bold
+                                )),
                           ),
                         ],
                       ),
@@ -355,9 +369,8 @@ class _MainPageState extends State<MainPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "*If Location is OFF, turn on before start reporting",
-                            style: TextStyle(color: Colors.white)
-                          ),
+                              "*If Location is OFF, turn on before start reporting",
+                              style: TextStyle(color: Colors.white)),
                         ],
                       ),
                     ),
@@ -375,7 +388,9 @@ class _MainPageState extends State<MainPage> {
                     //     ],
                     //   ),
                     // ),
-                    SizedBox(height: 50,)
+                    SizedBox(
+                      height: 50,
+                    )
                   ],
                 ),
               ),
@@ -383,8 +398,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      bottomNavigationBar: 
-      BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         child: Container(
           color: Colors.black,
           width: MediaQuery.of(context).size.width,
@@ -398,8 +412,8 @@ class _MainPageState extends State<MainPage> {
                   color: Colors.white,
                 ),
                 // child: Icon(
-                //   Icons.chevron_left, 
-                //   color: Colors.white, 
+                //   Icons.chevron_left,
+                //   color: Colors.white,
                 //   size: 40,
                 // ),
               ),
@@ -414,17 +428,15 @@ class _MainPageState extends State<MainPage> {
                     left: BorderSide(width: 2.0, color: Colors.black),
                   ),
                   borderRadius: BorderRadius.circular(0),
-                  color: Colors.grey, 
+                  color: Colors.grey,
                 ),
                 child: Center(
-                  child: Text(
-                    "EXIT",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      //fontWeight: FontWeight.bold
-                    )
-                  ),
+                  child: Text("EXIT",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        //fontWeight: FontWeight.bold
+                      )),
                 ),
               ),
               Expanded(
@@ -439,25 +451,22 @@ class _MainPageState extends State<MainPage> {
                       left: BorderSide(width: 2.0, color: Colors.black),
                     ),
                     borderRadius: BorderRadius.circular(0),
-                    color: Colors.black, 
+                    color: Colors.black,
                   ),
                   child: Center(
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () {
                         // Navigator.push(
                         //   context,
                         //   MaterialPageRoute(builder: (context) => RepCatPage()),
                         // );
-                        Navigator.push( context, SlideLeftRoute(page: RepCatPage()));
+                        Navigator.push(
+                            context, SlideLeftRoute(page: RepCatPage()));
                       },
-                      child: Text(
-                        "START REPORTING",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20
-                          //fontWeight: FontWeight.bold
-                        )
-                      ),
+                      child: Text("START REPORTING",
+                          style: TextStyle(color: Colors.white, fontSize: 20
+                              //fontWeight: FontWeight.bold
+                              )),
                     ),
                   ),
                 ),

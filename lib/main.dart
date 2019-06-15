@@ -13,28 +13,32 @@ Color subheader1 = Color(0xFFd2ebe8);
 Color canvas = Color(0xFFeaebf0);
 Color greybutton = Color(0xFF464646);
 Color blackbutton = Color(0xFF000000);
-String name = '', surname = '', password = '', location = '', address = '', country = '';
+String name = '',
+    surname = '',
+    password = '',
+    location = '',
+    address = '',
+    country = '';
 String date = '', time = '';
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Daily Expense',
-      theme: new ThemeData(
-        // buttonTheme: ButtonThemeData(
-        //   textTheme: ButtonTextTheme.primary
-        // ),
-        primarySwatch: Colors.green,
-        secondaryHeaderColor: Color.fromRGBO(44, 127, 108, 1.0),
-        // buttonColor: Colors.black,
-        // primarySwatch: Colors.grey,
-        // brightness: Brightness.light,
-        accentColor: mainheader,
-        canvasColor: canvas
-        //canvasColor: Colors.grey[200]
-      ),
-      home: MyHomePage()
-    );
+        title: 'Daily Expense',
+        theme: new ThemeData(
+            // buttonTheme: ButtonThemeData(
+            //   textTheme: ButtonTextTheme.primary
+            // ),
+            primarySwatch: Colors.green,
+            secondaryHeaderColor: Color.fromRGBO(44, 127, 108, 1.0),
+            // buttonColor: Colors.black,
+            // primarySwatch: Colors.grey,
+            // brightness: Brightness.light,
+            accentColor: mainheader,
+            canvasColor: canvas
+            //canvasColor: Colors.grey[200]
+            ),
+        home: MyHomePage());
   }
 }

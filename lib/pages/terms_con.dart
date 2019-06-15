@@ -16,7 +16,7 @@ class TnCPage extends StatefulWidget {
 class _TnCPageState extends State<TnCPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
-  
+
   @override
   Widget build(BuildContext context) {
     Drawer drawer = new Drawer(
@@ -30,8 +30,8 @@ class _TnCPageState extends State<TnCPage> {
                 children: <Widget>[
                   Container(
                     child: Icon(
-                      Icons.menu, 
-                      color: Colors.white, 
+                      Icons.menu,
+                      color: Colors.white,
                       size: 40,
                     ),
                   ),
@@ -41,13 +41,10 @@ class _TnCPageState extends State<TnCPage> {
             ),
             ListTile(
               title: Text(
-                "Profile", 
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                "Profile",
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProfilePage()),
@@ -61,10 +58,7 @@ class _TnCPageState extends State<TnCPage> {
                   children: <Widget>[
                     Text(
                       "Report Progress",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                     Container(
                       transform: Matrix4.translationValues(-15.0, -10.0, 0.0),
@@ -76,7 +70,7 @@ class _TnCPageState extends State<TnCPage> {
                   ],
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProgressPage()),
@@ -87,12 +81,9 @@ class _TnCPageState extends State<TnCPage> {
             ListTile(
               title: Text(
                 "Notifications",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => NotifyPage()),
@@ -103,26 +94,20 @@ class _TnCPageState extends State<TnCPage> {
             ListTile(
               title: Text(
                 "",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: Text(
                 "Log Out",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TnCPage()),
@@ -130,24 +115,18 @@ class _TnCPageState extends State<TnCPage> {
                 },
                 child: Text(
                   "Legal v1.01",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
           ],
         ),
-      ), 
+      ),
     );
     return Scaffold(
       drawer: drawer,
-      appBar: AppBar(
-        backgroundColor: mainheader,
-        title: Text("Crime Report")
-      ),
+      appBar: AppBar(backgroundColor: mainheader, title: Text("Crime Report")),
       body: SingleChildScrollView(
         child: Container(
           color: Colors.white,
@@ -161,29 +140,39 @@ class _TnCPageState extends State<TnCPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       "Legal",
                       style: TextStyle(fontSize: 22, color: Colors.black),
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       "Terms & Conditions & Privacy Policy",
                       style: TextStyle(fontSize: 18, color: Colors.black),
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       "Terms and Conditions agreements act as a legal contract between you (the company) who has the website or mobile app and the user who access your website and mobile app. Having a Terms and Conditions agreement is completely optional. No laws require you to have one. Not even the super-strict and wide-reaching General Data Protection Regulation (GDPR). It’s up to you to set the rules and guidelines that the user must agree to. You can think of your Terms and Conditions agreement as the legal agreement where you maintain your rights to exclude users from your app in the event that they abuse your app, where you maintain your legal rights against potential app abusers, and so on. \nTerms and Conditions are also known as Terms of Service or Terms of Use.",
                       textAlign: TextAlign.justify,
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
-                    SizedBox(height: 20,),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
                       "Terms and Conditions agreements act as a legal contract between you (the company) who has the website or mobile app and the user who access your website and mobile app. Having a Terms and Conditions agreement is completely optional. No laws require you to have one. Not even the super-strict and wide-reaching General Data Protection Regulation (GDPR). It’s up to you to set the rules and guidelines that the user must agree to. You can think of your Terms and Conditions agreement as the legal agreement where you maintain your rights to exclude users from your app in the event that they abuse your app, where you maintain your legal rights against potential app abusers, and so on. \nTerms and Conditions are also known as Terms of Service or Terms of Use.",
                       textAlign: TextAlign.justify,
                       style: TextStyle(fontSize: 15, color: Colors.black),
                     ),
-                    SizedBox(height: 30,),
+                    SizedBox(
+                      height: 30,
+                    ),
                   ],
                 ),
               ),
@@ -191,8 +180,7 @@ class _TnCPageState extends State<TnCPage> {
           ),
         ),
       ),
-      bottomNavigationBar: 
-      BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         child: Container(
           padding: EdgeInsets.all(15),
           color: blackbutton,

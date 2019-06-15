@@ -18,7 +18,7 @@ class RepCatPage extends StatefulWidget {
 class _RepCatPageState extends State<RepCatPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
-  
+
   @override
   Widget build(BuildContext context) {
     Drawer drawer = new Drawer(
@@ -32,8 +32,8 @@ class _RepCatPageState extends State<RepCatPage> {
                 children: <Widget>[
                   Container(
                     child: Icon(
-                      Icons.menu, 
-                      color: Colors.white, 
+                      Icons.menu,
+                      color: Colors.white,
                       size: 40,
                     ),
                   ),
@@ -43,13 +43,10 @@ class _RepCatPageState extends State<RepCatPage> {
             ),
             ListTile(
               title: Text(
-                "Profile", 
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                "Profile",
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProfilePage()),
@@ -63,10 +60,7 @@ class _RepCatPageState extends State<RepCatPage> {
                   children: <Widget>[
                     Text(
                       "Report Progress",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                     Container(
                       transform: Matrix4.translationValues(-15.0, -10.0, 0.0),
@@ -78,7 +72,7 @@ class _RepCatPageState extends State<RepCatPage> {
                   ],
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProgressPage()),
@@ -89,12 +83,9 @@ class _RepCatPageState extends State<RepCatPage> {
             ListTile(
               title: Text(
                 "Notifications",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => NotifyPage()),
@@ -105,26 +96,20 @@ class _RepCatPageState extends State<RepCatPage> {
             ListTile(
               title: Text(
                 "",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: Text(
                 "Log Out",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TnCPage()),
@@ -132,24 +117,18 @@ class _RepCatPageState extends State<RepCatPage> {
                 },
                 child: Text(
                   "Legal v1.01",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
           ],
         ),
-      ), 
+      ),
     );
     return Scaffold(
       drawer: drawer,
-      appBar: AppBar(
-        backgroundColor: mainheader,
-        title: Text("Crime Report")
-      ),
+      appBar: AppBar(backgroundColor: mainheader, title: Text("Crime Report")),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -158,13 +137,12 @@ class _RepCatPageState extends State<RepCatPage> {
                 width: MediaQuery.of(context).size.width,
                 height: 150,
                 child: Container(
-                  child: Container(
-                    child: CircleAvatar(
-                      backgroundColor: Colors.transparent,
-                      child: Image.asset('assets/logo.png'),
-                    ),
-                  )
-                ),
+                    child: Container(
+                  child: CircleAvatar(
+                    backgroundColor: Colors.transparent,
+                    child: Image.asset('assets/logo.png'),
+                  ),
+                )),
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -182,18 +160,42 @@ class _RepCatPageState extends State<RepCatPage> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Incidents | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Complaints | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Assets |", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                        Text(
+                          "Incidents | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Complaints | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Assets |",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )
                       ],
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text("Maintenance | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Assessments | ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                        Text("Reporting |", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),)
+                        Text(
+                          "Maintenance | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Assessments | ",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        ),
+                        Text(
+                          "Reporting |",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
+                        )
                       ],
                     ),
                   ],
@@ -206,7 +208,7 @@ class _RepCatPageState extends State<RepCatPage> {
                 //color: Theme.of(context).secondaryHeaderColor,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center, 
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -214,48 +216,54 @@ class _RepCatPageState extends State<RepCatPage> {
                       margin: EdgeInsets.only(left: 20, right: 20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center, 
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
                             width: 150,
                             height: 150,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(0),
-                              color: Colors.white, 
+                              color: Colors.white,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
                                   padding: EdgeInsets.all(5.0),
                                   child: Container(
                                     child: GestureDetector(
-                                      onTap: (){
+                                      onTap: () {
                                         // Navigator.push(
                                         //   context,
                                         //   MaterialPageRoute(builder: (context) => ReportScreen()),
                                         // );
-                                        Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
+                                        Navigator.push(
+                                            context,
+                                            SlideLeftRoute(
+                                                page: ReportScreen()));
                                       },
                                       child: Text(
                                         "Service 1",
                                         style: TextStyle(
-                                          fontSize: 15,
-                                          color: Theme.of(context).secondaryHeaderColor
-                                        ),
+                                            fontSize: 15,
+                                            color: Theme.of(context)
+                                                .secondaryHeaderColor),
                                       ),
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 10),
                                 Container(
-                                  transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
-                                    onTap: (){
-                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Water &\nSanitation",
@@ -276,45 +284,49 @@ class _RepCatPageState extends State<RepCatPage> {
                             width: 150,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(0),
-                              color: Colors.white, 
+                              color: Colors.white,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
                                   padding: EdgeInsets.all(5.0),
                                   child: Container(
                                     child: GestureDetector(
-                                      onTap: (){
-                                        Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            SlideLeftRoute(
+                                                page: ReportScreen()));
                                       },
                                       child: Text(
-                                          "Service 2",
-                                          style: TextStyle(
+                                        "Service 2",
+                                        style: TextStyle(
                                             fontSize: 15,
-                                            color: Theme.of(context).secondaryHeaderColor
-                                          ),
-                                        ),
+                                            color: Theme.of(context)
+                                                .secondaryHeaderColor),
+                                      ),
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 10),
                                 Container(
-                                  transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
-                                    onTap: (){
-                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Electricity",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.black
-                                      ),
+                                          fontSize: 17, color: Colors.black),
                                     ),
                                   ),
                                 ),
@@ -331,50 +343,52 @@ class _RepCatPageState extends State<RepCatPage> {
                       margin: EdgeInsets.only(left: 20, right: 20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center, 
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           Container(
                             width: 150,
                             height: 150,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(0),
-                              color: Colors.white, 
+                              color: Colors.white,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
-                                    onTap: (){
-                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Service 3",
                                       style: TextStyle(
-                                        fontSize: 15,
-                                        color: Theme.of(context).secondaryHeaderColor
-                                      ),
+                                          fontSize: 15,
+                                          color: Theme.of(context)
+                                              .secondaryHeaderColor),
                                     ),
                                   ),
                                 ),
                                 SizedBox(height: 10),
                                 Container(
-                                  transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
-                                    onTap: (){
-                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Waste &\nEnvironment",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.black
-                                      ),
+                                          fontSize: 17, color: Colors.black),
                                     ),
                                   ),
                                 ),
@@ -387,43 +401,45 @@ class _RepCatPageState extends State<RepCatPage> {
                             width: 150,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(0),
-                              color: Colors.white, 
+                              color: Colors.white,
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Container(
-                                  transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
-                                    onTap: (){
-                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
-                                        "Service 4",
-                                        style: TextStyle(
+                                      "Service 4",
+                                      style: TextStyle(
                                           fontSize: 15,
-                                          color: Theme.of(context).secondaryHeaderColor
-                                        ),
-                                      ),
+                                          color: Theme.of(context)
+                                              .secondaryHeaderColor),
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 10),
                                 Container(
-                                  transform: Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
                                   padding: EdgeInsets.all(5.0),
                                   child: GestureDetector(
-                                    onTap: (){
-                                      Navigator.push( context, SlideLeftRoute(page: ReportScreen()));
+                                    onTap: () {
+                                      Navigator.push(context,
+                                          SlideLeftRoute(page: ReportScreen()));
                                     },
                                     child: Text(
                                       "Legal &\nComplaints",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 17,
-                                        color: Colors.black
-                                      ),
+                                          fontSize: 17, color: Colors.black),
                                     ),
                                   ),
                                 ),
@@ -440,8 +456,7 @@ class _RepCatPageState extends State<RepCatPage> {
           ),
         ),
       ),
-      bottomNavigationBar: 
-      BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         child: Container(
           width: MediaQuery.of(context).size.width,
           child: Row(
@@ -461,8 +476,8 @@ class _RepCatPageState extends State<RepCatPage> {
                 //     );
                 //   },
                 //   child: Icon(
-                //     Icons.chevron_left, 
-                //     color: Colors.white, 
+                //     Icons.chevron_left,
+                //     color: Colors.white,
                 //     size: 40,
                 //   ),
                 // ),
@@ -484,17 +499,15 @@ class _RepCatPageState extends State<RepCatPage> {
                       left: BorderSide(width: 2.0, color: Colors.black),
                     ),
                     borderRadius: BorderRadius.circular(0),
-                    color: Colors.grey, 
+                    color: Colors.grey,
                   ),
                   child: Center(
-                    child: Text(
-                      "EXIT",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.6,
-                        //fontWeight: FontWeight.bold
-                      )
-                    ),
+                    child: Text("EXIT",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.6,
+                          //fontWeight: FontWeight.bold
+                        )),
                   ),
                 ),
               ),

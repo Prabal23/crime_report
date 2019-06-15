@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 
-
 ////////Transition code////////
-
 
 // Navigator.push( context, SlideLeftRoute(page: HomePage()));
 
 ////////Transition code end////////
-
 
 ////////Slide Left////////
 

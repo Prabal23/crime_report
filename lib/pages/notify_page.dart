@@ -18,7 +18,7 @@ class NotifyPage extends StatefulWidget {
 class _NotifyPageState extends State<NotifyPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
-  
+
   @override
   Widget build(BuildContext context) {
     Drawer drawer = new Drawer(
@@ -32,8 +32,8 @@ class _NotifyPageState extends State<NotifyPage> {
                 children: <Widget>[
                   Container(
                     child: Icon(
-                      Icons.menu, 
-                      color: Colors.white, 
+                      Icons.menu,
+                      color: Colors.white,
                       size: 40,
                     ),
                   ),
@@ -43,13 +43,10 @@ class _NotifyPageState extends State<NotifyPage> {
             ),
             ListTile(
               title: Text(
-                "Profile", 
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                "Profile",
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProfilePage()),
@@ -63,10 +60,7 @@ class _NotifyPageState extends State<NotifyPage> {
                   children: <Widget>[
                     Text(
                       "Report Progress",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22
-                      ),
+                      style: TextStyle(color: Colors.white, fontSize: 22),
                     ),
                     Container(
                       transform: Matrix4.translationValues(-15.0, -10.0, 0.0),
@@ -78,7 +72,7 @@ class _NotifyPageState extends State<NotifyPage> {
                   ],
                 ),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => ProgressPage()),
@@ -89,12 +83,9 @@ class _NotifyPageState extends State<NotifyPage> {
             ListTile(
               title: Text(
                 "Notifications",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
-              onTap: (){
+              onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => NotifyPage()),
@@ -105,26 +96,20 @@ class _NotifyPageState extends State<NotifyPage> {
             ListTile(
               title: Text(
                 "",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: Text(
                 "Log Out",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 22),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
               title: GestureDetector(
-                onTap: (){
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => TnCPage()),
@@ -132,24 +117,18 @@ class _NotifyPageState extends State<NotifyPage> {
                 },
                 child: Text(
                   "Legal v1.01",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 22),
                 ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
           ],
         ),
-      ), 
+      ),
     );
     return Scaffold(
       drawer: drawer,
-      appBar: AppBar(
-        backgroundColor: mainheader,
-        title: Text("Crime Report")
-      ),
+      appBar: AppBar(backgroundColor: mainheader, title: Text("Crime Report")),
       body: Container(
         child: ListView(
           children: <Widget>[
@@ -171,14 +150,14 @@ class _NotifyPageState extends State<NotifyPage> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: ListTile(
                       title: Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Text('1. "Insert Notification Heading"')
-                      ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text('1. "Insert Notification Heading"')),
                       subtitle: Text("Read more..."),
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NotifyDetPage()),
+                          MaterialPageRoute(
+                              builder: (context) => NotifyDetPage()),
                         );
                       },
                     ),
@@ -188,14 +167,14 @@ class _NotifyPageState extends State<NotifyPage> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: ListTile(
                       title: Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Text('2. "Insert Notification Heading"')
-                      ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text('2. "Insert Notification Heading"')),
                       subtitle: Text("Read more..."),
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NotifyDetPage()),
+                          MaterialPageRoute(
+                              builder: (context) => NotifyDetPage()),
                         );
                       },
                     ),
@@ -205,14 +184,14 @@ class _NotifyPageState extends State<NotifyPage> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: ListTile(
                       title: Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Text('3. "Insert Notification Heading"')
-                      ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text('3. "Insert Notification Heading"')),
                       subtitle: Text("Read more..."),
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NotifyDetPage()),
+                          MaterialPageRoute(
+                              builder: (context) => NotifyDetPage()),
                         );
                       },
                     ),
@@ -222,14 +201,14 @@ class _NotifyPageState extends State<NotifyPage> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: ListTile(
                       title: Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Text('4. "Insert Notification Heading"')
-                      ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text('4. "Insert Notification Heading"')),
                       subtitle: Text("Read more..."),
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NotifyDetPage()),
+                          MaterialPageRoute(
+                              builder: (context) => NotifyDetPage()),
                         );
                       },
                     ),
@@ -239,14 +218,14 @@ class _NotifyPageState extends State<NotifyPage> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: ListTile(
                       title: Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Text('5. "Insert Notification Heading"')
-                      ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text('5. "Insert Notification Heading"')),
                       subtitle: Text("Read more..."),
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NotifyDetPage()),
+                          MaterialPageRoute(
+                              builder: (context) => NotifyDetPage()),
                         );
                       },
                     ),
@@ -256,14 +235,14 @@ class _NotifyPageState extends State<NotifyPage> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: ListTile(
                       title: Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Text('6. "Insert Notification Heading"')
-                      ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text('6. "Insert Notification Heading"')),
                       subtitle: Text("Read more..."),
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NotifyDetPage()),
+                          MaterialPageRoute(
+                              builder: (context) => NotifyDetPage()),
                         );
                       },
                     ),
@@ -273,14 +252,14 @@ class _NotifyPageState extends State<NotifyPage> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: ListTile(
                       title: Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Text('7. "Insert Notification Heading"')
-                      ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text('7. "Insert Notification Heading"')),
                       subtitle: Text("Read more..."),
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NotifyDetPage()),
+                          MaterialPageRoute(
+                              builder: (context) => NotifyDetPage()),
                         );
                       },
                     ),
@@ -290,14 +269,14 @@ class _NotifyPageState extends State<NotifyPage> {
                     margin: EdgeInsets.only(bottom: 10),
                     child: ListTile(
                       title: Container(
-                        margin: EdgeInsets.only(bottom: 10),
-                        child: Text('8. "Insert Notification Heading"')
-                      ),
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: Text('8. "Insert Notification Heading"')),
                       subtitle: Text("Read more..."),
-                      onTap: (){
+                      onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NotifyDetPage()),
+                          MaterialPageRoute(
+                              builder: (context) => NotifyDetPage()),
                         );
                       },
                     ),
@@ -306,10 +285,9 @@ class _NotifyPageState extends State<NotifyPage> {
               ),
             ),
           ],
-        ),   
+        ),
       ),
-      bottomNavigationBar: 
-      BottomAppBar(
+      bottomNavigationBar: BottomAppBar(
         child: Container(
           padding: EdgeInsets.all(15),
           color: blackbutton,
