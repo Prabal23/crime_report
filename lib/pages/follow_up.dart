@@ -888,34 +888,35 @@ class _FollowUpPageState extends State<FollowUpPage> {
                   ),
                 ),
               ),
-              Container(
-                height: 70,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(width: 2.0, color: Colors.black),
-                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                    right: BorderSide(width: 2.0, color: Colors.black),
-                    left: BorderSide(width: 2.0, color: Colors.black),
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(width: 2.0, color: Colors.black),
+                      bottom: BorderSide(width: 2.0, color: Colors.black),
+                      right: BorderSide(width: 2.0, color: Colors.black),
+                      left: BorderSide(width: 2.0, color: Colors.black),
+                    ),
+                    borderRadius: BorderRadius.circular(0),
+                    color: Colors.black, 
                   ),
-                  borderRadius: BorderRadius.circular(0),
-                  color: Colors.black, 
-                ),
-                child: Center(
-                  child: GestureDetector(
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => MainPage()),
-                      );
-                    },
-                    child: Text(
-                      "SEND FOLLOW UP",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20
-                        //fontWeight: FontWeight.bold
-                      )
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MainPage()),
+                        );
+                      },
+                      child: Text(
+                        "SEND FOLLOW UP",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20
+                          //fontWeight: FontWeight.bold
+                        )
+                      ),
                     ),
                   ),
                 ),
