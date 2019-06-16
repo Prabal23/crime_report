@@ -1233,8 +1233,13 @@ class _LogRegPageState extends State<LogRegPage> {
     var first = addresses.first;
     //address = "${first.featureName} & ${first.addressLine} & ${first.adminArea}";
     address = "${first.addressLine}";
+    add = "${first.addressLine}";
     country = "${first.countryName}";
     location = curLocation['latitude'].toString() +
+        ", " +
+        curLocation['longitude'].toString();
+
+    locate = curLocation['latitude'].toString() +
         ", " +
         curLocation['longitude'].toString();
   }

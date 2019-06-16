@@ -303,61 +303,132 @@ class _MainPageState extends State<MainPage> {
                                     fontSize: 19,
                                     fontWeight: FontWeight.bold)),
                           ),
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top:
-                                    BorderSide(width: 2.0, color: Colors.black),
-                                bottom:
-                                    BorderSide(width: 2.0, color: Colors.black),
-                                right:
-                                    BorderSide(width: 2.0, color: Colors.black),
-                                left:
-                                    BorderSide(width: 2.0, color: Colors.black),
-                              ),
-                              borderRadius: BorderRadius.circular(0),
-                              color: Colors.black,
-                            ),
-                            child: Row(
-                              children: <Widget>[
-                                Text("ON",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 19,
-                                      //fontWeight: FontWeight.bold
-                                    )),
-                                Icon(
-                                  Icons.done,
-                                  color: Colors.white,
-                                  size: 20,
+                          (locate == '' || add == '')
+                              ? Container(
+                                  padding: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      bottom: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      right: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      left: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                    ),
+                                    borderRadius: BorderRadius.circular(0),
+                                    color: Colors.grey,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      locate = location;
+                                      add = address;
+                                    },
+                                    child: Text("ON",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 19,
+                                          //fontWeight: FontWeight.bold
+                                        )),
+                                  ),
+                                )
+                              : Container(
+                                  padding: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      bottom: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      right: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      left: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                    ),
+                                    borderRadius: BorderRadius.circular(0),
+                                    color: Colors.black,
+                                  ),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text("ON",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 19,
+                                            //fontWeight: FontWeight.bold
+                                          )),
+                                      Icon(
+                                        Icons.done,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            padding: EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                top:
-                                    BorderSide(width: 2.0, color: Colors.black),
-                                bottom:
-                                    BorderSide(width: 2.0, color: Colors.black),
-                                right:
-                                    BorderSide(width: 2.0, color: Colors.black),
-                                left:
-                                    BorderSide(width: 2.0, color: Colors.black),
-                              ),
-                              borderRadius: BorderRadius.circular(0),
-                              color: Colors.grey,
-                            ),
-                            child: Text("OFF",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 19,
-                                  //fontWeight: FontWeight.bold
-                                )),
-                          ),
+                          (locate == '' || add == '')
+                              ? Container(
+                                  padding: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      bottom: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      right: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      left: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                    ),
+                                    borderRadius: BorderRadius.circular(0),
+                                    color: Colors.black,
+                                  ),
+                                  child: Row(
+                                    children: <Widget>[
+                                      Text("OFF",
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 19,
+                                            //fontWeight: FontWeight.bold
+                                          )),
+                                      Icon(
+                                        Icons.done,
+                                        color: Colors.white,
+                                        size: 20,
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(
+                                  padding: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      bottom: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      right: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                      left: BorderSide(
+                                          width: 2.0, color: Colors.black),
+                                    ),
+                                    borderRadius: BorderRadius.circular(0),
+                                    color: Colors.grey,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        locate = '';
+                                        add = '';
+                                      });
+                                    },
+                                    child: Text("OFF",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 19,
+                                          //fontWeight: FontWeight.bold
+                                        )),
+                                  ),
+                                ),
                         ],
                       ),
                     ),

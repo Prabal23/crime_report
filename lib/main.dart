@@ -18,7 +18,9 @@ String name = '',
     password = '',
     location = '',
     address = '',
-    country = '';
+    country = '',
+    locate = '',
+    add = '';
 String date = '', time = '';
 
 class MyApp extends StatelessWidget {

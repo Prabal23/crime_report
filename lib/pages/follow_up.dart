@@ -441,7 +441,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                     fontSize: 19,
                                     fontWeight: FontWeight.bold)),
                           ),
-                          (location == '' || address == '')
+                          (locate == '' || add == '')
                               ? Container(
                                   padding: EdgeInsets.all(15),
                                   decoration: BoxDecoration(
@@ -458,12 +458,18 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                     borderRadius: BorderRadius.circular(0),
                                     color: Colors.grey,
                                   ),
-                                  child: Text("ON",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        //fontWeight: FontWeight.bold
-                                      )),
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      locate = location;
+                                      add = address;
+                                    },
+                                    child: Text("ON",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 19,
+                                          //fontWeight: FontWeight.bold
+                                        )),
+                                  ),
                                 )
                               : Container(
                                   padding: EdgeInsets.all(15),
@@ -497,7 +503,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                     ],
                                   ),
                                 ),
-                          (location == '' || address == '')
+                          (locate == '' || add == '')
                               ? Container(
                                   padding: EdgeInsets.all(15),
                                   decoration: BoxDecoration(
@@ -546,12 +552,20 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                     borderRadius: BorderRadius.circular(0),
                                     color: Colors.grey,
                                   ),
-                                  child: Text("OFF",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 19,
-                                        //fontWeight: FontWeight.bold
-                                      )),
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      setState(() {
+                                        locate = '';
+                                        add = ''; 
+                                      });
+                                    },
+                                    child: Text("OFF",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 19,
+                                          //fontWeight: FontWeight.bold
+                                        )),
+                                  ),
                                 ),
                         ],
                       ),
@@ -936,6 +950,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
               ),
               Expanded(
                 child: Container(
+                  height: 78.25,
                   padding: EdgeInsets.all(15),
                   decoration: BoxDecoration(
                     border: Border(
