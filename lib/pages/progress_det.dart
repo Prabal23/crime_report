@@ -1,4 +1,5 @@
 import 'package:crime_report/main.dart';
+import 'package:crime_report/pages/login_reg.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
@@ -10,8 +11,27 @@ import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/notify_det.dart';
 import 'package:crime_report/pages/progress.dart';
 import 'package:crime_report/pages/follow_up.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProgressDetPage extends StatefulWidget {
+  final int id;
+  final String lat;
+  final String longi;
+  final String sit;
+  final String pID;
+  final String notes;
+  final String add;
+
+  ProgressDetPage(
+      {Key key,
+      @required this.id,
+      @required this.lat,
+      @required this.longi,
+      @required this.sit,
+      @required this.pID,
+      @required this.notes,
+      @required this.add})
+      : super(key: key);
   @override
   _ProgressDetPageState createState() => new _ProgressDetPageState();
 }
@@ -102,9 +122,20 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
-              title: Text(
-                "Log Out",
-                style: TextStyle(color: Colors.white, fontSize: 22),
+              title: GestureDetector(
+                onTap: () async {
+                  SharedPreferences localStorage =
+                      await SharedPreferences.getInstance();
+                  localStorage.remove('user');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LogRegPage()),
+                  );
+                },
+                child: Text(
+                  "Log Out",
+                  style: TextStyle(color: Colors.white, fontSize: 22),
+                ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
@@ -129,7 +160,8 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
     );
     return Scaffold(
       drawer: drawer,
-      appBar: AppBar(backgroundColor: mainheader, title: Text("Crime Report")),
+      appBar:
+          AppBar(backgroundColor: mainheader, title: Text("Report Progress")),
       body: SingleChildScrollView(
         child: Container(
           child: Column(
@@ -138,16 +170,16 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.only(left: 20, right: 20),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Report Progress",
-                      style: TextStyle(fontSize: 22, color: Colors.black),
-                    ),
+                    // SizedBox(
+                    //   height: 20,
+                    // ),
+                    // Text(
+                    //   "Report Progress",
+                    //   style: TextStyle(fontSize: 22, color: Colors.black),
+                    // ),
                     SizedBox(
                       height: 20,
                     ),
@@ -159,7 +191,7 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              '1. Report/Complaint: "Insert Number"',
+                              '1. Report/Complaint: "#${widget.id}"',
                               style:
                                   TextStyle(fontSize: 18, color: Colors.black),
                             ),
@@ -172,10 +204,32 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                                       fontSize: 18, color: Colors.black),
                                 ),
                                 SizedBox(width: 5),
-                                CircleAvatar(
-                                  backgroundColor: Colors.red,
-                                  radius: 8,
-                                )
+                                (widget.sit == 'green')
+                                    ? CircleAvatar(
+                                        backgroundColor: Colors.green,
+                                        radius: 8,
+                                      )
+                                    : (widget.sit == 'red')
+                                        ? CircleAvatar(
+                                            backgroundColor: Colors.red,
+                                            radius: 8,
+                                          )
+                                        : (widget.sit == 'yellow')
+                                            ? CircleAvatar(
+                                                backgroundColor: Colors.yellow,
+                                                radius: 8,
+                                              )
+                                            : (widget.sit == 'orange')
+                                                ? CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.orange,
+                                                    radius: 8,
+                                                  )
+                                                : null
+                                // CircleAvatar(
+                                //   backgroundColor: Colors.red,
+                                //   radius: 8,
+                                // )
                               ],
                             ),
                           ],
@@ -185,11 +239,81 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    Row(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Province\nNumber of days in System\nOrder Number\nAttending Person\nExternal Supplier Appointed\nAddress\nGPS\nResolved",
+                          "Province",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Number of days in System",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Order Number : #${widget.id}",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Attending Person",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Internal Staff Appointed",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "External Supplier Appointed",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "3rd Party involvement",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Required Completion Date",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Actual Completion Date",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Late by Number of Days",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Early by Number of Days",
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Report Description : " + widget.notes,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Address : " + widget.add,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "GPS : " + widget.lat + ", " + widget.longi,
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 15, color: Colors.black),
+                        ),
+                        Text(
+                          "Resolved (Yes/No)",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
@@ -216,11 +340,7 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                               color: mainheader,
                               child: FlatButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => FollowUpPage()),
-                                  );
+                                  handleClick(widget.pID, widget.id, widget.notes);
                                 },
                                 child: Text(
                                   "Follow up",
@@ -269,6 +389,15 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void handleClick(String problem, int id, String notes) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => FollowUpPage(
+        prob: problem, pID: id, desc: notes
+      )),
     );
   }
 }

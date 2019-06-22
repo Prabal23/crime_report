@@ -1,5 +1,9 @@
 import 'dart:async';
-
+import 'dart:io';
+import 'dart:convert';
+import 'package:crime_report/api/api.dart';
+import 'package:crime_report/pages/login_reg.dart';
+import 'package:http/http.dart' as http;
 import 'package:crime_report/main.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -11,6 +15,10 @@ import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/progress.dart';
 import 'package:crime_report/pages/main_page.dart';
+import 'package:flutter/services.dart';
+import 'package:crime_report/json_serialize/problem.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ReportScreen extends StatefulWidget {
   @override
@@ -20,23 +28,84 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
   TextEditingController _textController = new TextEditingController();
   TextEditingController _textController1 = new TextEditingController();
+  //List<Asset> images = List<Asset>();
   String text = '',
       prob = '',
-      situation = '',
+      situation = 'green',
       prob_status = '',
-      runningTime = '';
+      runningTime = '',
+      problem_name = '';
+  int problem_id, imgNum = 0;
   bool green = true, yellow = false, orange = false, red = false;
   List _problems = ["Burst Pipe", "Flood"];
   List<DropdownMenuItem<String>> _dropDownProblemItems;
+  List<Problem> probsList = const [];
+  bool isLoading = true;
+  bool isAddLoading = false;
+  var userData;
+  var profileImage;
+  File fileImage;
+  bool isImage = false;
+  bool isChosen = false;
+
+  Future getProblemList() async {
+    // http.Response response =
+    //     await http.get('http://192.168.0.104:8000/api/getAllProblems');
+
+    //await Future.delayed(Duration(seconds: 3));
+
+    /////    for content without json array value   ////////
+    var response = await CallApi().getData('getAllProblems');
+    var content = response.body;
+    List collection = json.decode(content);
+
+    List<Problem> _list =
+        collection.map((json) => Problem.fromJson(json)).toList();
+
+    setState(() {
+      probsList = _list;
+      isLoading = false;
+    });
+  }
 
   @override
   void initState() {
-    _dropDownProblemItems = getDropDownproblemItems();
-    prob = _dropDownProblemItems[0].value;
+    _getUserInfo();
+    getProblemList();
+    // _dropDownProblemItems = getDropDownproblemItems();
+    // prob = _dropDownProblemItems[0].value;
     _textController.text = address;
     runningTime = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
+  }
+
+  clickImagefromCamera() async {
+    profileImage = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      fileImage = profileImage;
+      isImage = true;
+      isChosen = false;
+    });
+  }
+
+  pickImagefromGallery() async {
+    profileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      fileImage = profileImage;
+      isImage = false;
+      isChosen = true;
+    });
+  }
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson);
+    setState(() {
+      userData = user;
+    });
+    //print("ID's : userData['id']");
   }
 
   void _getTime() {
@@ -63,6 +132,38 @@ class _ReportScreenState extends State<ReportScreen> {
     }
     return items;
   }
+
+//   Future<void> loadAssets() async {
+//     List<Asset> resultList = List<Asset>();
+//     String error = 'No Error Dectected';
+
+//     try {
+//       resultList = await MultiImagePicker.pickImages(
+//           maxImages: 300,
+//           enableCamera: true,
+//           selectedAssets: images,
+//           cupertinoOptions: CupertinoOptions(takePhotoIcon: "chat"),
+//           materialOptions: MaterialOptions(
+//             actionBarColor: "#abcdef",
+//             actionBarTitle: "Example App",
+//             allViewTitle: "All Photos",
+//             selectCircleStrokeColor: "#000000",
+//           ));
+//     } on PlatformException catch (e) {
+//       error = e.message;
+//     }
+
+//     // If the widget was removed from the tree while the asynchronous platform
+//     // message was in flight, we want to discard the reply rather than calling
+//     // setState to update our non-existent appearance.
+//     if (!mounted) return;
+
+//     setState(() {
+//       images = resultList;
+//       imgNum = images.length;
+//       print("Image Number : "+ '$imgNum');
+//     });
+// }
 
   @override
   Widget build(BuildContext context) {
@@ -146,9 +247,20 @@ class _ReportScreenState extends State<ReportScreen> {
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
-              title: Text(
-                "Log Out",
-                style: TextStyle(color: Colors.white, fontSize: 22),
+              title: GestureDetector(
+                onTap: () async {
+                  SharedPreferences localStorage =
+                      await SharedPreferences.getInstance();
+                  localStorage.remove('user');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LogRegPage()),
+                  );
+                },
+                child: Text(
+                  "Log Out",
+                  style: TextStyle(color: Colors.white, fontSize: 22),
+                ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
@@ -265,7 +377,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(name,
+                            Text('${userData['first_name']}',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15)),
                           ],
@@ -276,7 +388,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(surname,
+                            Text('${userData['last_name']}',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15)),
                           ],
@@ -287,7 +399,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text(password,
+                            Text('${userData['username']}',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15)),
                           ],
@@ -463,52 +575,84 @@ class _ReportScreenState extends State<ReportScreen> {
                         ),
                       ),
                       SizedBox(height: 20),
-                      Container(
-                        color: blackbutton,
-                        padding: EdgeInsets.only(
-                            left: 10, top: 10, bottom: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('Take Photo/s',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 17)),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.add_box,
-                                  color: Colors.white,
-                                  size: 25,
-                                ),
-                                Icon(
-                                  Icons.camera_enhance,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              ],
+                      GestureDetector(
+                        onTap: () {
+                          clickImagefromCamera();
+                        },
+                        child: Container(
+                          color: blackbutton,
+                          padding: EdgeInsets.only(
+                              left: 10, top: 10, bottom: 10, right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text('Take Photo/s',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17)),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.add_box,
+                                    color: Colors.white,
+                                    size: 25,
+                                  ),
+                                  Icon(
+                                    Icons.camera_enhance,
+                                    color: Colors.white,
+                                    size: 30,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      (isImage == true && isChosen == false)
+                          ? SizedBox(
+                              height: 10,
+                            )
+                          : SizedBox(
+                              height: 0,
                             ),
+                      Container(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            (isImage == true && isChosen == false)
+                                ? Text(
+                                    'Photo taken',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontStyle: FontStyle.italic),
+                                  )
+                                : Text(''),
                           ],
                         ),
                       ),
                       SizedBox(height: 10),
-                      Container(
-                        color: blackbutton,
-                        padding: EdgeInsets.only(
-                            left: 10, top: 10, bottom: 10, right: 10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('Attach Photo/s',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 17)),
-                            Icon(
-                              Icons.image,
-                              color: Colors.white,
-                              size: 25,
-                            ),
-                          ],
+                      GestureDetector(
+                        onTap: () {
+                          pickImagefromGallery();
+                        },
+                        child: Container(
+                          color: blackbutton,
+                          padding: EdgeInsets.only(
+                              left: 10, top: 10, bottom: 10, right: 10),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text('Attach Photo/s',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 17)),
+                              Icon(
+                                Icons.image,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(height: 10),
@@ -516,7 +660,11 @@ class _ReportScreenState extends State<ReportScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text("No photos attached or\n5 photos attached",
+                            Text(
+                                //imgNum == 0 ? "No photos attached or" : "$imgNum" + " photos attached",
+                                (isImage == false && isChosen == true)
+                                    ? "Photo attached"
+                                    : "",
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontStyle: FontStyle.italic)),
@@ -581,33 +729,47 @@ class _ReportScreenState extends State<ReportScreen> {
                                 data: Theme.of(context)
                                     .copyWith(canvasColor: blackbutton),
                                 child: Expanded(
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton(
-                                      style: TextStyle(
-                                          fontSize: 17, color: Colors.white),
-                                      value: prob,
-                                      items: _dropDownProblemItems,
-                                      hint: Text(prob,
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                      iconSize: 40,
-                                      iconDisabledColor: Colors.white,
-                                      iconEnabledColor: Colors.white,
-                                      onChanged: (String value) {
-                                        setState(() {
-                                          prob = value;
-                                        });
-                                      },
+                                  // child: DropdownButtonHideUnderline(
+                                  //   child: DropdownButton(
+                                  //     style: TextStyle(
+                                  //         fontSize: 17, color: Colors.white),
+                                  //     value: prob,
+                                  //     items: _dropDownProblemItems,
+                                  //     hint: Text(prob,
+                                  //         style:
+                                  //             TextStyle(color: Colors.white)),
+                                  //     iconSize: 40,
+                                  //     iconDisabledColor: Colors.white,
+                                  //     iconEnabledColor: Colors.white,
+                                  //     onChanged: (String value) {
+                                  //       setState(() {
+                                  //         prob = value;
+                                  //       });
+                                  //     },
+                                  //   ),
+                                  // ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      problemList();
+                                    },
+                                    child: Container(
+                                      child: Text(
+                                        problem_name == ''
+                                            ? "Select Problem"
+                                            : problem_name,
+                                        style: TextStyle(
+                                            fontSize: 17, color: Colors.white),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            // Icon(
-                            //   Icons.arrow_drop_down,
-                            //   color: Colors.white,
-                            //   size: 50,
-                            // )
+                            Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.white,
+                              size: 40,
+                            )
                           ],
                         ),
                       ),
@@ -711,7 +873,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   yellow = false;
                                   orange = false;
                                   red = false;
-                                  situation = '1';
+                                  situation = 'green';
                                 });
                               },
                               child: Container(
@@ -752,7 +914,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   yellow = true;
                                   orange = false;
                                   red = false;
-                                  situation = '2';
+                                  situation = 'yellow';
                                 });
                               },
                               child: Container(
@@ -793,7 +955,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   yellow = false;
                                   orange = true;
                                   red = false;
-                                  situation = '3';
+                                  situation = 'orange';
                                 });
                               },
                               child: Container(
@@ -834,7 +996,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   yellow = false;
                                   orange = false;
                                   red = true;
-                                  situation = '4';
+                                  situation = 'red';
                                 });
                               },
                               child: Container(
@@ -938,12 +1100,9 @@ class _ReportScreenState extends State<ReportScreen> {
                   child: Center(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MainPage()),
-                        );
+                        isAddLoading ? null : sendReport();
                       },
-                      child: Text("SEND REPORT",
+                      child: Text(isAddLoading ? "SENDING..." : "SEND REPORT",
                           style: TextStyle(color: Colors.white, fontSize: 20
                               //fontWeight: FontWeight.bold
                               )),
@@ -955,6 +1114,177 @@ class _ReportScreenState extends State<ReportScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  void problemList() {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            title: Center(
+              child: new Text(
+                "Select Problem",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            content: isLoading
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    child: ListView.builder(
+                      itemCount: probsList.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        Problem probList = probsList[index];
+                        return ListTile(
+                          title: Text(
+                            probList.title,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          trailing: Icon(
+                            Icons.chevron_right,
+                            size: 30,
+                            color: Colors.white,
+                          ),
+                          onTap: () {
+                            _getProblemID(probList.id, probList.title);
+                            Navigator.of(context).pop();
+                          },
+                        );
+                      },
+                    ),
+                  ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _getProblemID(int id, String title) {
+    setState(() {
+      problem_name = title;
+      problem_id = id;
+    });
+  }
+
+  void sendReport() async {
+    int pID = 0;
+    //String pID = '';
+    String add = _textController.text;
+    String des = _textController1.text;
+    pID = problem_id;
+    int uID = userData['id'];
+    String work_code = password;
+    String latitude = lat;
+    String longitude = longi;
+    String situ = situation;
+
+    if (add == '') {
+      verificationAlert("Address field is blank");
+    } else if (pID == 0) {
+      verificationAlert("Select your problem");
+    } else if (des == '') {
+      verificationAlert("Notes field is blank");
+    } else {
+      setState(() {
+        isAddLoading = true;
+      });
+      var data = {
+        'manager_name': 'admin',
+        'reporting_person': uID,
+        'work_code': work_code,
+        'lat': latitude,
+        'longi': longitude,
+        'address': add,
+        'situation': situ,
+        'report_date': date + ' ' + time,
+        'problem_id': '$pID',
+        'notes': des,
+        'admin_notes': 'undefined',
+        'admin_situation': 'green',
+        'status': 0,
+        'show_status': 0
+      };
+      var res1 = await CallApi().postData(data, 'insertReport');
+      var body1 = json.decode(res1.body);
+      int rID = body1['id'];
+      sendPhotos(rID);
+      //print(body1);
+
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => ProgressPage()),
+      // );
+    }
+  }
+
+  void sendPhotos(int id) async {
+    print('Report id : ' + '$id');
+    String rID = '$id';
+
+    List<int> imageBytes = fileImage.readAsBytesSync();
+    String image = base64.encode(imageBytes);
+    image = 'data:image/png;base64,' + image;
+    var data = {'report_id': rID, 'photo': image};
+    var res1 = await CallApi().postData(data, 'insertReportImage');
+    var body1 = json.decode(res1.body);
+    print(body1);
+    setState(() {
+      isAddLoading = false;
+    });
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => ProgressPage()),
+    // );
+  }
+
+  void verificationAlert(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            title: new Text(
+              "Alert",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

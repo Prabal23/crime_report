@@ -1,6 +1,9 @@
 import 'dart:async';
-
+import 'dart:convert';
+import 'dart:io';
+import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
+import 'package:crime_report/pages/login_reg.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
@@ -12,25 +15,70 @@ import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/progress.dart';
 import 'package:crime_report/pages/main_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FollowUpPage extends StatefulWidget {
+  final String prob;
+  final int pID;
+  final String desc;
+
+  FollowUpPage(
+      {Key key, @required this.prob, @required this.pID, @required this.desc})
+      : super(key: key);
   @override
   _FollowUpPageState createState() => new _FollowUpPageState();
 }
 
 class _FollowUpPageState extends State<FollowUpPage> {
   TextEditingController _textController = new TextEditingController();
-  String text = '', situation = '', prob_status = '', runningTime = '';
+  String text = '', situation = 'green', prob_status = '', runningTime = '';
   bool green = true, yellow = false, orange = false, red = false;
   bool not_fixed = true, adeq_fixed = false;
+  var userData;
+  bool isAddLoading = false;
+  var profileImage;
+  File fileImage;
+  bool isImage = false;
+  bool isChosen = false;
 
   @override
   void initState() {
     // final DateTime curTime = DateTime.now();
     // DateFormat("hh:mm:ss").format(curTime);
+    _textController.text = widget.desc;
+    _getUserInfo();
     runningTime = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     super.initState();
+  }
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson);
+    setState(() {
+      userData = user;
+    });
+    //print("ID's : userData['id']");
+  }
+
+  clickImagefromCamera() async {
+    profileImage = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      fileImage = profileImage;
+      isImage = true;
+      isChosen = false;
+    });
+  }
+
+  pickImagefromGallery() async {
+    profileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      fileImage = profileImage;
+      isImage = false;
+      isChosen = true;
+    });
   }
 
   void _getTime() {
@@ -127,9 +175,20 @@ class _FollowUpPageState extends State<FollowUpPage> {
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
-              title: Text(
-                "Log Out",
-                style: TextStyle(color: Colors.white, fontSize: 22),
+              title: GestureDetector(
+                onTap: () async {
+                  SharedPreferences localStorage =
+                      await SharedPreferences.getInstance();
+                  localStorage.remove('user');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LogRegPage()),
+                  );
+                },
+                child: Text(
+                  "Log Out",
+                  style: TextStyle(color: Colors.white, fontSize: 22),
+                ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
@@ -244,7 +303,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text('Follow up on report Number: "Insert Number"',
+                          Text('Follow up on report Number: "#${widget.pID}"',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 15)),
                         ],
@@ -269,7 +328,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                               setState(() {
                                 not_fixed = true;
                                 adeq_fixed = false;
-                                prob_status = '1';
+                                prob_status = '3';
                               });
                             },
                             child: (not_fixed == true && adeq_fixed == false)
@@ -314,7 +373,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                               setState(() {
                                 not_fixed = false;
                                 adeq_fixed = true;
-                                prob_status = '2';
+                                prob_status = '4';
                               });
                             },
                             child: (not_fixed == false && adeq_fixed == true)
@@ -381,7 +440,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         //mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text(name,
+                          Text('${userData['first_name']}',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 15)),
                         ],
@@ -393,7 +452,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         //mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text(surname,
+                          Text('${userData['last_name']}',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 15)),
                         ],
@@ -405,7 +464,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         //mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text(password,
+                          Text('${userData['username']}',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 15)),
                         ],
@@ -459,7 +518,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                     color: Colors.grey,
                                   ),
                                   child: GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       locate = location;
                                       add = address;
                                     },
@@ -553,10 +612,10 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                     color: Colors.grey,
                                   ),
                                   child: GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       setState(() {
                                         locate = '';
-                                        add = ''; 
+                                        add = '';
                                       });
                                     },
                                     child: Text("OFF",
@@ -583,63 +642,100 @@ class _FollowUpPageState extends State<FollowUpPage> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    Container(
-                      color: blackbutton,
-                      padding: EdgeInsets.only(
-                          left: 10, top: 10, bottom: 10, right: 10),
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text('Take Photo/s',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17)),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Icon(
-                                Icons.add_box,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                              Icon(
-                                Icons.camera_enhance,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                            ],
-                          ),
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        clickImagefromCamera();
+                      },
+                      child: Container(
+                        color: blackbutton,
+                        padding: EdgeInsets.only(
+                            left: 10, top: 10, bottom: 10, right: 10),
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Take Photo/s',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 17)),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.add_box,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                                Icon(
+                                  Icons.camera_enhance,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    SizedBox(height: 10),
-                    Container(
-                      color: blackbutton,
-                      padding: EdgeInsets.only(
-                          left: 10, top: 10, bottom: 10, right: 10),
-                      margin: EdgeInsets.only(left: 20, right: 20),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text('Attach Photo/s',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 17)),
-                          Icon(
-                            Icons.image,
-                            color: Colors.white,
-                            size: 25,
+                    (isImage == true && isChosen == false)
+                        ? SizedBox(
+                            height: 10,
+                          )
+                        : SizedBox(
+                            height: 0,
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 10),
                     Container(
-                      margin: EdgeInsets.only(left: 20),
+                      margin: EdgeInsets.only(left: 20, right: 20),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("No photos attached or\n5 photos attached",
+                          (isImage == true && isChosen == false)
+                              ? Text(
+                                  'Photo taken',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontStyle: FontStyle.italic),
+                                )
+                              : Text(''),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    GestureDetector(
+                      onTap: () {
+                        pickImagefromGallery();
+                      },
+                      child: Container(
+                        color: blackbutton,
+                        padding: EdgeInsets.only(
+                            left: 10, top: 10, bottom: 10, right: 10),
+                        margin: EdgeInsets.only(left: 20, right: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Attach Photo/s',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 17)),
+                            Icon(
+                              Icons.image,
+                              color: Colors.white,
+                              size: 25,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                              //imgNum == 0 ? "No photos attached or" : "$imgNum" + " photos attached",
+                              (isImage == false && isChosen == true)
+                                  ? "Photo attached"
+                                  : "",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontStyle: FontStyle.italic)),
@@ -661,7 +757,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("Autofil previous problem type",
+                          Text("Problem Type : " + widget.prob,
                               style: TextStyle(color: Colors.white)),
                         ],
                       ),
@@ -965,15 +1061,17 @@ class _FollowUpPageState extends State<FollowUpPage> {
                   child: Center(
                     child: GestureDetector(
                       onTap: () {
+                        isAddLoading ? null : sendReport();
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => MainPage()),
                         );
                       },
-                      child: Text("SEND FOLLOW UP",
-                          style: TextStyle(color: Colors.white, fontSize: 20
-                              //fontWeight: FontWeight.bold
-                              )),
+                      child:
+                          Text(isAddLoading ? "SENDING..." : "SEND FOLLOW UP",
+                              style: TextStyle(color: Colors.white, fontSize: 20
+                                  //fontWeight: FontWeight.bold
+                                  )),
                     ),
                   ),
                 ),
@@ -982,6 +1080,106 @@ class _FollowUpPageState extends State<FollowUpPage> {
           ),
         ),
       ),
+    );
+  }
+
+  void sendReport() async {
+    //int pID = 0;
+    String pID = '';
+    String des = _textController.text;
+    pID = widget.prob;
+    int uID = userData['id'];
+    String work_code = password;
+    String latitude = lat;
+    String longitude = longi;
+    String situ = situation;
+
+    if (des == '') {
+      verificationAlert("Notes field is blank");
+    } else {
+      setState(() {
+        isAddLoading = true;
+      });
+      var data = {
+        'manager_name': 'admin',
+        'reporting_person': uID,
+        'work_code': work_code,
+        'lat': latitude,
+        'longi': longitude,
+        'address': add,
+        'situation': situ,
+        'report_date': date + ' ' + time,
+        'problem_id': '$pID',
+        'notes': des,
+        'status': 0,
+      };
+      var res1 = await CallApi().postData(data, 'followUp');
+      var body1 = json.decode(res1.body);
+      int rID = body1['id'];
+      sendPhotos(rID);
+      print(body1);
+      setState(() {
+        isAddLoading = false;
+      });
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => ProgressPage()),
+      // );
+    }
+  }
+
+  void sendPhotos(int id) async {
+    print('Follow id : ' + '$id');
+    String fID = '$id';
+
+    List<int> imageBytes = fileImage.readAsBytesSync();
+    String image = base64.encode(imageBytes);
+    image = 'data:image/png;base64,' + image;
+    var data = {'follow_id': fID, 'photo': image};
+    var res1 = await CallApi().postData(data, 'insertflloupImage');
+    var body1 = json.decode(res1.body);
+    print(body1);
+    setState(() {
+      isAddLoading = false;
+    });
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => ProgressPage()),
+    // );
+  }
+
+  void verificationAlert(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            title: new Text(
+              "Alert",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

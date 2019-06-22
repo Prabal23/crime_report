@@ -35,13 +35,17 @@ dependencies:
   carousel_pro: 
   geocoder:
   intl:
+  json_serializable: 
+  build_runner:
+  http: 
+  shared_preferences:
+  
   #geolocator: 
   #location: ^1.4.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec

@@ -1,9 +1,11 @@
+import 'package:crime_report/pages/main_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:crime_report/pages/login_reg.dart';
 import 'package:crime_report/pages/routeAnimation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -17,10 +19,23 @@ class SplashScreenState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   Animation<double> animation;
   AnimationController controller;
+  bool _isLoggedIn = false;
+
+  void _checkIfLoggedIn() async{
+      // check if token is there
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      var user = localStorage.getString('user');
+      if(user!= null){
+         setState(() {
+            _isLoggedIn = true;
+         });
+      }
+}
 
   @override
   void initState() {
     CircularProgressIndicator();
+    _checkIfLoggedIn();
     super.initState();
 
     //loadData();
@@ -41,6 +56,7 @@ class SplashScreenState extends State<MyHomePage>
   }
 
   onDoneLoading() async {
+    _isLoggedIn ? Navigator.pushReplacement(context, SlideLeftRoute(page: MainPage())) :
     Navigator.pushReplacement(context, SlideLeftRoute(page: LogRegPage()));
     //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LogRegPage()));
   }

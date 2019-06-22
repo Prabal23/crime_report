@@ -1,4 +1,5 @@
 import 'package:crime_report/main.dart';
+import 'package:crime_report/pages/login_reg.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
@@ -9,6 +10,7 @@ import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/notify_det.dart';
 import 'package:crime_report/pages/progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NotifyPage extends StatefulWidget {
   @override
@@ -101,9 +103,19 @@ class _NotifyPageState extends State<NotifyPage> {
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
-              title: Text(
-                "Log Out",
-                style: TextStyle(color: Colors.white, fontSize: 22),
+              title: GestureDetector(
+                onTap: () async {
+                  SharedPreferences localStorage = await SharedPreferences.getInstance();
+                  localStorage.remove('user');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LogRegPage()),
+                  );
+                },
+                child: Text(
+                  "Log Out",
+                  style: TextStyle(color: Colors.white, fontSize: 22),
+                ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),

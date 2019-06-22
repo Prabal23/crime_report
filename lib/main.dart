@@ -20,8 +20,11 @@ String name = '',
     address = '',
     country = '',
     locate = '',
-    add = '';
-String date = '', time = '';
+    add = '',
+    lat = '',
+    longi = '';
+String date = '', time = '', prob = '';
+String _urls = 'http://192.168.0.108:8000/api/';
 
 class MyApp extends StatelessWidget {
   @override

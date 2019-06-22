@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -9,6 +12,8 @@ import 'package:crime_report/pages/profile.dart';
 import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/progress.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/services.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -18,6 +23,29 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   // final scaffoldKey = GlobalKey<ScaffoldState>();
   // final formKey = GlobalKey<FormState>();
+  var userData;
+  String proImage = '', profile = '';
+  @override
+  void initState() {
+    _getUserInfo();
+    _getURL();
+    super.initState();
+  }
+
+  void _getURL() async {
+    proImage = await CallApi().getURL();
+    proImage = proImage + '${userData['image']}';
+    print("Image : " + profile);
+  }
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson);
+    setState(() {
+      userData = user;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,9 +129,20 @@ class _MainPageState extends State<MainPage> {
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
-              title: Text(
-                "Log Out",
-                style: TextStyle(color: Colors.white, fontSize: 22),
+              title: GestureDetector(
+                onTap: () async {
+                  SharedPreferences localStorage =
+                      await SharedPreferences.getInstance();
+                  localStorage.remove('user');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LogRegPage()),
+                  );
+                },
+                child: Text(
+                  "Log Out",
+                  style: TextStyle(color: Colors.white, fontSize: 22),
+                ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
@@ -216,9 +255,12 @@ class _MainPageState extends State<MainPage> {
                     Text("Hello,",
                         style: TextStyle(fontSize: 20, color: Colors.white)),
                     //TextField(controller:  _textNameController),
-                    Text(name + " " + surname,
+                    Text(
+                        '${userData['first_name']}' +
+                            " " +
+                            '${userData['last_name']}',
                         style: TextStyle(fontSize: 20, color: Colors.white)),
-                    Text("Work Code :  " + password,
+                    Text("Work Code :  " + '${userData['username']}',
                         style: TextStyle(fontSize: 20, color: Colors.white)),
                     Container(
                       width: MediaQuery.of(context).size.width,
@@ -230,16 +272,45 @@ class _MainPageState extends State<MainPage> {
                           Container(
                             transform: Matrix4.translationValues(0.0, 0.0, 0.0),
                             padding: EdgeInsets.all(5.0),
-                            child: CircleAvatar(
-                              radius: 60.0,
-                              backgroundColor: Colors.transparent,
-                              backgroundImage: AssetImage('assets/person.png'),
-                            ),
-                            decoration: new BoxDecoration(
-                              color: subheader,
-                              //color: Theme.of(context).accentColor, // border color
-                              shape: BoxShape.circle,
-                            ),
+                            //color: subheader,
+                            child: ('${userData['image']}' == null ||
+                                    '${userData['username']}' == '')
+                                ? Container(
+                                    transform: Matrix4.translationValues(
+                                        0.0, 0.0, 0.0),
+                                    padding: EdgeInsets.all(5.0),
+                                    child: CircleAvatar(
+                                      radius: 60.0,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage:
+                                          AssetImage('assets/person.png'),
+                                    ),
+                                    decoration: new BoxDecoration(
+                                      color: subheader, // border color
+                                      shape: BoxShape.circle,
+                                    ),
+                                  )
+                                : Container(
+                                    child: CircleAvatar(
+                                        radius: 60.0,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: subheader,
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                image:
+                                                    new NetworkImage(proImage),
+                                                fit: BoxFit.cover,
+                                              )),
+                                        )),
+                                  ),
+                            // decoration: new BoxDecoration(
+                            //     color: subheader, // border color
+                            //     shape: BoxShape.circle,
+                            //     image: new DecorationImage(
+                            //       image: new NetworkImage('http://192.168.0.109:8000/uploads/profile-1561186060.jpg'),
+                            //       fit: BoxFit.cover,
+                            //     )),
                           ),
                           SizedBox(width: 25),
                           GestureDetector(

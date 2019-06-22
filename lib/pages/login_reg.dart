@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
 import 'package:geocoder/geocoder.dart';
 import 'dart:async';
@@ -5,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 import 'package:location/location.dart';
 import 'package:flutter/services.dart';
@@ -27,6 +31,8 @@ class _LogRegPageState extends State<LogRegPage> {
   Map<String, double> curLocation = new Map();
   StreamSubscription<Map<String, double>> locSub;
   Location loc = new Location();
+  bool isLoginLoading = false;
+  bool isRegLoading = false;
 
   TextEditingController _textNameController = TextEditingController();
   TextEditingController _textSurNameController = TextEditingController();
@@ -74,28 +80,29 @@ class _LogRegPageState extends State<LogRegPage> {
     "31"
   ];
   List _months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12"
   ];
-  List _user_type = [
-    "Attorney",
-    "Magistrate",
-    "Candidate Attorney",
-    "Civil Servant",
-    "Government Worker",
-    "Legal Aid",
-    "General Public"
-  ];
+  // List _user_type = [
+  //   "Attorney",
+  //   "Magistrate",
+  //   "Candidate Attorney",
+  //   "Civil Servant",
+  //   "Government Worker",
+  //   "Legal Aid",
+  //   "General Public"
+  // ];
+  List _user_type = ["staff", "client"];
   List<DropdownMenuItem<String>> _dropDownDayItems;
   List<DropdownMenuItem<String>> _dropDownMonthItems;
   List<DropdownMenuItem<String>> _dropDownTypeItems;
@@ -106,10 +113,10 @@ class _LogRegPageState extends State<LogRegPage> {
       _radioGender = value;
 
       switch (_radioGender) {
-        case 'Female':
+        case 'female':
           //Fluttertoast.showToast(msg: 'Male',toastLength: Toast.LENGTH_SHORT);
           break;
-        case 'Male':
+        case 'male':
           //Fluttertoast.showToast(msg: 'Female',toastLength: Toast.LENGTH_SHORT);
           break;
       }
@@ -139,7 +146,7 @@ class _LogRegPageState extends State<LogRegPage> {
     });
 
     var now = new DateTime.now();
-    date = new DateFormat("dd-MM-yyyy").format(now);
+    date = new DateFormat("yyyy-MM-dd").format(now);
     //date = "${date}";
     time = new DateFormat("hh:mm:ss").format(now);
     //time = "${time}";
@@ -476,140 +483,12 @@ class _LogRegPageState extends State<LogRegPage> {
                               child: RaisedButton(
                                 color: blackbutton,
                                 child: Text(
-                                  "Login",
+                                  isLoginLoading ? "Logging In..." : "Login",
                                   style: TextStyle(
                                       fontSize: 20, color: Colors.white),
                                 ),
                                 onPressed: () {
-                                  String n = name;
-                                  String s = surname;
-                                  String p = password;
-                                  if (n == "") {
-                                    return showDialog<String>(
-                                      context: context,
-                                      barrierDismissible:
-                                          false, // dialog is dismissible with a tap on the barrier
-                                      builder: (BuildContext context) {
-                                        return Theme(
-                                          data: Theme.of(context).copyWith(
-                                              dialogBackgroundColor:
-                                                  Colors.black),
-                                          child: AlertDialog(
-                                            title: new Text(
-                                              "Alert",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            content: new Text(
-                                              "Name field is blank",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            actions: <Widget>[
-                                              new FlatButton(
-                                                child: new Text(
-                                                  "OK",
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .secondaryHeaderColor),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  } else if (s == "") {
-                                    return showDialog<String>(
-                                      context: context,
-                                      barrierDismissible:
-                                          false, // dialog is dismissible with a tap on the barrier
-                                      builder: (BuildContext context) {
-                                        return Theme(
-                                          data: Theme.of(context).copyWith(
-                                              dialogBackgroundColor:
-                                                  Colors.black),
-                                          child: AlertDialog(
-                                            title: new Text(
-                                              "Alert",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            content: new Text(
-                                              "Surname field is blank",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            actions: <Widget>[
-                                              new FlatButton(
-                                                child: new Text(
-                                                  "OK",
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .secondaryHeaderColor),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  } else if (p == "") {
-                                    return showDialog<String>(
-                                      context: context,
-                                      barrierDismissible:
-                                          false, // dialog is dismissible with a tap on the barrier
-                                      builder: (BuildContext context) {
-                                        return Theme(
-                                          data: Theme.of(context).copyWith(
-                                              dialogBackgroundColor:
-                                                  Colors.black),
-                                          child: AlertDialog(
-                                            title: new Text(
-                                              "Alert",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            content: new Text(
-                                              "Password field is blank",
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            actions: <Widget>[
-                                              new FlatButton(
-                                                child: new Text(
-                                                  "OK",
-                                                  style: TextStyle(
-                                                      color: Theme.of(context)
-                                                          .secondaryHeaderColor),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  } else {
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(builder: (context) => MainPage()),
-                                    // );
-                                    //Navigator.push(context, SlideRightRoute(page: MainPage()));
-                                    // setState(() {
-                                    //   Navigator.push( context, SlideLeftRoute(page: MainPage()));
-                                    // });
-                                    Navigator.push(context,
-                                        SlideLeftRoute(page: MainPage()));
-                                  }
+                                  isLoginLoading ? null : userLogin();
                                 },
                               ),
                             ),
@@ -767,6 +646,7 @@ class _LogRegPageState extends State<LogRegPage> {
                         child: TextField(
                           autofocus: false,
                           controller: _textrNewPassController,
+                          obscureText: true,
                           decoration: InputDecoration(
                             hintText: "New Password",
                             border: InputBorder.none,
@@ -801,6 +681,7 @@ class _LogRegPageState extends State<LogRegPage> {
                         child: TextField(
                           autofocus: false,
                           controller: _textrConPassController,
+                          obscureText: true,
                           decoration: InputDecoration(
                             hintText: "Confirm Password",
                             border: InputBorder.none,
@@ -1065,7 +946,7 @@ class _LogRegPageState extends State<LogRegPage> {
                               child: Row(
                                 children: <Widget>[
                                   new Radio(
-                                      value: 'Female',
+                                      value: 'female',
                                       groupValue: _radioGender,
                                       //onChanged:(int e) => showDatas(e),
                                       onChanged: _handleRadioValueChange),
@@ -1086,7 +967,7 @@ class _LogRegPageState extends State<LogRegPage> {
                                     transform: Matrix4.translationValues(
                                         -10.0, 0.0, 0.0),
                                     child: new Radio(
-                                        value: 'Male',
+                                        value: 'male',
                                         groupValue: _radioGender,
                                         //onChanged:(int e) => showDatas(e),
                                         onChanged: _handleRadioValueChange),
@@ -1174,11 +1055,13 @@ class _LogRegPageState extends State<LogRegPage> {
                                   RaisedButton(
                                     color: mainheader,
                                     child: Text(
-                                      "Sign Up",
+                                     isRegLoading ? "Signing up..." : "Sign Up",
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      isRegLoading ? null : userRegister();
+                                    },
                                   ),
                                 ],
                               ),
@@ -1213,6 +1096,179 @@ class _LogRegPageState extends State<LogRegPage> {
     );
   }
 
+  void userLogin() async {
+    String n = name;
+    String s = surname;
+    String p = password;
+    if (n == "") {
+      verificationAlert("Name field is blank");
+    } else if (s == "") {
+      verificationAlert("Surname field is blank");
+    } else if (p == "") {
+      verificationAlert("Password field is blank");
+    } else {
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => MainPage()),
+      // );
+      //Navigator.push(context, SlideRightRoute(page: MainPage()));
+      // setState(() {
+      //   Navigator.push( context, SlideLeftRoute(page: MainPage()));
+      // });
+      setState(() {
+        isLoginLoading = true;
+      });
+      var data = {
+        'first_name': _textNameController.text,
+        'last_name': _textSurNameController.text,
+        'username': _textPassController.text
+      };
+
+      var res = await CallApi().postData(data, 'login');
+      var body = json.decode(res.body);
+      print(body);
+      if (body['success']) {
+        SharedPreferences localStorage = await SharedPreferences.getInstance();
+        localStorage.setString('user', json.encode(body['user']));
+
+        Navigator.push(context, SlideLeftRoute(page: MainPage()));
+      } else {
+        _showMsg(body['msg']);
+      }
+
+      setState(() {
+        isLoginLoading = false;
+      });
+    }
+  }
+
+  void _showMsg(msg) {
+    //
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            title: new Text(
+              "Alert",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void userRegister() async {
+    String n = _textrNameController.text;
+    String s = _textrSurController.text;
+    String e = _textrEmailController.text;
+    String p = _textrNewPassController.text;
+    String cp = _textrConPassController.text;
+    String dd = day, mm = month, yy = year;
+    String g = _radioGender;
+    String t = type;
+
+    if (n == '') {
+      verificationAlert("First Name field is blank");
+    } else if (s == '') {
+      verificationAlert("Surname field is blank");
+    } else if (e == '') {
+      verificationAlert("Email field is blank");
+    } else if (p == '') {
+      verificationAlert("Password field is blank");
+    } else if (cp == '') {
+      verificationAlert("Confirm Password field is blank");
+    } else if (cp != p) {
+      verificationAlert("Password doesn't match");
+    } else if (dd == '') {
+      verificationAlert("Day not chosen");
+    } else if (mm == '') {
+      verificationAlert("Month not chosen");
+    } else if (yy == '') {
+      verificationAlert("Year field is blank");
+    } else if (g == '') {
+      verificationAlert("Gender not chosen");
+    } else if (t == '') {
+      verificationAlert("Ttype not chosen");
+    } else {
+      setState(() {
+        isRegLoading = true;
+      });
+      var data = {
+        'first_name': _textrNameController.text,
+        'last_name': _textrSurController.text,
+        'email': _textrEmailController.text,
+        'password_text': _textrNewPassController.text,
+        'dob': year + "-" + month + "-" + day,
+        'gender': _radioGender,
+        'user_type': type
+      };
+
+      var res1 = await CallApi().postData(data, 'register');
+      var body1 = json.decode(res1.body);
+      print(body1);
+
+      setState(() {
+        isRegLoading = false;
+      });
+    }
+  }
+
+  void verificationAlert(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            title: new Text(
+              "Alert",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void mapState() async {
     Map<String, double> my_loc;
 
@@ -1242,6 +1298,9 @@ class _LogRegPageState extends State<LogRegPage> {
     locate = curLocation['latitude'].toString() +
         ", " +
         curLocation['longitude'].toString();
+
+        lat = curLocation['latitude'].toString();
+        longi = curLocation['longitude'].toString();
   }
 }
 

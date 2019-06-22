@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:math' as Math;
+import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
+import 'package:crime_report/pages/login_reg.dart';
 import 'package:crime_report/pages/rep_cat.dart';
 import 'package:flutter/material.dart';
-
+import 'package:toast/toast.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:crime_report/pages/rep_cat.dart';
@@ -12,6 +18,8 @@ import 'package:crime_report/pages/notify_det.dart';
 import 'package:crime_report/pages/progress.dart';
 import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -30,9 +38,17 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController _textrNewPassController = TextEditingController();
   TextEditingController _textrConPassController = TextEditingController();
   TextEditingController _textYearController = TextEditingController();
-  String name = '', surname = '', password = '', _radioGender = '';
+  String name = '', surname = '', password = '', _radioGender = 'male';
   String rName = '', rSurname = '', rEmail = '', rNewpass = '', rConpass = '';
-  String day = '', month = '', year = '', type = '';
+  String day = '',
+      month = '',
+      year = '',
+      type = '',
+      date = '',
+      uid = '',
+      proImage = '';
+  File fileImage;
+  bool isEditLoading = false;
   List _day = [
     "1",
     "2",
@@ -67,41 +83,64 @@ class _ProfilePageState extends State<ProfilePage> {
     "31"
   ];
   List _months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
+    "10",
+    "11",
+    "12"
   ];
-  List _user_type = [
-    "Attorney",
-    "Magistrate",
-    "Candidate Attorney",
-    "Civil Servant",
-    "Government Worker",
-    "Legal Aid",
-    "General Public"
-  ];
+  // List _user_type = [
+  //   "Attorney",
+  //   "Magistrate",
+  //   "Candidate Attorney",
+  //   "Civil Servant",
+  //   "Government Worker",
+  //   "Legal Aid",
+  //   "General Public"
+  // ];
+  List _user_type = ["staff", "client"];
   List<DropdownMenuItem<String>> _dropDownDayItems;
   List<DropdownMenuItem<String>> _dropDownMonthItems;
   List<DropdownMenuItem<String>> _dropDownTypeItems;
+  var userData;
+  var profileImage;
+  bool isPicked = false;
+  bool isImage = false;
+
+  clickImagefromCamera() async {
+    profileImage = await ImagePicker.pickImage(source: ImageSource.camera);
+    setState(() {
+      fileImage = profileImage;
+      isPicked = true;
+      isImage = false;
+    });
+  }
+
+  pickImagefromGallery() async {
+    profileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      fileImage = profileImage;
+      isPicked = true;
+      isImage = false;
+    });
+  }
 
   void _handleRadioValueChange(String value) {
     setState(() {
       _radioGender = value;
 
       switch (_radioGender) {
-        case 'Female':
+        case 'female':
           //Fluttertoast.showToast(msg: 'Male',toastLength: Toast.LENGTH_SHORT);
           break;
-        case 'Male':
+        case 'male':
           //Fluttertoast.showToast(msg: 'Female',toastLength: Toast.LENGTH_SHORT);
           break;
       }
@@ -109,8 +148,31 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson);
+    setState(() {
+      userData = user;
+    });
+    _textrNameController.text = '${userData['first_name']}';
+    _textrSurController.text = '${userData['last_name']}';
+    _textrEmailController.text = '${userData['email']}';
+    _textrNewPassController.text = '${userData['password_text']}';
+    _radioGender = '${userData['gender']}';
+    date = '${userData['dob']}';
+    type = '${userData['user_type']}';
+    uid = '${userData['id']}';
+    proImage = await CallApi().getURL();
+    isPicked = false;
+    isImage = true;
+    print(proImage + '${userData['image']}');
+    //print("ID's : userData['id']");
+  }
+
   @override
   void initState() {
+    _getUserInfo();
     _dropDownDayItems = getDropDowndayItems();
     day = _dropDownDayItems[0].value;
 
@@ -244,9 +306,20 @@ class _ProfilePageState extends State<ProfilePage> {
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
-              title: Text(
-                "Log Out",
-                style: TextStyle(color: Colors.white, fontSize: 22),
+              title: GestureDetector(
+                onTap: () async {
+                  SharedPreferences localStorage =
+                      await SharedPreferences.getInstance();
+                  localStorage.remove('user');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LogRegPage()),
+                  );
+                },
+                child: Text(
+                  "Log Out",
+                  style: TextStyle(color: Colors.white, fontSize: 22),
+                ),
               ),
               //trailing: Icon(Icons.arrow_forward),
             ),
@@ -300,19 +373,141 @@ class _ProfilePageState extends State<ProfilePage> {
                       SizedBox(
                         height: 20,
                       ),
-                      Container(
-                        transform: Matrix4.translationValues(0.0, 0.0, 0.0),
-                        padding: EdgeInsets.all(5.0),
-                        child: CircleAvatar(
-                          radius: 60.0,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage: AssetImage('assets/person.png'),
-                        ),
-                        decoration: new BoxDecoration(
-                          color: subheader, // border color
-                          shape: BoxShape.circle,
-                        ),
+                      GestureDetector(
+                        onTap: () {
+                          pickImagefromGallery();
+                        },
+                        // child: ('${userData['image']}' == null ||
+                        //         '${userData['image']}' == '')
+                        //     ? Container(
+                        //         transform:
+                        //             Matrix4.translationValues(0.0, 0.0, 0.0),
+                        //         padding: EdgeInsets.all(5.0),
+                        //         child: CircleAvatar(
+                        //           radius: 60.0,
+                        //           backgroundColor: Colors.transparent,
+                        //           backgroundImage:
+                        //               AssetImage('assets/person.png'),
+                        //         ),
+                        //         decoration: new BoxDecoration(
+                        //           color: subheader, // border color
+                        //           shape: BoxShape.circle,
+                        //         ),
+                        //       )
+                        //     : ('${userData['image']}' != null ||
+                        //             '${userData['image']}' != '')
+                        //         ? Container(
+                        //             child: CircleAvatar(
+                        //                 radius: 60.0,
+                        //                 child: Container(
+                        //                   decoration: BoxDecoration(
+                        //                       color: subheader,
+                        //                       shape: BoxShape.circle,
+                        //                       image: new DecorationImage(
+                        //                         image: new NetworkImage(
+                        //                             proImage +
+                        //                                 '${userData['image']}'),
+                        //                         fit: BoxFit.cover,
+                        //                       )),
+                        //                 )),
+                        //           )
+                        //         :
+                        child: (isPicked == true && isImage == false)
+                            ? Container(
+                                transform:
+                                    Matrix4.translationValues(0.0, 0.0, 0.0),
+                                padding: EdgeInsets.all(5.0),
+                                child: CircleAvatar(
+                                  radius: 60.0,
+                                  backgroundColor: Colors.transparent,
+                                  // child: Image.file(
+                                  //   fileImage,
+                                  // ),
+                                  backgroundImage: FileImage(fileImage),
+                                ),
+                                decoration: new BoxDecoration(
+                                  color: subheader, // border color
+                                  shape: BoxShape.circle,
+                                ),
+                              )
+                            : (isPicked == false && isImage == true)
+                                ? Container(
+                                    child: CircleAvatar(
+                                        radius: 60.0,
+                                        child: Container(
+                                          padding: EdgeInsets.all(5.0),
+                                          decoration: BoxDecoration(
+                                              color: subheader,
+                                              shape: BoxShape.circle,
+                                              image: new DecorationImage(
+                                                image: new NetworkImage(
+                                                    proImage +
+                                                        '${userData['image']}'),
+                                                fit: BoxFit.cover,
+                                              )),
+                                        )),
+                                  )
+                                : Container(
+                                    transform: Matrix4.translationValues(
+                                        0.0, 0.0, 0.0),
+                                    padding: EdgeInsets.all(5.0),
+                                    child: CircleAvatar(
+                                      radius: 60.0,
+                                      backgroundColor: Colors.transparent,
+                                      backgroundImage:
+                                          AssetImage('assets/person.png'),
+                                    ),
+                                    decoration: new BoxDecoration(
+                                      color: subheader, // border color
+                                      shape: BoxShape.circle,
+                                    ),
+                                  ),
                       ),
+                      // new FutureBuilder<File>(
+                      //   future: fileImage,
+                      //   builder: (BuildContext context,
+                      //       AsyncSnapshot<File> snapshot) {
+                      //     if (snapshot.connectionState ==
+                      //             ConnectionState.done &&
+                      //         snapshot.data != null) {
+                      //       return Container(
+                      //         transform:
+                      //             Matrix4.translationValues(0.0, 0.0, 0.0),
+                      //         padding: EdgeInsets.all(5.0),
+                      //         child: CircleAvatar(
+                      //           backgroundColor: Colors.transparent,
+                      //           backgroundImage: FileImage(snapshot.data),
+                      //           radius: 60.0,
+                      //         ),
+                      //         decoration: new BoxDecoration(
+                      //           color: subheader, // border color
+                      //           shape: BoxShape.circle,
+                      //         ),
+                      //       );
+                      //     } else if (snapshot.error != null) {
+                      //       return const Text(
+                      //         'Error Picking Image',
+                      //         textAlign: TextAlign.center,
+                      //       );
+                      //     } else {
+                      //       return Container(
+                      //         transform:
+                      //             Matrix4.translationValues(0.0, 0.0, 0.0),
+                      //         padding: EdgeInsets.all(5.0),
+                      //         child: CircleAvatar(
+                      //           backgroundColor: Colors.transparent,
+                      //           backgroundImage:
+                      //               ExactAssetImage('assets/person.png'),
+                      //           radius: 60.0,
+                      //         ),
+                      //         decoration: new BoxDecoration(
+                      //           color: subheader, // border color
+                      //           shape: BoxShape.circle,
+                      //         ),
+                      //       );
+                      //     }
+                      //   },
+                      // ),
                       SizedBox(
                         height: 10,
                       ),
@@ -320,15 +515,29 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Icons.add_box,
-                            color: Colors.grey,
-                            size: 25,
+                          GestureDetector(
+                            onTap: () {
+                              pickImagefromGallery();
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.add_box,
+                                color: Colors.grey,
+                                size: 25,
+                              ),
+                            ),
                           ),
-                          Icon(
-                            Icons.camera_enhance,
-                            color: Colors.grey,
-                            size: 30,
+                          GestureDetector(
+                            onTap: () {
+                              clickImagefromCamera();
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.camera_enhance,
+                                color: Colors.grey,
+                                size: 30,
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -483,6 +692,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: TextField(
                           autofocus: false,
                           controller: _textrNewPassController,
+                          obscureText: true,
                           decoration: InputDecoration(
                             hintText: "New Password",
                             border: InputBorder.none,
@@ -517,6 +727,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: TextField(
                           autofocus: false,
                           controller: _textrConPassController,
+                          obscureText: true,
                           decoration: InputDecoration(
                             hintText: "Confirm Password",
                             border: InputBorder.none,
@@ -781,7 +992,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Row(
                                 children: <Widget>[
                                   new Radio(
-                                      value: 'Female',
+                                      value: 'female',
                                       groupValue: _radioGender,
                                       //onChanged:(int e) => showDatas(e),
                                       onChanged: _handleRadioValueChange),
@@ -802,7 +1013,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     transform: Matrix4.translationValues(
                                         -10.0, 0.0, 0.0),
                                     child: new Radio(
-                                        value: 'Male',
+                                        value: 'male',
                                         groupValue: _radioGender,
                                         //onChanged:(int e) => showDatas(e),
                                         onChanged: _handleRadioValueChange),
@@ -890,11 +1101,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                   RaisedButton(
                                     color: mainheader,
                                     child: Text(
-                                      "Sign Up",
+                                      isEditLoading ? "SENDING..." : "SEND",
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      isEditLoading ? null : handleSubmit();
+                                    },
                                   ),
                                 ],
                               ),
@@ -925,6 +1138,105 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
+    );
+  }
+
+  void handleSubmit() async {
+    String n = _textrNameController.text;
+    String s = _textrSurController.text;
+    String e = _textrEmailController.text;
+    String p = _textrNewPassController.text;
+    String cp = _textrConPassController.text;
+    String dd = day, mm = month, yy = year;
+    String g = _radioGender;
+    String t = type;
+
+    List<int> imageBytes = fileImage.readAsBytesSync();
+    String image = base64.encode(imageBytes);
+    image = 'data:image/png;base64,' + image;
+    //String image = base64Encode(fileImage.readAsBytesSync());
+    //print(image);
+
+    if (n == '') {
+      verificationAlert("First Name field is blank");
+    } else if (s == '') {
+      verificationAlert("Surname field is blank");
+    } else if (e == '') {
+      verificationAlert("Email field is blank");
+    } else if (p == '') {
+      verificationAlert("Password field is blank");
+    } else if (cp == '') {
+      verificationAlert("Confirm Password field is blank");
+    } else if (cp != p) {
+      verificationAlert("Password doesn't match");
+    } else if (dd == '') {
+      verificationAlert("Day not chosen");
+    } else if (mm == '') {
+      verificationAlert("Month not chosen");
+    } else if (yy == '') {
+      verificationAlert("Year field is blank");
+    } else if (g == '') {
+      verificationAlert("Gender not chosen");
+    } else if (t == '') {
+      verificationAlert("Ttype not chosen");
+    } else {
+      setState(() {
+        isEditLoading = true;
+      });
+      var data = {
+        'id': uid,
+        'first_name': _textrNameController.text,
+        'last_name': _textrSurController.text,
+        'email': _textrEmailController.text,
+        'password_text': _textrNewPassController.text,
+        'dob': year + "-" + month + "-" + day,
+        'gender': _radioGender,
+        'user_type': type,
+        'image': image
+      };
+
+      var res1 = await CallApi().postData(data, 'updateUser');
+      var body1 = json.decode(res1.body);
+      print(body1);
+
+      setState(() {
+        isEditLoading = false;
+      });
+    }
+  }
+
+  void verificationAlert(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            title: new Text(
+              "Alert",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
