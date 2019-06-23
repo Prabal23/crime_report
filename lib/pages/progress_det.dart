@@ -380,11 +380,69 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
           padding: EdgeInsets.all(15),
           color: blackbutton,
           child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               BackButton(
                 color: Colors.white,
               ),
+              // Expanded(
+              //   child: Container(
+              //     //width: 282,
+              //     //margin: EdgeInsets.only(right: 78),
+              //     //transform: Matrix4.translationValues(0.0, 0.0, -78.0),
+              //     height: 78.25,
+              //     //transform: Matrix4.translationValues(0.0, 0.0, -140.0),
+              //     //margin: EdgeInsets.only(right: 70),
+              //     padding: EdgeInsets.all(15),
+              //     decoration: BoxDecoration(
+              //       border: Border(
+              //         top: BorderSide(width: 2.0, color: Colors.black),
+              //         bottom: BorderSide(width: 2.0, color: Colors.black),
+              //         right: BorderSide(width: 2.0, color: Colors.black),
+              //         left: BorderSide(width: 2.0, color: Colors.black),
+              //       ),
+              //       borderRadius: BorderRadius.circular(0),
+              //       color: Colors.grey,
+              //     ),
+              //     child: Center(
+              //       child: Text("CAMERA",
+              //           style: TextStyle(
+              //             color: Colors.white,
+              //             fontSize: 20.6,
+              //             //fontWeight: FontWeight.bold
+              //           )),
+              //     ),
+              //   ),
+              // ),
+              // Expanded(
+              //   child: Container(
+              //     //width: 282,
+              //     //margin: EdgeInsets.only(right: 78),
+              //     //transform: Matrix4.translationValues(0.0, 0.0, -78.0),
+              //     height: 78.25,
+              //     //transform: Matrix4.translationValues(0.0, 0.0, -140.0),
+              //     //margin: EdgeInsets.only(right: 70),
+              //     padding: EdgeInsets.all(15),
+              //     decoration: BoxDecoration(
+              //       border: Border(
+              //         top: BorderSide(width: 2.0, color: Colors.black),
+              //         bottom: BorderSide(width: 2.0, color: Colors.black),
+              //         right: BorderSide(width: 2.0, color: Colors.black),
+              //         left: BorderSide(width: 2.0, color: Colors.black),
+              //       ),
+              //       borderRadius: BorderRadius.circular(0),
+              //       color: Colors.grey,
+              //     ),
+              //     child: Center(
+              //       child: Text("GALLERY",
+              //           style: TextStyle(
+              //             color: Colors.white,
+              //             fontSize: 20.6,
+              //             //fontWeight: FontWeight.bold
+              //           )),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         ),

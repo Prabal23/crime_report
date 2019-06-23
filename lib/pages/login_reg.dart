@@ -93,16 +93,16 @@ class _LogRegPageState extends State<LogRegPage> {
     "11",
     "12"
   ];
-  // List _user_type = [
-  //   "Attorney",
-  //   "Magistrate",
-  //   "Candidate Attorney",
-  //   "Civil Servant",
-  //   "Government Worker",
-  //   "Legal Aid",
-  //   "General Public"
-  // ];
-  List _user_type = ["staff", "client"];
+  List _user_type = [
+    "Attorney",
+    "Magistrate",
+    "Candidate Attorney",
+    "Civil Servant",
+    "Government Worker",
+    "Legal Aid",
+    "General Public"
+  ];
+  //List _user_type = ["staff", "client"];
   List<DropdownMenuItem<String>> _dropDownDayItems;
   List<DropdownMenuItem<String>> _dropDownMonthItems;
   List<DropdownMenuItem<String>> _dropDownTypeItems;
