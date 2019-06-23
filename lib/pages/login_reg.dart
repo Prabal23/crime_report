@@ -1209,7 +1209,7 @@ class _LogRegPageState extends State<LogRegPage> {
     } else if (g == '') {
       verificationAlert("Gender not chosen");
     } else if (t == '') {
-      verificationAlert("Ttype not chosen");
+      verificationAlert("Type not chosen");
     } else {
       setState(() {
         isRegLoading = true;

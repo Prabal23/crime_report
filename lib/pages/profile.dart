@@ -1178,7 +1178,7 @@ class _ProfilePageState extends State<ProfilePage> {
     } else if (g == '') {
       verificationAlert("Gender not chosen");
     } else if (t == '') {
-      verificationAlert("Ttype not chosen");
+      verificationAlert("Type not chosen");
     } else {
       setState(() {
         isEditLoading = true;

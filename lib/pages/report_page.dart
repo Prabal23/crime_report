@@ -1100,7 +1100,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   child: Center(
                     child: GestureDetector(
                       onTap: () {
-                        isAddLoading ? null : sendReport();
+                        isAddLoading ? null : sendReportDialog();
                       },
                       child: Text(isAddLoading ? "SENDING..." : "SEND REPORT",
                           style: TextStyle(color: Colors.white, fontSize: 20
@@ -1182,6 +1182,56 @@ class _ReportScreenState extends State<ReportScreen> {
     });
   }
 
+  void sendReportDialog(){
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.white),
+          child: AlertDialog(
+            title: new Text(
+              "Confirm Submit",
+              style: TextStyle(color: Colors.black),
+            ),
+            content: new Text(
+              "Are you sure you want to send this report with the selected situation?",
+              style: TextStyle(color: Colors.black),
+            ),
+            actions: <Widget>[
+              Row(
+                children: <Widget>[
+                  FlatButton(
+                    child: new Text(
+                      "YES",
+                      style:
+                          TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      sendReport();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  FlatButton(
+                    child: new Text(
+                      "NO",
+                      style:
+                          TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void sendReport() async {
     int pID = 0;
     //String pID = '';
@@ -1200,6 +1250,10 @@ class _ReportScreenState extends State<ReportScreen> {
       verificationAlert("Select your problem");
     } else if (des == '') {
       verificationAlert("Notes field is blank");
+    }else if (isImage == false) {
+      verificationAlert("Photos not attached. Please attach photos.");
+    }else if (isChosen == false) {
+      verificationAlert("Photos not attached. Please attach photos.");
     } else {
       setState(() {
         isAddLoading = true;
@@ -1247,6 +1301,7 @@ class _ReportScreenState extends State<ReportScreen> {
     setState(() {
       isAddLoading = false;
     });
+    verificationAlert("Good o go! Report has been sent to your manager");
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => ProgressPage()),
