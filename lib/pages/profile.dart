@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:math' as Math;
+import 'package:http/http.dart' as http;
 import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
 import 'package:crime_report/pages/login_reg.dart';
@@ -46,19 +47,19 @@ class _ProfilePageState extends State<ProfilePage> {
       type = '',
       date = '',
       uid = '',
-      proImage = '';
+      proImage = '', m = '', d = '';
   File fileImage;
   bool isEditLoading = false;
   List _day = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
     "10",
     "11",
     "12",
@@ -161,12 +162,37 @@ class _ProfilePageState extends State<ProfilePage> {
     _textrNewPassController.text = '${userData['password_text']}';
     _radioGender = '${userData['gender']}';
     date = '${userData['dob']}';
+    _textYearController.text = date.substring(0, 4);
+    year  = _textYearController.text;
+    m = date.substring(5, 7);
+    d = date.substring(8);
+    // date.split("-");
+    //print(date.split("-");
+    for (int i = 0; i < _day.length; i++) {
+      if (d == _day[i]) {
+        day = _dropDownDayItems[i].value;
+      }
+    }
+    for (int i = 0; i < _months.length; i++) {
+      if (m == _months[i]) {
+        month = _dropDownMonthItems[i].value;
+      }
+    }
+
+    // _textYearController.text = date[0];
+
     type = '${userData['user_type']}';
     uid = '${userData['id']}';
     proImage = await CallApi().getURL();
     isPicked = false;
     isImage = true;
+    
     print(proImage + '${userData['image']}');
+    for (int i = 0; i < _user_type.length; i++) {
+      if (type == _user_type[i]) {
+        type = _dropDownTypeItems[i].value;
+      }
+    }
     //print("ID's : userData['id']");
   }
 
@@ -345,782 +371,820 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       drawer: drawer,
       appBar: AppBar(backgroundColor: mainheader, title: Text("Crime Report")),
-      body: SingleChildScrollView(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-              Container(
-                color: Colors.white,
-                width: MediaQuery.of(context).size.width,
-                height: 300,
-                child: Container(
-                  padding: EdgeInsets.only(left: 20, right: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Profile",
-                        style: TextStyle(color: Colors.black, fontSize: 22),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        "*Only individuals who do not work for government can edit their profile",
-                        style: TextStyle(color: Colors.black, fontSize: 14),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          pickImagefromGallery();
-                        },
-                        // child: ('${userData['image']}' == null ||
-                        //         '${userData['image']}' == '')
-                        //     ? Container(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: <Widget>[
+                // Container(
+                //   width: MediaQuery.of(context).size.width,
+                //   height: 40,
+                //   color: Colors.red,
+                //   child: IconButton(
+                //     onPressed: (){
+                //       Drawer();
+                //     },
+                //     icon: Icon(Icons.wallpaper),
+                //   ),
+                // ),
+                Container(
+                  color: Colors.white,
+                  width: MediaQuery.of(context).size.width,
+                  height: 300,
+                  child: Container(
+                    padding: EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Profile",
+                          style: TextStyle(color: Colors.black, fontSize: 22),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "*Only individuals who do not work for government can edit their profile",
+                          style: TextStyle(color: Colors.black, fontSize: 14),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            pickImagefromGallery();
+                          },
+                          // child: ('${userData['image']}' == null ||
+                          //         '${userData['image']}' == '')
+                          //     ? Container(
+                          //         transform:
+                          //             Matrix4.translationValues(0.0, 0.0, 0.0),
+                          //         padding: EdgeInsets.all(5.0),
+                          //         child: CircleAvatar(
+                          //           radius: 60.0,
+                          //           backgroundColor: Colors.transparent,
+                          //           backgroundImage:
+                          //               AssetImage('assets/person.png'),
+                          //         ),
+                          //         decoration: new BoxDecoration(
+                          //           color: subheader, // border color
+                          //           shape: BoxShape.circle,
+                          //         ),
+                          //       )
+                          //     : ('${userData['image']}' != null ||
+                          //             '${userData['image']}' != '')
+                          //         ? Container(
+                          //             child: CircleAvatar(
+                          //                 radius: 60.0,
+                          //                 child: Container(
+                          //                   decoration: BoxDecoration(
+                          //                       color: subheader,
+                          //                       shape: BoxShape.circle,
+                          //                       image: new DecorationImage(
+                          //                         image: new NetworkImage(
+                          //                             proImage +
+                          //                                 '${userData['image']}'),
+                          //                         fit: BoxFit.cover,
+                          //                       )),
+                          //                 )),
+                          //           )
+                          //         :
+                          child: (isPicked == true && isImage == false)
+                              ? Container(
+                                  transform:
+                                      Matrix4.translationValues(0.0, 0.0, 0.0),
+                                  padding: EdgeInsets.all(5.0),
+                                  child: CircleAvatar(
+                                    radius: 60.0,
+                                    backgroundColor: Colors.transparent,
+                                    // child: Image.file(
+                                    //   fileImage,
+                                    // ),
+                                    backgroundImage: FileImage(fileImage),
+                                  ),
+                                  decoration: new BoxDecoration(
+                                    color: subheader, // border color
+                                    shape: BoxShape.circle,
+                                  ),
+                                )
+                              : (isPicked == false && isImage == true)
+                                  ? Container(
+                                      child: CircleAvatar(
+                                          radius: 60.0,
+                                          child: Container(
+                                            padding: EdgeInsets.all(5.0),
+                                            decoration: BoxDecoration(
+                                                color: subheader,
+                                                shape: BoxShape.circle,
+                                                image: new DecorationImage(
+                                                  image: new NetworkImage(
+                                                      proImage +
+                                                          '${userData['image']}'),
+                                                  fit: BoxFit.cover,
+                                                )),
+                                          )),
+                                    )
+                                  : Container(
+                                      transform: Matrix4.translationValues(
+                                          0.0, 0.0, 0.0),
+                                      padding: EdgeInsets.all(5.0),
+                                      child: CircleAvatar(
+                                        radius: 60.0,
+                                        backgroundColor: Colors.transparent,
+                                        backgroundImage:
+                                            AssetImage('assets/person.png'),
+                                      ),
+                                      decoration: new BoxDecoration(
+                                        color: subheader, // border color
+                                        shape: BoxShape.circle,
+                                      ),
+                                    ),
+                        ),
+                        // new FutureBuilder<File>(
+                        //   future: fileImage,
+                        //   builder: (BuildContext context,
+                        //       AsyncSnapshot<File> snapshot) {
+                        //     if (snapshot.connectionState ==
+                        //             ConnectionState.done &&
+                        //         snapshot.data != null) {
+                        //       return Container(
                         //         transform:
                         //             Matrix4.translationValues(0.0, 0.0, 0.0),
                         //         padding: EdgeInsets.all(5.0),
                         //         child: CircleAvatar(
-                        //           radius: 60.0,
                         //           backgroundColor: Colors.transparent,
-                        //           backgroundImage:
-                        //               AssetImage('assets/person.png'),
+                        //           backgroundImage: FileImage(snapshot.data),
+                        //           radius: 60.0,
                         //         ),
                         //         decoration: new BoxDecoration(
                         //           color: subheader, // border color
                         //           shape: BoxShape.circle,
                         //         ),
-                        //       )
-                        //     : ('${userData['image']}' != null ||
-                        //             '${userData['image']}' != '')
-                        //         ? Container(
-                        //             child: CircleAvatar(
-                        //                 radius: 60.0,
-                        //                 child: Container(
-                        //                   decoration: BoxDecoration(
-                        //                       color: subheader,
-                        //                       shape: BoxShape.circle,
-                        //                       image: new DecorationImage(
-                        //                         image: new NetworkImage(
-                        //                             proImage +
-                        //                                 '${userData['image']}'),
-                        //                         fit: BoxFit.cover,
-                        //                       )),
-                        //                 )),
-                        //           )
-                        //         :
-                        child: (isPicked == true && isImage == false)
-                            ? Container(
-                                transform:
-                                    Matrix4.translationValues(0.0, 0.0, 0.0),
-                                padding: EdgeInsets.all(5.0),
-                                child: CircleAvatar(
-                                  radius: 60.0,
-                                  backgroundColor: Colors.transparent,
-                                  // child: Image.file(
-                                  //   fileImage,
-                                  // ),
-                                  backgroundImage: FileImage(fileImage),
-                                ),
-                                decoration: new BoxDecoration(
-                                  color: subheader, // border color
-                                  shape: BoxShape.circle,
-                                ),
-                              )
-                            : (isPicked == false && isImage == true)
-                                ? Container(
-                                    child: CircleAvatar(
-                                        radius: 60.0,
-                                        child: Container(
-                                          padding: EdgeInsets.all(5.0),
-                                          decoration: BoxDecoration(
-                                              color: subheader,
-                                              shape: BoxShape.circle,
-                                              image: new DecorationImage(
-                                                image: new NetworkImage(
-                                                    proImage +
-                                                        '${userData['image']}'),
-                                                fit: BoxFit.cover,
-                                              )),
-                                        )),
-                                  )
-                                : Container(
-                                    transform: Matrix4.translationValues(
-                                        0.0, 0.0, 0.0),
-                                    padding: EdgeInsets.all(5.0),
-                                    child: CircleAvatar(
-                                      radius: 60.0,
-                                      backgroundColor: Colors.transparent,
-                                      backgroundImage:
-                                          AssetImage('assets/person.png'),
-                                    ),
-                                    decoration: new BoxDecoration(
-                                      color: subheader, // border color
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                      ),
-                      // new FutureBuilder<File>(
-                      //   future: fileImage,
-                      //   builder: (BuildContext context,
-                      //       AsyncSnapshot<File> snapshot) {
-                      //     if (snapshot.connectionState ==
-                      //             ConnectionState.done &&
-                      //         snapshot.data != null) {
-                      //       return Container(
-                      //         transform:
-                      //             Matrix4.translationValues(0.0, 0.0, 0.0),
-                      //         padding: EdgeInsets.all(5.0),
-                      //         child: CircleAvatar(
-                      //           backgroundColor: Colors.transparent,
-                      //           backgroundImage: FileImage(snapshot.data),
-                      //           radius: 60.0,
-                      //         ),
-                      //         decoration: new BoxDecoration(
-                      //           color: subheader, // border color
-                      //           shape: BoxShape.circle,
-                      //         ),
-                      //       );
-                      //     } else if (snapshot.error != null) {
-                      //       return const Text(
-                      //         'Error Picking Image',
-                      //         textAlign: TextAlign.center,
-                      //       );
-                      //     } else {
-                      //       return Container(
-                      //         transform:
-                      //             Matrix4.translationValues(0.0, 0.0, 0.0),
-                      //         padding: EdgeInsets.all(5.0),
-                      //         child: CircleAvatar(
-                      //           backgroundColor: Colors.transparent,
-                      //           backgroundImage:
-                      //               ExactAssetImage('assets/person.png'),
-                      //           radius: 60.0,
-                      //         ),
-                      //         decoration: new BoxDecoration(
-                      //           color: subheader, // border color
-                      //           shape: BoxShape.circle,
-                      //         ),
-                      //       );
-                      //     }
-                      //   },
-                      // ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          GestureDetector(
-                            onTap: () {
-                              pickImagefromGallery();
-                            },
-                            child: Container(
-                              child: Icon(
-                                Icons.add_box,
-                                color: Colors.grey,
-                                size: 25,
-                              ),
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              clickImagefromCamera();
-                            },
-                            child: Container(
-                              child: Icon(
-                                Icons.camera_enhance,
-                                color: Colors.grey,
-                                size: 30,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 30),
-                      Text(
-                        "Create a new account",
-                        style: TextStyle(
-                            color: Theme.of(context).secondaryHeaderColor,
-                            fontSize: 22),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: Row(
+                        //       );
+                        //     } else if (snapshot.error != null) {
+                        //       return const Text(
+                        //         'Error Picking Image',
+                        //         textAlign: TextAlign.center,
+                        //       );
+                        //     } else {
+                        //       return Container(
+                        //         transform:
+                        //             Matrix4.translationValues(0.0, 0.0, 0.0),
+                        //         padding: EdgeInsets.all(5.0),
+                        //         child: CircleAvatar(
+                        //           backgroundColor: Colors.transparent,
+                        //           backgroundImage:
+                        //               ExactAssetImage('assets/person.png'),
+                        //           radius: 60.0,
+                        //         ),
+                        //         decoration: new BoxDecoration(
+                        //           color: subheader, // border color
+                        //           shape: BoxShape.circle,
+                        //         ),
+                        //       );
+                        //     }
+                        //   },
+                        // ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Container(
-                              //color: Colors.white,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  bottom: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  right: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  left: BorderSide(
-                                      width: 1.0, color: Colors.black26),
+                            GestureDetector(
+                              onTap: () {
+                                pickImagefromGallery();
+                              },
+                              child: Container(
+                                child: Icon(
+                                  Icons.add_box,
+                                  color: Colors.grey,
+                                  size: 25,
                                 ),
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                              width: 155,
-                              child: TextField(
-                                autofocus: false,
-                                controller: _textrNameController,
-                                decoration: InputDecoration(
-                                  hintText: "First name",
-                                  border: InputBorder.none,
-                                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                                  contentPadding: EdgeInsets.fromLTRB(
-                                      10.0, 10.0, 20.0, 10.0),
-                                ),
-                                onChanged: (value) {
-                                  rName = value;
-                                },
                               ),
                             ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Container(
-                              //color: Colors.white,
-                              width: 155,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  bottom: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  right: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  left: BorderSide(
-                                      width: 1.0, color: Colors.black26),
+                            GestureDetector(
+                              onTap: () {
+                                clickImagefromCamera();
+                              },
+                              child: Container(
+                                child: Icon(
+                                  Icons.camera_enhance,
+                                  color: Colors.grey,
+                                  size: 30,
                                 ),
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                              child: TextField(
-                                autofocus: false,
-                                controller: _textrSurController,
-                                decoration: InputDecoration(
-                                  hintText: "Surname",
-                                  border: InputBorder.none,
-                                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                                  contentPadding: EdgeInsets.fromLTRB(
-                                      10.0, 10.0, 20.0, 10.0),
-                                ),
-                                onChanged: (value) {
-                                  rSurname = value;
-                                },
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        //color: Colors.white,
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(width: 1.0, color: Colors.black26),
-                            bottom:
-                                BorderSide(width: 1.0, color: Colors.black26),
-                            right:
-                                BorderSide(width: 1.0, color: Colors.black26),
-                            left: BorderSide(width: 1.0, color: Colors.black26),
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                    width: MediaQuery.of(context).size.width,
+                    child: Column(
+                      children: <Widget>[
+                        SizedBox(height: 30),
+                        Text(
+                          "Create a new account",
+                          style: TextStyle(
+                              color: Theme.of(context).secondaryHeaderColor,
+                              fontSize: 22),
                         ),
-                        child: TextField(
-                          autofocus: false,
-                          controller: _textrEmailController,
-                          decoration: InputDecoration(
-                            hintText: "Email Address",
-                            border: InputBorder.none,
-                            //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                            contentPadding:
-                                EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
-                          ),
-                          onChanged: (value) {
-                            rEmail = value;
-                          },
+                        SizedBox(
+                          height: 20,
                         ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        //color: Colors.white,
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(width: 1.0, color: Colors.black26),
-                            bottom:
-                                BorderSide(width: 1.0, color: Colors.black26),
-                            right:
-                                BorderSide(width: 1.0, color: Colors.black26),
-                            left: BorderSide(width: 1.0, color: Colors.black26),
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
-                        ),
-                        child: TextField(
-                          autofocus: false,
-                          controller: _textrNewPassController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            hintText: "New Password",
-                            border: InputBorder.none,
-                            //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                            contentPadding:
-                                EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
-                          ),
-                          onChanged: (value) {
-                            rNewpass = value;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        //color: Colors.white,
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            top: BorderSide(width: 1.0, color: Colors.black26),
-                            bottom:
-                                BorderSide(width: 1.0, color: Colors.black26),
-                            right:
-                                BorderSide(width: 1.0, color: Colors.black26),
-                            left: BorderSide(width: 1.0, color: Colors.black26),
-                          ),
-                          borderRadius: BorderRadius.circular(5),
-                          color: Colors.white,
-                        ),
-                        child: TextField(
-                          autofocus: false,
-                          controller: _textrConPassController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                            hintText: "Confirm Password",
-                            border: InputBorder.none,
-                            //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                            contentPadding:
-                                EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
-                          ),
-                          onChanged: (value) {
-                            rConpass = value;
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        padding: EdgeInsets.only(left: 10),
-                        color: Colors.black,
-                        child: Row(
-                          //crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Container(
-                              //width: 80,
-                              child: Text(
-                                "Are you an? ",
-                                style: TextStyle(
-                                    fontSize: 17, color: Colors.white),
-                              ),
-                            ),
-                            Container(
-                              //width: 50,
-                              child: Theme(
-                                data: Theme.of(context)
-                                    .copyWith(canvasColor: blackbutton),
-                                child: Expanded(
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton(
-                                      style: TextStyle(
-                                          fontSize: 17, color: Colors.white),
-                                      value: type,
-                                      items: _dropDownTypeItems,
-                                      hint: Text(type,
-                                          style:
-                                              TextStyle(color: Colors.white)),
-                                      iconSize: 40,
-                                      iconDisabledColor: Colors.white,
-                                      iconEnabledColor: Colors.white,
-                                      onChanged: (String value) {
-                                        setState(() {
-                                          type = value;
-                                        });
-                                      },
-                                    ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Container(
+                                //color: Colors.white,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    bottom: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    right: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    left: BorderSide(
+                                        width: 1.0, color: Colors.black26),
                                   ),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
+                                width: 155,
+                                child: TextField(
+                                  autofocus: false,
+                                  controller: _textrNameController,
+                                  decoration: InputDecoration(
+                                    hintText: "First name",
+                                    border: InputBorder.none,
+                                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        10.0, 10.0, 20.0, 10.0),
+                                  ),
+                                  onChanged: (value) {
+                                    rName = value;
+                                  },
                                 ),
                               ),
-                            ),
-                            // Icon(
-                            //   Icons.arrow_drop_down,
-                            //   color: Colors.white,
-                            //   size: 50,
-                            // )
-                          ],
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                //color: Colors.white,
+                                width: 155,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    bottom: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    right: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    left: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
+                                ),
+                                child: TextField(
+                                  autofocus: false,
+                                  controller: _textrSurController,
+                                  decoration: InputDecoration(
+                                    hintText: "Surname",
+                                    border: InputBorder.none,
+                                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        10.0, 10.0, 20.0, 10.0),
+                                  ),
+                                  onChanged: (value) {
+                                    rSurname = value;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 15,
-                      ),
-                      Container(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: EdgeInsets.only(left: 20, right: 20),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: <Widget>[
-                                  Text(
-                                    "Birthday",
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: 19,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          //color: Colors.white,
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                              bottom:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                              right:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                              left:
+                                  BorderSide(width: 1.0, color: Colors.black26),
                             ),
-                            Container(
-                              padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              margin: EdgeInsets.only(left: 20, right: 20),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Container(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                        bottom: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                        right: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                        left: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                      ),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton(
-                                        style: TextStyle(
-                                            fontSize: 15, color: Colors.black),
-                                        value: day,
-                                        items: _dropDownDayItems,
-                                        onChanged: (String value) {
-                                          setState(() {
-                                            day = value;
-                                          });
-                                        },
-                                      ),
-                                    ),
-                                    // child: Row(
-                                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                                    //   children: <Widget>[
-                                    //     Text(
-                                    //       "9",
-                                    //       style: TextStyle(fontSize: 15, color: Colors.black),
-                                    //     ),
-                                    //     Icon(
-                                    //       Icons.arrow_drop_down,
-                                    //       color: Colors.black,
-                                    //       size: 20,
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                        bottom: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                        right: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                        left: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                      ),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: DropdownButtonHideUnderline(
-                                      child: DropdownButton(
-                                        style: TextStyle(
-                                            fontSize: 15, color: Colors.black),
-                                        value: month,
-                                        items: _dropDownMonthItems,
-                                        onChanged: (String value) {
-                                          setState(() {
-                                            month = value;
-                                          });
-                                        },
-                                      ),
-                                    ),
-
-                                    // child: Row(
-                                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                                    //   children: <Widget>[
-                                    //     Text(
-                                    //       "Jun",
-                                    //       style: TextStyle(fontSize: 15, color: Colors.black),
-                                    //     ),
-                                    //     Icon(
-                                    //       Icons.arrow_drop_down,
-                                    //       color: Colors.black,
-                                    //       size: 20,
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                    padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                    width: 70,
-                                    decoration: BoxDecoration(
-                                      border: Border(
-                                        top: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                        bottom: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                        right: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                        left: BorderSide(
-                                            width: 1.0, color: Colors.black26),
-                                      ),
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.white,
-                                    ),
-                                    child: TextField(
-                                      autofocus: false,
-                                      controller: _textYearController,
-                                      decoration: InputDecoration(
-                                        hintText: "2019",
-                                        hintStyle: TextStyle(
-                                            fontSize: 15, color: Colors.black),
-                                        border: InputBorder.none,
-                                        //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                                        contentPadding: EdgeInsets.fromLTRB(
-                                            10.0, 10.0, 20.0, 10.0),
-                                      ),
-                                      onChanged: (value) {
-                                        year = value;
-                                      },
-                                    ),
-                                    // child: Row(
-                                    //   crossAxisAlignment: CrossAxisAlignment.center,
-                                    //   children: <Widget>[
-                                    //     Text(
-                                    //       "2019",
-                                    //       style: TextStyle(fontSize: 15, color: Colors.black),
-                                    //     ),
-                                    //     Icon(
-                                    //       Icons.arrow_drop_down,
-                                    //       color: Colors.black,
-                                    //       size: 20,
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
-                                      width: 110,
-                                      child: Text(
-                                        "Why do I need to provide my date of birth?",
-                                        style: TextStyle(
-                                            color: Colors.blueAccent,
-                                            fontSize: 12),
-                                      )),
-                                ],
-                              ),
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.white,
+                          ),
+                          child: TextField(
+                            autofocus: false,
+                            controller: _textrEmailController,
+                            decoration: InputDecoration(
+                              hintText: "Email Address",
+                              border: InputBorder.none,
+                              //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                              contentPadding:
+                                  EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
                             ),
-                            SizedBox(
-                              height: 0,
+                            onChanged: (value) {
+                              rEmail = value;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          //color: Colors.white,
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                              bottom:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                              right:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                              left:
+                                  BorderSide(width: 1.0, color: Colors.black26),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10, right: 10),
-                              child: Row(
-                                children: <Widget>[
-                                  new Radio(
-                                      value: 'female',
-                                      groupValue: _radioGender,
-                                      //onChanged:(int e) => showDatas(e),
-                                      onChanged: _handleRadioValueChange),
-                                  Container(
-                                    transform: Matrix4.translationValues(
-                                        -10.0, 0.0, 0.0),
-                                    child: Text(
-                                      "Female",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    transform: Matrix4.translationValues(
-                                        -10.0, 0.0, 0.0),
-                                    child: new Radio(
-                                        value: 'male',
-                                        groupValue: _radioGender,
-                                        //onChanged:(int e) => showDatas(e),
-                                        onChanged: _handleRadioValueChange),
-                                  ),
-                                  Container(
-                                    transform: Matrix4.translationValues(
-                                        -20.0, 0.0, 0.0),
-                                    child: Text(
-                                      "Male",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Container(
-                                    transform: Matrix4.translationValues(
-                                        -10.0, 0.0, 0.0),
-                                    child: new Radio(
-                                        value: 'Non-binary',
-                                        groupValue: _radioGender,
-                                        //onChanged:(int e) => showDatas(e),
-                                        onChanged: _handleRadioValueChange),
-                                  ),
-                                  Container(
-                                    transform: Matrix4.translationValues(
-                                        -20.0, 0.0, 0.0),
-                                    child: Text(
-                                      "Non-binary",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  )
-                                ],
-                              ),
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.white,
+                          ),
+                          child: TextField(
+                            autofocus: false,
+                            controller: _textrNewPassController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: "New Password",
+                              border: InputBorder.none,
+                              //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                              contentPadding:
+                                  EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
                             ),
-                            Container(
-                              margin: EdgeInsets.only(left: 20, right: 20),
-                              child: Text.rich(
-                                TextSpan(
-                                  text:
-                                      'By clicking Sign Up, you agree to our ',
+                            onChanged: (value) {
+                              rNewpass = value;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          //color: Colors.white,
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              top:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                              bottom:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                              right:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                              left:
+                                  BorderSide(width: 1.0, color: Colors.black26),
+                            ),
+                            borderRadius: BorderRadius.circular(5),
+                            color: Colors.white,
+                          ),
+                          child: TextField(
+                            autofocus: false,
+                            controller: _textrConPassController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                              hintText: "Confirm Password",
+                              border: InputBorder.none,
+                              //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                              contentPadding:
+                                  EdgeInsets.fromLTRB(10.0, 10.0, 20.0, 10.0),
+                            ),
+                            onChanged: (value) {
+                              rConpass = value;
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        // Text(
+                        //   "You are an " + type,
+                        //   style: TextStyle(),
+                        // ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          padding: EdgeInsets.only(left: 10),
+                          color: Colors.black,
+                          child: Row(
+                            //crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Container(
+                                //width: 80,
+                                child: Text(
+                                  "Are you an? ",
                                   style: TextStyle(
-                                      fontSize: 13, color: Colors.black38),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: 'Terms, Data Policy',
+                                      fontSize: 17, color: Colors.white),
+                                ),
+                              ),
+                              Container(
+                                //width: 50,
+                                child: Theme(
+                                  data: Theme.of(context)
+                                      .copyWith(canvasColor: blackbutton),
+                                  child: Expanded(
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton(
                                         style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.blueAccent,
-                                        )),
-                                    TextSpan(
-                                        text: ' and ',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.black38,
-                                        )),
-                                    TextSpan(
-                                        text: 'Cookie Policy',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.blueAccent,
-                                        )),
-                                    TextSpan(
-                                        text:
-                                            '. You may receive SMS notifications from us and can opt out at any time.',
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          color: Colors.black38,
+                                            fontSize: 17, color: Colors.white),
+                                        value: type,
+                                        items: _dropDownTypeItems,
+                                        hint: Text(type,
+                                            style:
+                                                TextStyle(color: Colors.white)),
+                                        iconSize: 40,
+                                        iconDisabledColor: Colors.white,
+                                        iconEnabledColor: Colors.white,
+                                        onChanged: (String value) {
+                                          setState(() {
+                                            type = value;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              // Icon(
+                              //   Icons.arrow_drop_down,
+                              //   color: Colors.white,
+                              //   size: 50,
+                              // )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                margin: EdgeInsets.only(left: 20, right: 20),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    Text(
+                                      "Birthday",
+                                      style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                margin: EdgeInsets.only(left: 20, right: 20),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          top: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                          bottom: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                          right: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                          left: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                        ),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton(
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.black),
+                                          value: day,
+                                          items: _dropDownDayItems,
+                                          onChanged: (String value) {
+                                            setState(() {
+                                              day = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      // child: Row(
+                                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                                      //   children: <Widget>[
+                                      //     Text(
+                                      //       "9",
+                                      //       style: TextStyle(fontSize: 15, color: Colors.black),
+                                      //     ),
+                                      //     Icon(
+                                      //       Icons.arrow_drop_down,
+                                      //       color: Colors.black,
+                                      //       size: 20,
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          top: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                          bottom: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                          right: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                          left: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                        ),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: DropdownButtonHideUnderline(
+                                        child: DropdownButton(
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.black),
+                                          value: month,
+                                          items: _dropDownMonthItems,
+                                          onChanged: (String value) {
+                                            setState(() {
+                                              month = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+
+                                      // child: Row(
+                                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                                      //   children: <Widget>[
+                                      //     Text(
+                                      //       "Jun",
+                                      //       style: TextStyle(fontSize: 15, color: Colors.black),
+                                      //     ),
+                                      //     Icon(
+                                      //       Icons.arrow_drop_down,
+                                      //       color: Colors.black,
+                                      //       size: 20,
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                      padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                      width: 70,
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          top: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                          bottom: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                          right: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                          left: BorderSide(
+                                              width: 1.0,
+                                              color: Colors.black26),
+                                        ),
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
+                                      ),
+                                      child: TextField(
+                                        autofocus: false,
+                                        controller: _textYearController,
+                                        decoration: InputDecoration(
+                                          hintText: "2019",
+                                          hintStyle: TextStyle(
+                                              fontSize: 15,
+                                              color: Colors.black),
+                                          border: InputBorder.none,
+                                          //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                                          contentPadding: EdgeInsets.fromLTRB(
+                                              10.0, 10.0, 20.0, 10.0),
+                                        ),
+                                        onChanged: (value) {
+                                          year = value;
+                                        },
+                                      ),
+                                      // child: Row(
+                                      //   crossAxisAlignment: CrossAxisAlignment.center,
+                                      //   children: <Widget>[
+                                      //     Text(
+                                      //       "2019",
+                                      //       style: TextStyle(fontSize: 15, color: Colors.black),
+                                      //     ),
+                                      //     Icon(
+                                      //       Icons.arrow_drop_down,
+                                      //       color: Colors.black,
+                                      //       size: 20,
+                                      //     ),
+                                      //   ],
+                                      // ),
+                                    ),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    Container(
+                                        width: 110,
+                                        child: Text(
+                                          "Why do I need to provide my date of birth?",
+                                          style: TextStyle(
+                                              color: Colors.blueAccent,
+                                              fontSize: 12),
                                         )),
                                   ],
                                 ),
                               ),
-                            ),
-                            SizedBox(
-                              height: 20,
-                            ),
-                            Container(
-                              width: 150,
-                              child: Column(
-                                children: <Widget>[
-                                  RaisedButton(
-                                    color: mainheader,
-                                    child: Text(
-                                      isEditLoading ? "SENDING..." : "SEND",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                    onPressed: () {
-                                      isEditLoading ? null : handleSubmit();
-                                    },
-                                  ),
-                                ],
+                              SizedBox(
+                                height: 0,
                               ),
-                            ),
-                            SizedBox(
-                              height: 50,
-                            )
-                          ],
+                              Container(
+                                margin: EdgeInsets.only(left: 10, right: 10),
+                                child: Row(
+                                  children: <Widget>[
+                                    new Radio(
+                                        value: 'female',
+                                        groupValue: _radioGender,
+                                        //onChanged:(int e) => showDatas(e),
+                                        onChanged: _handleRadioValueChange),
+                                    Container(
+                                      transform: Matrix4.translationValues(
+                                          -10.0, 0.0, 0.0),
+                                      child: Text(
+                                        "Female",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      transform: Matrix4.translationValues(
+                                          -10.0, 0.0, 0.0),
+                                      child: new Radio(
+                                          value: 'male',
+                                          groupValue: _radioGender,
+                                          //onChanged:(int e) => showDatas(e),
+                                          onChanged: _handleRadioValueChange),
+                                    ),
+                                    Container(
+                                      transform: Matrix4.translationValues(
+                                          -20.0, 0.0, 0.0),
+                                      child: Text(
+                                        "Male",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Container(
+                                      transform: Matrix4.translationValues(
+                                          -10.0, 0.0, 0.0),
+                                      child: new Radio(
+                                          value: 'Non-binary',
+                                          groupValue: _radioGender,
+                                          //onChanged:(int e) => showDatas(e),
+                                          onChanged: _handleRadioValueChange),
+                                    ),
+                                    Container(
+                                      transform: Matrix4.translationValues(
+                                          -20.0, 0.0, 0.0),
+                                      child: Text(
+                                        "Non-binary",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 20, right: 20),
+                                child: Text.rich(
+                                  TextSpan(
+                                    text:
+                                        'By clicking Sign Up, you agree to our ',
+                                    style: TextStyle(
+                                        fontSize: 13, color: Colors.black38),
+                                    children: <TextSpan>[
+                                      TextSpan(
+                                          text: 'Terms, Data Policy',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.blueAccent,
+                                          )),
+                                      TextSpan(
+                                          text: ' and ',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.black38,
+                                          )),
+                                      TextSpan(
+                                          text: 'Cookie Policy',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.blueAccent,
+                                          )),
+                                      TextSpan(
+                                          text:
+                                              '. You may receive SMS notifications from us and can opt out at any time.',
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            color: Colors.black38,
+                                          )),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Container(
+                                width: 150,
+                                child: Column(
+                                  children: <Widget>[
+                                    RaisedButton(
+                                      color: mainheader,
+                                      child: Text(
+                                        isEditLoading ? "SENDING..." : "SEND",
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.white),
+                                      ),
+                                      onPressed: () {
+                                        isEditLoading ? null : handleSubmit();
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 50,
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ))
-            ],
+                      ],
+                    ))
+              ],
+            ),
           ),
         ),
       ),
@@ -1157,7 +1221,9 @@ class _ProfilePageState extends State<ProfilePage> {
     //String image = base64Encode(fileImage.readAsBytesSync());
     //print(image);
 
-    if (n == '') {
+    if (image == '') {
+      verificationAlert("Photo not selected. Please select a photo.");
+    }else if (n == '') {
       verificationAlert("First Name field is blank");
     } else if (s == '') {
       verificationAlert("Surname field is blank");

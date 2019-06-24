@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:crime_report/pages/main_page.dart';
 import 'package:crime_report/pages/routeAnimation.dart';
 import 'package:crime_report/pages/profile.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LogRegPage extends StatefulWidget {
   @override
@@ -28,6 +29,7 @@ class _LogRegPageState extends State<LogRegPage> {
   // Map<String, double> currentLocation;
   // Geolocator geolocator = Geolocator();
   // Position userLocation;
+  //final FirebaseMessaging _messaging = FirebaseMessaging();
   Map<String, double> curLocation = new Map();
   StreamSubscription<Map<String, double>> locSub;
   Location loc = new Location();
@@ -47,15 +49,15 @@ class _LogRegPageState extends State<LogRegPage> {
   String rName = '', rSurname = '', rEmail = '', rNewpass = '', rConpass = '';
   String day = '', month = '', year = '', type = '';
   List _day = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06",
+    "07",
+    "08",
+    "09",
     "10",
     "11",
     "12",
@@ -149,6 +151,10 @@ class _LogRegPageState extends State<LogRegPage> {
     date = new DateFormat("yyyy-MM-dd").format(now);
     //date = "${date}";
     time = new DateFormat("hh:mm:ss").format(now);
+    // _messaging.getToken().then((token) {
+    //   print("Token : " + token);
+    // });
+
     //time = "${time}";
     // _getLocation().then((position) {
     //   userLocation = position;
@@ -426,6 +432,7 @@ class _LogRegPageState extends State<LogRegPage> {
                       child: TextField(
                         autofocus: false,
                         controller: _textPassController,
+                        obscureText: true,
                         decoration: InputDecoration(
                           hintText: "Work Code* or Password*",
                           border: InputBorder.none,
@@ -1055,7 +1062,9 @@ class _LogRegPageState extends State<LogRegPage> {
                                   RaisedButton(
                                     color: mainheader,
                                     child: Text(
-                                     isRegLoading ? "Signing up..." : "Sign Up",
+                                      isRegLoading
+                                          ? "Signing up..."
+                                          : "Sign Up",
                                       style: TextStyle(
                                           fontSize: 20, color: Colors.white),
                                     ),
@@ -1299,8 +1308,8 @@ class _LogRegPageState extends State<LogRegPage> {
         ", " +
         curLocation['longitude'].toString();
 
-        lat = curLocation['latitude'].toString();
-        longi = curLocation['longitude'].toString();
+    lat = curLocation['latitude'].toString();
+    longi = curLocation['longitude'].toString();
   }
 }
 

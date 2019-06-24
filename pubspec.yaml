@@ -39,7 +39,7 @@ dependencies:
   build_runner:
   http: 
   shared_preferences:
-  
+  firebase_messaging:
   #geolocator: 
   #location: ^1.4.1
 

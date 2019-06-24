@@ -1,10 +1,13 @@
+import 'dart:async';
 import 'dart:convert';
-
+import 'package:geocoder/geocoder.dart';
 import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
+import 'package:location/location.dart';
+import 'package:flutter/services.dart';
 import 'package:crime_report/pages/routeAnimation.dart';
 import 'package:crime_report/pages/login_reg.dart';
 import 'package:crime_report/pages/rep_cat.dart';
@@ -14,6 +17,7 @@ import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/progress.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
+//import 'package:firebase_messaging/firebase_messaging.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -23,12 +27,27 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   // final scaffoldKey = GlobalKey<ScaffoldState>();
   // final formKey = GlobalKey<FormState>();
+  //final FirebaseMessaging _messaging = FirebaseMessaging();
   var userData;
   String proImage = '', profile = '';
+  Map<String, double> curLocation = new Map();
+  StreamSubscription<Map<String, double>> locSub;
+  Location loc = new Location();
   @override
   void initState() {
     _getUserInfo();
     _getURL();
+    mapState();
+    locSub = loc.onLocationChanged().listen((Map<String, double> result) {
+      setState(() {
+        curLocation = result;
+      });
+    });
+
+    // _messaging.getToken().then((token) {
+    //   print("Token : " + token);
+    // });
+
     super.initState();
   }
 
@@ -618,5 +637,39 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
     );
+  }
+
+  void mapState() async {
+    Map<String, double> my_loc;
+
+    try {
+      my_loc = await loc.getLocation();
+    } on PlatformException catch (e) {
+      if (e.code == 'PERMISSION_DENIED') {}
+      if (e.code == 'PERMISSION_DENIED_NEVER_ASKED') {}
+      my_loc = null;
+    }
+    setState(() {
+      curLocation = my_loc;
+    });
+    final coordinates =
+        new Coordinates(curLocation['latitude'], curLocation['longitude']);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    //address = "${first.featureName} & ${first.addressLine} & ${first.adminArea}";
+    address = "${first.addressLine}";
+    add = "${first.addressLine}";
+    country = "${first.countryName}";
+    location = curLocation['latitude'].toString() +
+        ", " +
+        curLocation['longitude'].toString();
+
+    locate = curLocation['latitude'].toString() +
+        ", " +
+        curLocation['longitude'].toString();
+
+    lat = curLocation['latitude'].toString();
+    longi = curLocation['longitude'].toString();
   }
 }

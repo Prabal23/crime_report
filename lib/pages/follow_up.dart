@@ -32,7 +32,12 @@ class FollowUpPage extends StatefulWidget {
 
 class _FollowUpPageState extends State<FollowUpPage> {
   TextEditingController _textController = new TextEditingController();
-  String text = '', situation = 'green', prob_status = '', runningTime = '';
+  String text = '',
+      situation = 'green',
+      prob_status = '',
+      runningTime = '',
+      runningdate = '',
+      photo = '';
   bool green = true, yellow = false, orange = false, red = false;
   bool not_fixed = true, adeq_fixed = false;
   var userData;
@@ -50,6 +55,8 @@ class _FollowUpPageState extends State<FollowUpPage> {
     _getUserInfo();
     runningTime = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    runningdate = _formatDateTime1(DateTime.now());
+    Timer.periodic(Duration(seconds: 1), (Timer t) => _getDate());
     super.initState();
   }
 
@@ -69,6 +76,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
       fileImage = profileImage;
       isImage = true;
       isChosen = false;
+      photo = '1';
     });
   }
 
@@ -78,6 +86,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
       fileImage = profileImage;
       isImage = false;
       isChosen = true;
+      photo = '1';
     });
   }
 
@@ -89,8 +98,20 @@ class _FollowUpPageState extends State<FollowUpPage> {
     });
   }
 
+  void _getDate() {
+    final DateTime now = DateTime.now();
+    final String formattedDateTime1 = _formatDateTime1(now);
+    setState(() {
+      runningdate = formattedDateTime1;
+    });
+  }
+
   String _formatDateTime(DateTime dateTime) {
     return DateFormat('hh:mm:ss').format(dateTime);
+  }
+
+  String _formatDateTime1(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd').format(dateTime);
   }
 
   @override
@@ -768,7 +789,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("Date : " + date,
+                          Text("Date : " + runningdate,
                               style: TextStyle(color: Colors.white)),
                         ],
                       ),
@@ -1062,10 +1083,10 @@ class _FollowUpPageState extends State<FollowUpPage> {
                     child: GestureDetector(
                       onTap: () {
                         isAddLoading ? null : sendReport();
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => MainPage()),
-                        );
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => MainPage()),
+                        // );
                       },
                       child:
                           Text(isAddLoading ? "SENDING..." : "SEND FOLLOW UP",
@@ -1096,6 +1117,8 @@ class _FollowUpPageState extends State<FollowUpPage> {
 
     if (des == '') {
       verificationAlert("Notes field is blank");
+    } else if (photo == '') {
+      verificationAlert("Photos not attached. Please attach photos.");
     } else {
       setState(() {
         isAddLoading = true;
@@ -1142,10 +1165,10 @@ class _FollowUpPageState extends State<FollowUpPage> {
     setState(() {
       isAddLoading = false;
     });
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ProgressPage()),
-    // );
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProgressPage()),
+    );
   }
 
   void verificationAlert(String msg) {

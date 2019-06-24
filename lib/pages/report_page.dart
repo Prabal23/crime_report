@@ -34,7 +34,9 @@ class _ReportScreenState extends State<ReportScreen> {
       situation = 'green',
       prob_status = '',
       runningTime = '',
-      problem_name = '';
+      runningdate = '',
+      problem_name = '',
+      photo = '';
   int problem_id, imgNum = 0;
   bool green = true, yellow = false, orange = false, red = false;
   List _problems = ["Burst Pipe", "Flood"];
@@ -77,6 +79,8 @@ class _ReportScreenState extends State<ReportScreen> {
     _textController.text = address;
     runningTime = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
+    runningdate = _formatDateTime1(DateTime.now());
+    Timer.periodic(Duration(seconds: 1), (Timer t) => _getDate());
     super.initState();
   }
 
@@ -86,6 +90,7 @@ class _ReportScreenState extends State<ReportScreen> {
       fileImage = profileImage;
       isImage = true;
       isChosen = false;
+      photo = '1';
     });
   }
 
@@ -95,6 +100,7 @@ class _ReportScreenState extends State<ReportScreen> {
       fileImage = profileImage;
       isImage = false;
       isChosen = true;
+      photo = '1';
     });
   }
 
@@ -116,8 +122,20 @@ class _ReportScreenState extends State<ReportScreen> {
     });
   }
 
+  void _getDate() {
+    final DateTime now = DateTime.now();
+    final String formattedDateTime1 = _formatDateTime1(now);
+    setState(() {
+      runningdate = formattedDateTime1;
+    });
+  }
+
   String _formatDateTime(DateTime dateTime) {
     return DateFormat('hh:mm:ss').format(dateTime);
+  }
+
+  String _formatDateTime1(DateTime dateTime) {
+    return DateFormat('yyyy-MM-dd').format(dateTime);
   }
 
   List<DropdownMenuItem<String>> getDropDownproblemItems() {
@@ -809,7 +827,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text("Date : " + date,
+                            Text("Date : " + runningdate,
                                 style: TextStyle(color: Colors.white)),
                           ],
                         ),
@@ -1100,7 +1118,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   child: Center(
                     child: GestureDetector(
                       onTap: () {
-                        isAddLoading ? null : sendReportDialog();
+                        isAddLoading ? null : sendReport();
                       },
                       child: Text(isAddLoading ? "SENDING..." : "SEND REPORT",
                           style: TextStyle(color: Colors.white, fontSize: 20
@@ -1182,7 +1200,32 @@ class _ReportScreenState extends State<ReportScreen> {
     });
   }
 
-  void sendReportDialog(){
+  void sendReport() async {
+    int pID = 0;
+    //String pID = '';
+    String add = _textController.text;
+    String des = _textController1.text;
+    pID = problem_id;
+    int uID = userData['id'];
+    String work_code = password;
+    String latitude = lat;
+    String longitude = longi;
+    String situ = situation;
+
+    if (add == '') {
+      verificationAlert("Address field is blank");
+    } else if (pID == 0) {
+      verificationAlert("Select your problem");
+    } else if (des == '') {
+      verificationAlert("Notes field is blank");
+    }else if (photo == '') {
+      verificationAlert("Photos not attached. Please attach photos.");
+    } else {
+      sendReportDialog();
+    }
+  }
+
+void sendReportDialog(){
     showDialog<String>(
       context: context,
       barrierDismissible:
@@ -1209,7 +1252,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           TextStyle(color: Theme.of(context).secondaryHeaderColor),
                     ),
                     onPressed: () {
-                      sendReport();
+                      sendReportConfirm();
                       Navigator.of(context).pop();
                     },
                   ),
@@ -1232,7 +1275,7 @@ class _ReportScreenState extends State<ReportScreen> {
     );
   }
 
-  void sendReport() async {
+  void sendReportConfirm() async{
     int pID = 0;
     //String pID = '';
     String add = _textController.text;
@@ -1243,19 +1286,7 @@ class _ReportScreenState extends State<ReportScreen> {
     String latitude = lat;
     String longitude = longi;
     String situ = situation;
-
-    if (add == '') {
-      verificationAlert("Address field is blank");
-    } else if (pID == 0) {
-      verificationAlert("Select your problem");
-    } else if (des == '') {
-      verificationAlert("Notes field is blank");
-    }else if (isImage == false) {
-      verificationAlert("Photos not attached. Please attach photos.");
-    }else if (isChosen == false) {
-      verificationAlert("Photos not attached. Please attach photos.");
-    } else {
-      setState(() {
+    setState(() {
         isAddLoading = true;
       });
       var data = {
@@ -1284,7 +1315,6 @@ class _ReportScreenState extends State<ReportScreen> {
       //   context,
       //   MaterialPageRoute(builder: (context) => ProgressPage()),
       // );
-    }
   }
 
   void sendPhotos(int id) async {
