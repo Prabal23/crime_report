@@ -5,7 +5,7 @@ import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
 import 'package:crime_report/pages/login_reg.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:intl/intl.dart';
 import 'package:redux/redux.dart';
@@ -17,6 +17,7 @@ import 'package:crime_report/pages/progress.dart';
 import 'package:crime_report/pages/main_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_multiple_image_picker/flutter_multiple_image_picker.dart';
 
 class FollowUpPage extends StatefulWidget {
   final String prob;
@@ -32,6 +33,10 @@ class FollowUpPage extends StatefulWidget {
 
 class _FollowUpPageState extends State<FollowUpPage> {
   TextEditingController _textController = new TextEditingController();
+  List images;
+  var img = [];
+  int maxImageNo = 5;
+  bool selectSingleImage = false;
   String text = '',
       situation = 'green',
       prob_status = '',
@@ -70,12 +75,38 @@ class _FollowUpPageState extends State<FollowUpPage> {
     //print("ID's : userData['id']");
   }
 
+  initMultiPickUp() async {
+    setState(() {
+      images = null;
+      //_platformMessage = 'No Error';
+    });
+    List resultList;
+    //String error;
+    try {
+      resultList = await FlutterMultipleImagePicker.pickMultiImages(
+          maxImageNo, selectSingleImage);
+    } on PlatformException catch (e) {
+      //error = e.message;
+      print(e.message);
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      images = resultList;
+      isImage = false;
+      photo = '1';
+      //if (error == null) _platformMessage = 'No Error Dectected';
+    });
+  }
+
   clickImagefromCamera() async {
     profileImage = await ImagePicker.pickImage(source: ImageSource.camera);
     setState(() {
       fileImage = profileImage;
       isImage = true;
-      isChosen = false;
+      images = null;
+      //isChosen = false;
       photo = '1';
     });
   }
@@ -698,7 +729,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         ),
                       ),
                     ),
-                    (isImage == true && isChosen == false)
+                    (isImage == true && images == null)
                         ? SizedBox(
                             height: 10,
                           )
@@ -710,7 +741,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          (isImage == true && isChosen == false)
+                          (isImage == true && images == null)
                               ? Text(
                                   'Photo taken',
                                   style: TextStyle(
@@ -723,9 +754,10 @@ class _FollowUpPageState extends State<FollowUpPage> {
                     ),
                     SizedBox(height: 10),
                     GestureDetector(
-                      onTap: () {
-                        pickImagefromGallery();
-                      },
+                      // onTap: () {
+                      //   pickImagefromGallery();
+                      // },
+                      onTap: initMultiPickUp,
                       child: Container(
                         color: blackbutton,
                         padding: EdgeInsets.only(
@@ -746,6 +778,25 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         ),
                       ),
                     ),
+                    images == null
+                        ? new Container()
+                        : new Container(
+                            margin: EdgeInsets.only(left: 20, right: 20),
+                            color: Colors.white,
+                            height: 50.0,
+                            width: MediaQuery.of(context).size.width,
+                            child: new ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (BuildContext context, int index) =>
+                                  new Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: new Image.file(
+                                      new File(images[index].toString()),
+                                    ),
+                                  ),
+                              itemCount: images.length,
+                            ),
+                          ),
                     SizedBox(height: 10),
                     Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
@@ -754,8 +805,8 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         children: <Widget>[
                           Text(
                               //imgNum == 0 ? "No photos attached or" : "$imgNum" + " photos attached",
-                              (isImage == false && isChosen == true)
-                                  ? "Photo attached"
+                              (isImage == false && images != null)
+                                  ? "${images.length}" + " Photo attached"
                                   : "",
                               style: TextStyle(
                                   color: Colors.white,
@@ -1043,26 +1094,31 @@ class _FollowUpPageState extends State<FollowUpPage> {
                 //   size: 40,
                 // ),
               ),
-              Container(
-                height: 78.25,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(width: 2.0, color: Colors.black),
-                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                    right: BorderSide(width: 2.0, color: Colors.black),
-                    left: BorderSide(width: 2.0, color: Colors.black),
+              GestureDetector(
+                onTap: () {
+                  exit(0);
+                },
+                child: Container(
+                  height: 78.25,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(width: 2.0, color: Colors.black),
+                      bottom: BorderSide(width: 2.0, color: Colors.black),
+                      right: BorderSide(width: 2.0, color: Colors.black),
+                      left: BorderSide(width: 2.0, color: Colors.black),
+                    ),
+                    borderRadius: BorderRadius.circular(0),
+                    color: Colors.grey,
                   ),
-                  borderRadius: BorderRadius.circular(0),
-                  color: Colors.grey,
-                ),
-                child: Center(
-                  child: Text("EXIT",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        //fontWeight: FontWeight.bold
-                      )),
+                  child: Center(
+                    child: Text("EXIT",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          //fontWeight: FontWeight.bold
+                        )),
+                  ),
                 ),
               ),
               Expanded(
@@ -1139,7 +1195,12 @@ class _FollowUpPageState extends State<FollowUpPage> {
       var res1 = await CallApi().postData(data, 'followUp');
       var body1 = json.decode(res1.body);
       int rID = body1['id'];
-      sendPhotos(rID);
+      if (isImage == true && images == null) {
+        sendCameraImage(rID);
+      } else {
+        sendPhotos(rID);
+      }
+
       print(body1);
       setState(() {
         isAddLoading = false;
@@ -1152,6 +1213,29 @@ class _FollowUpPageState extends State<FollowUpPage> {
   }
 
   void sendPhotos(int id) async {
+    print('Follow id : ' + '$id');
+    String fID = '$id';
+
+    for (int i = 0; i < images.length; i++) {
+      File file = new File(images[i].toString());
+      List<int> imageBytes = file.readAsBytesSync();
+      String image = base64.encode(imageBytes);
+      image = 'data:image/png;base64,' + image;
+      var data = {'follow_id': fID, 'photo': image};
+      var res1 = await CallApi().postData(data, 'insertflloupImage');
+      var body1 = json.decode(res1.body);
+      print(body1);
+    }
+    setState(() {
+      isAddLoading = false;
+    });
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ProgressPage()),
+    );
+  }
+
+  void sendCameraImage(int id) async {
     print('Follow id : ' + '$id');
     String fID = '$id';
 

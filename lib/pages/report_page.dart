@@ -19,6 +19,7 @@ import 'package:flutter/services.dart';
 import 'package:crime_report/json_serialize/problem.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_multiple_image_picker/flutter_multiple_image_picker.dart';
 
 class ReportScreen extends StatefulWidget {
   @override
@@ -29,6 +30,10 @@ class _ReportScreenState extends State<ReportScreen> {
   TextEditingController _textController = new TextEditingController();
   TextEditingController _textController1 = new TextEditingController();
   //List<Asset> images = List<Asset>();
+  List images;
+  var img = [];
+  int maxImageNo = 5;
+  bool selectSingleImage = false;
   String text = '',
       prob = '',
       situation = 'green',
@@ -49,6 +54,31 @@ class _ReportScreenState extends State<ReportScreen> {
   File fileImage;
   bool isImage = false;
   bool isChosen = false;
+
+  initMultiPickUp() async {
+    setState(() {
+      images = null;
+      //_platformMessage = 'No Error';
+    });
+    List resultList;
+    //String error;
+    try {
+      resultList = await FlutterMultipleImagePicker.pickMultiImages(
+          maxImageNo, selectSingleImage);
+    } on PlatformException catch (e) {
+      //error = e.message;
+      print(e.message);
+    }
+
+    if (!mounted) return;
+
+    setState(() {
+      images = resultList;
+      isImage = false;
+      photo = '1';
+      //if (error == null) _platformMessage = 'No Error Dectected';
+    });
+  }
 
   Future getProblemList() async {
     // http.Response response =
@@ -89,7 +119,7 @@ class _ReportScreenState extends State<ReportScreen> {
     setState(() {
       fileImage = profileImage;
       isImage = true;
-      isChosen = false;
+      images = null;
       photo = '1';
     });
   }
@@ -627,7 +657,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           ),
                         ),
                       ),
-                      (isImage == true && isChosen == false)
+                      (isImage == true && images == null)
                           ? SizedBox(
                               height: 10,
                             )
@@ -638,7 +668,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            (isImage == true && isChosen == false)
+                            (isImage == true && images == null)
                                 ? Text(
                                     'Photo taken',
                                     style: TextStyle(
@@ -651,9 +681,10 @@ class _ReportScreenState extends State<ReportScreen> {
                       ),
                       SizedBox(height: 10),
                       GestureDetector(
-                        onTap: () {
-                          pickImagefromGallery();
-                        },
+                        // onTap: () {
+                        //   pickImagefromGallery();
+                        // },
+                        onTap: initMultiPickUp,
                         child: Container(
                           color: blackbutton,
                           padding: EdgeInsets.only(
@@ -673,6 +704,25 @@ class _ReportScreenState extends State<ReportScreen> {
                           ),
                         ),
                       ),
+                      images == null
+                          ? new Container()
+                          : new Container(
+                              color: Colors.white,
+                              height: 50.0,
+                              width: MediaQuery.of(context).size.width,
+                              child: new ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder:
+                                    (BuildContext context, int index) =>
+                                        new Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: new Image.file(
+                                            new File(images[index].toString()),
+                                          ),
+                                        ),
+                                itemCount: images.length,
+                              ),
+                            ),
                       SizedBox(height: 10),
                       Container(
                         child: Row(
@@ -680,8 +730,8 @@ class _ReportScreenState extends State<ReportScreen> {
                           children: <Widget>[
                             Text(
                                 //imgNum == 0 ? "No photos attached or" : "$imgNum" + " photos attached",
-                                (isImage == false && isChosen == true)
-                                    ? "Photo attached"
+                                (isImage == false && images != null)
+                                    ? "${images.length}" + " Photo attached"
                                     : "",
                                 style: TextStyle(
                                     color: Colors.white,
@@ -1092,13 +1142,18 @@ class _ReportScreenState extends State<ReportScreen> {
                   borderRadius: BorderRadius.circular(0),
                   color: Colors.grey,
                 ),
-                child: Center(
-                  child: Text("EXIT",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        //fontWeight: FontWeight.bold
-                      )),
+                child: GestureDetector(
+                  onTap: () {
+                    exit(0);
+                  },
+                  child: Center(
+                    child: Text("EXIT",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          //fontWeight: FontWeight.bold
+                        )),
+                  ),
                 ),
               ),
               Expanded(
@@ -1218,14 +1273,14 @@ class _ReportScreenState extends State<ReportScreen> {
       verificationAlert("Select your problem");
     } else if (des == '') {
       verificationAlert("Notes field is blank");
-    }else if (photo == '') {
+    } else if (photo == '') {
       verificationAlert("Photos not attached. Please attach photos.");
     } else {
       sendReportDialog();
     }
   }
 
-void sendReportDialog(){
+  void sendReportDialog() {
     showDialog<String>(
       context: context,
       barrierDismissible:
@@ -1248,8 +1303,8 @@ void sendReportDialog(){
                   FlatButton(
                     child: new Text(
                       "YES",
-                      style:
-                          TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
                     ),
                     onPressed: () {
                       sendReportConfirm();
@@ -1259,8 +1314,8 @@ void sendReportDialog(){
                   FlatButton(
                     child: new Text(
                       "NO",
-                      style:
-                          TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
                     ),
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -1275,7 +1330,7 @@ void sendReportDialog(){
     );
   }
 
-  void sendReportConfirm() async{
+  void sendReportConfirm() async {
     int pID = 0;
     //String pID = '';
     String add = _textController.text;
@@ -1287,37 +1342,72 @@ void sendReportDialog(){
     String longitude = longi;
     String situ = situation;
     setState(() {
-        isAddLoading = true;
-      });
-      var data = {
-        'manager_name': 'admin',
-        'reporting_person': uID,
-        'work_code': work_code,
-        'lat': latitude,
-        'longi': longitude,
-        'address': add,
-        'situation': situ,
-        'report_date': date + ' ' + time,
-        'problem_id': '$pID',
-        'notes': des,
-        'admin_notes': 'undefined',
-        'admin_situation': 'green',
-        'status': 0,
-        'show_status': 0
-      };
-      var res1 = await CallApi().postData(data, 'insertReport');
-      var body1 = json.decode(res1.body);
-      int rID = body1['id'];
-      sendPhotos(rID);
-      //print(body1);
+      isAddLoading = true;
+    });
+    var data = {
+      'manager_name': 'admin',
+      'reporting_person': uID,
+      'work_code': work_code,
+      'lat': latitude,
+      'longi': longitude,
+      'address': add,
+      'situation': situ,
+      'report_date': date + ' ' + time,
+      'problem_id': '$pID',
+      'notes': des,
+      'admin_notes': 'undefined',
+      'admin_situation': 'green',
+      'status': 0,
+      'show_status': 0
+    };
+    var res1 = await CallApi().postData(data, 'insertReport');
+    var body1 = json.decode(res1.body);
+    int rID = body1['id'];
+    if (isImage == true && images == null) {
+        sendCameraImage(rID);
+      } else {
+        sendPhotos(rID);
+      }
+    //print(body1);
 
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => ProgressPage()),
-      // );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => ProgressPage()),
+    // );
   }
 
   void sendPhotos(int id) async {
+    print('Report id : ' + '$id');
+    String rID = '$id';
+
+    for (int i = 0; i <= images.length; i++) {
+      File file = new File(images[i].toString());
+      List<int> imageBytes = file.readAsBytesSync();
+      String image = base64.encode(imageBytes);
+      image = 'data:image/png;base64,' + image;
+      var data = {'report_id': rID, 'photo': image};
+      var res1 = await CallApi().postData(data, 'insertReportImage');
+      var body1 = json.decode(res1.body);
+      print(body1);
+    }
+    // List<int> imageBytes = fileImage.readAsBytesSync();
+    // String image = base64.encode(imageBytes);
+    // image = 'data:image/png;base64,' + image;
+    // var data = {'report_id': rID, 'photo': image};
+    // var res1 = await CallApi().postData(data, 'insertReportImage');
+    // var body1 = json.decode(res1.body);
+    // print(body1);
+    setState(() {
+      isAddLoading = false;
+    });
+    verificationAlert("Good o go! Report has been sent to your manager");
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => ProgressPage()),
+    // );
+  }
+
+  void sendCameraImage(int id) async {
     print('Report id : ' + '$id');
     String rID = '$id';
 
@@ -1331,7 +1421,7 @@ void sendReportDialog(){
     setState(() {
       isAddLoading = false;
     });
-    verificationAlert("Good o go! Report has been sent to your manager");
+    verificationAlert("Good to go! Report has been sent to your manager");
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => ProgressPage()),

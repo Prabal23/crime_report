@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
-
+import 'package:onesignal/onesignal.dart';
 import 'package:crime_report/pages/home.dart';
 
 void main() => runApp(new MyApp());

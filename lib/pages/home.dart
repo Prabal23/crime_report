@@ -7,6 +7,7 @@ import 'package:crime_report/pages/login_reg.dart';
 import 'package:crime_report/pages/routeAnimation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../main.dart';
+import 'package:onesignal/onesignal.dart';
 
 class MyHomePage extends StatefulWidget {
   @override

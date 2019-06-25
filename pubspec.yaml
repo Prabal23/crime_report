@@ -40,6 +40,8 @@ dependencies:
   http: 
   shared_preferences:
   firebase_messaging:
+  flutter_multiple_image_picker:
+  onesignal: 
   #geolocator: 
   #location: ^1.4.1
 

@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'dart:io';
 import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
 import 'package:geocoder/geocoder.dart';
@@ -1088,20 +1088,25 @@ class _LogRegPageState extends State<LogRegPage> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
-          child: Container(
+          child: GestureDetector(
+            onTap: (){
+              exit(0);
+            },
+            child: Container(
         //alignment: Alignment.center,
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.all(20),
         color: Colors.grey,
         child: Text(
-          "EXIT",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 22,
-            color: Colors.white,
-          ),
+            "EXIT",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 22,
+              color: Colors.white,
+            ),
         ),
-      )),
+      ),
+          )),
     );
   }
 

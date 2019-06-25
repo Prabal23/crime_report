@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:geocoder/geocoder.dart';
 import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
@@ -16,7 +17,6 @@ import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/progress.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter/services.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 
 class MainPage extends StatefulWidget {
@@ -578,26 +578,31 @@ class _MainPageState extends State<MainPage> {
                 //   size: 40,
                 // ),
               ),
-              Container(
-                height: 78.25,
-                padding: EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  border: Border(
-                    top: BorderSide(width: 2.0, color: Colors.black),
-                    bottom: BorderSide(width: 2.0, color: Colors.black),
-                    right: BorderSide(width: 2.0, color: Colors.black),
-                    left: BorderSide(width: 2.0, color: Colors.black),
+              GestureDetector(
+                onTap: (){
+                  exit(0);
+                },
+                child: Container(
+                  height: 78.25,
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      top: BorderSide(width: 2.0, color: Colors.black),
+                      bottom: BorderSide(width: 2.0, color: Colors.black),
+                      right: BorderSide(width: 2.0, color: Colors.black),
+                      left: BorderSide(width: 2.0, color: Colors.black),
+                    ),
+                    borderRadius: BorderRadius.circular(0),
+                    color: Colors.grey,
                   ),
-                  borderRadius: BorderRadius.circular(0),
-                  color: Colors.grey,
-                ),
-                child: Center(
-                  child: Text("EXIT",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                        //fontWeight: FontWeight.bold
-                      )),
+                  child: Center(
+                    child: Text("EXIT",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          //fontWeight: FontWeight.bold
+                        )),
+                  ),
                 ),
               ),
               Expanded(

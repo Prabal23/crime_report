@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:crime_report/main.dart';
 import 'package:crime_report/pages/login_reg.dart';
 import 'package:flutter/material.dart';
@@ -498,13 +500,18 @@ class _RepCatPageState extends State<RepCatPage> {
                     borderRadius: BorderRadius.circular(0),
                     color: Colors.grey,
                   ),
-                  child: Center(
-                    child: Text("EXIT",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 20.6,
-                          //fontWeight: FontWeight.bold
-                        )),
+                  child: GestureDetector(
+                    onTap: () {
+                      exit(0);
+                    },
+                    child: Center(
+                      child: Text("EXIT",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20.6,
+                            //fontWeight: FontWeight.bold
+                          )),
+                    ),
                   ),
                 ),
               ),

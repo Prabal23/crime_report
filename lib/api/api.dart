@@ -3,8 +3,10 @@ import 'package:crime_report/main.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 class CallApi{
-    final String _url = 'http://192.168.1.3:8000/api/';
-    final String _url1 = 'http://192.168.1.3:8000/uploads/';
+    final String _url = 'http://192.168.0.111:8000/api/';
+    final String _url1 = 'http://192.168.0.111:8000/uploads/';
+    // final String _url = 'api.cirms.xyz/';
+    // final String _url1 = 'api.cirms.xyz/uploads/';
 
     getURL(){
       var url = _url1;
