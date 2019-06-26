@@ -21,17 +21,19 @@ class SplashScreenState extends State<MyHomePage>
   Animation<double> animation;
   AnimationController controller;
   bool _isLoggedIn = false;
+  String _debugLabelString = "";
+  bool _requireConsent = false;
 
-  void _checkIfLoggedIn() async{
-      // check if token is there
-      SharedPreferences localStorage = await SharedPreferences.getInstance();
-      var user = localStorage.getString('user');
-      if(user!= null){
-         setState(() {
-            _isLoggedIn = true;
-         });
-      }
-}
+  void _checkIfLoggedIn() async {
+    // check if token is there
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var user = localStorage.getString('user');
+    if (user != null) {
+      setState(() {
+        _isLoggedIn = true;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -50,15 +52,75 @@ class SplashScreenState extends State<MyHomePage>
         });
       });
     controller.forward();
+    //initOneSignal();
   }
+
+//   void initOneSignal() {
+//     // if (!mounted) return;
+
+//     // OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+
+//     // OneSignal.shared.setRequiresUserPrivacyConsent(_requireConsent);
+
+//     // OneSignal.shared
+//     //     .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+//     //       print("OPENED NOTIFICATION");
+//     //       print(result.notification.jsonRepresentation().replaceAll("\\n", "\n"));
+//     //   this.setState(() {
+//     //     _debugLabelString =
+//     //     "Opened notification: \n${result.notification.jsonRepresentation().replaceAll("\\n", "\n")}";
+//     //   });
+//     // });
+
+//     // OneSignal.shared
+//     //     .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
+//     //   print("SUBSCRIPTION STATE CHANGED: ${changes.jsonRepresentation()}");
+//     // });
+
+//     // OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {
+//     //   print("PERMISSION STATE CHANGED: ${changes.jsonRepresentation()}");
+//     // });
+
+//     // OneSignal.shared.setEmailSubscriptionObserver(
+//     //         (OSEmailSubscriptionStateChanges changes) {
+//     //       print("EMAIL SUBSCRIPTION STATE CHANGED ${changes.jsonRepresentation()}");
+//     //     });
+
+//     // OneSignal.shared
+//     //     .setInFocusDisplayType(OSNotificationDisplayType.notification);
+
+//     // OneSignal.shared.promptUserForPushNotificationPermission(fallbackToSettings: true);
+
+//     OneSignal.shared
+//         .setNotificationReceivedHandler((OSNotification notification) {
+//       // will be called whenever a notification is received
+//     });
+
+//     OneSignal.shared
+//         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
+//       // will be called whenever a notification is opened/button pressed.
+//     });
+// //  OneSignal.shared.init("your_app_id_here");
+//     final app_id = "fe0695b7-f1d5-4475-bc53-083517f95589";
+// // You can also pass in iOS settings as a map.
+// // These settings are only applicable to iOS,
+// // and will be ignored in Android
+
+//     OneSignal.shared.init(app_id, iOSSettings: {
+//       OSiOSSettings.autoPrompt: false,
+//       OSiOSSettings.inAppLaunchUrl: true
+//     });
+//   }
 
   Future<Timer> loadData() async {
     return new Timer(Duration(seconds: 3), onDoneLoading);
   }
 
   onDoneLoading() async {
-    _isLoggedIn ? Navigator.pushReplacement(context, SlideLeftRoute(page: MainPage())) :
-    Navigator.pushReplacement(context, SlideLeftRoute(page: LogRegPage()));
+    _isLoggedIn
+        ? Navigator.pushReplacement(context, SlideLeftRoute(page: MainPage()))
+        : Navigator.pushReplacement(
+            context, SlideLeftRoute(page: LogRegPage()));
     //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LogRegPage()));
   }
 

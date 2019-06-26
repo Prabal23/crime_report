@@ -425,7 +425,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text('${userData['first_name']}',
+                            Text('Name : ${userData['first_name']}',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15)),
                           ],
@@ -436,7 +436,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text('${userData['last_name']}',
+                            Text('Surname : ${userData['last_name']}',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15)),
                           ],
@@ -447,7 +447,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           //mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            Text('${userData['username']}',
+                            Text('Work Code : ${userData['username']}',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15)),
                           ],
@@ -657,6 +657,22 @@ class _ReportScreenState extends State<ReportScreen> {
                           ),
                         ),
                       ),
+                      Center(
+                        child: (isImage == true && images == null)
+                            ? new Container(
+                                margin: EdgeInsets.only(left: 20, right: 20),
+                                color: Colors.white,
+                                height: 60.0,
+                                width: MediaQuery.of(context).size.width,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: fileImage != null
+                                      ? new Image.file(fileImage)
+                                      : null,
+                                ),
+                              )
+                            : new Container(),
+                      ),
                       (isImage == true && images == null)
                           ? SizedBox(
                               height: 10,
@@ -675,7 +691,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                         color: Colors.white,
                                         fontStyle: FontStyle.italic),
                                   )
-                                : Text(''),
+                                : Container(),
                           ],
                         ),
                       ),
@@ -704,26 +720,33 @@ class _ReportScreenState extends State<ReportScreen> {
                           ),
                         ),
                       ),
-                      images == null
-                          ? new Container()
-                          : new Container(
-                              color: Colors.white,
-                              height: 50.0,
-                              width: MediaQuery.of(context).size.width,
-                              child: new ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder:
-                                    (BuildContext context, int index) =>
-                                        new Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: new Image.file(
-                                            new File(images[index].toString()),
-                                          ),
+                      Center(
+                        child: images == null
+                            ? new Container()
+                            : new Container(
+                                margin: EdgeInsets.only(left: 20, right: 20),
+                                color: Colors.white,
+                                height: 60.0,
+                                width: MediaQuery.of(context).size.width,
+                                child: new ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (BuildContext context,
+                                          int index) =>
+                                      new Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: new Image.file(
+                                          new File(images[index].toString()),
                                         ),
-                                itemCount: images.length,
+                                      ),
+                                  itemCount: images.length,
+                                ),
                               ),
-                            ),
-                      SizedBox(height: 10),
+                      ),
+                      images == null
+                          ? SizedBox(
+                              height: 0,
+                            )
+                          : SizedBox(height: 10),
                       Container(
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1364,10 +1387,10 @@ class _ReportScreenState extends State<ReportScreen> {
     var body1 = json.decode(res1.body);
     int rID = body1['id'];
     if (isImage == true && images == null) {
-        sendCameraImage(rID);
-      } else {
-        sendPhotos(rID);
-      }
+      sendCameraImage(rID);
+    } else {
+      sendPhotos(rID);
+    }
     //print(body1);
 
     // Navigator.push(
@@ -1380,7 +1403,7 @@ class _ReportScreenState extends State<ReportScreen> {
     print('Report id : ' + '$id');
     String rID = '$id';
 
-    for (int i = 0; i <= images.length; i++) {
+    for (int i = 0; i < images.length; i++) {
       File file = new File(images[i].toString());
       List<int> imageBytes = file.readAsBytesSync();
       String image = base64.encode(imageBytes);
@@ -1389,7 +1412,9 @@ class _ReportScreenState extends State<ReportScreen> {
       var res1 = await CallApi().postData(data, 'insertReportImage');
       var body1 = json.decode(res1.body);
       print(body1);
+      await Future.delayed(Duration(milliseconds: 10));
     }
+
     // List<int> imageBytes = fileImage.readAsBytesSync();
     // String image = base64.encode(imageBytes);
     // image = 'data:image/png;base64,' + image;

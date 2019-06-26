@@ -47,7 +47,11 @@ class _ProfilePageState extends State<ProfilePage> {
       type = '',
       date = '',
       uid = '',
-      proImage = '', m = '', d = '';
+      proImage = '',
+      m = '',
+      d = '',
+      image = '',
+      pImg = '';
   File fileImage;
   bool isEditLoading = false;
   List _day = [
@@ -121,6 +125,7 @@ class _ProfilePageState extends State<ProfilePage> {
       fileImage = profileImage;
       isPicked = true;
       isImage = false;
+      pImg = '';
     });
   }
 
@@ -130,6 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
       fileImage = profileImage;
       isPicked = true;
       isImage = false;
+      pImg = '';
     });
   }
 
@@ -142,6 +148,9 @@ class _ProfilePageState extends State<ProfilePage> {
           //Fluttertoast.showToast(msg: 'Male',toastLength: Toast.LENGTH_SHORT);
           break;
         case 'male':
+          //Fluttertoast.showToast(msg: 'Female',toastLength: Toast.LENGTH_SHORT);
+          break;
+        case 'Non_binary':
           //Fluttertoast.showToast(msg: 'Female',toastLength: Toast.LENGTH_SHORT);
           break;
       }
@@ -163,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _radioGender = '${userData['gender']}';
     date = '${userData['dob']}';
     _textYearController.text = date.substring(0, 4);
-    year  = _textYearController.text;
+    year = _textYearController.text;
     m = date.substring(5, 7);
     d = date.substring(8);
     // date.split("-");
@@ -186,7 +195,7 @@ class _ProfilePageState extends State<ProfilePage> {
     proImage = await CallApi().getURL();
     isPicked = false;
     isImage = true;
-    
+
     print(proImage + '${userData['image']}');
     for (int i = 0; i < _user_type.length; i++) {
       if (type == _user_type[i]) {
@@ -194,6 +203,10 @@ class _ProfilePageState extends State<ProfilePage> {
       }
     }
     //print("ID's : userData['id']");
+
+    SharedPreferences localStorage1 = await SharedPreferences.getInstance();
+    pImg = localStorage1.getString('pro_image');
+    print("Images : " + image);
   }
 
   @override
@@ -1215,15 +1228,25 @@ class _ProfilePageState extends State<ProfilePage> {
     String g = _radioGender;
     String t = type;
 
-    List<int> imageBytes = fileImage.readAsBytesSync();
-    String image = base64.encode(imageBytes);
-    image = 'data:image/png;base64,' + image;
+    if (pImg == '') {
+      List<int> imageBytes = fileImage.readAsBytesSync();
+      image = base64.encode(imageBytes);
+      image = 'data:image/png;base64,' + image;
+    }else{
+      image = pImg;
+    }
+
+    // List<int> imageBytes = fileImage.readAsBytesSync();
+    // image = base64.encode(imageBytes);
+    // image = 'data:image/png;base64,' + image;
+    SharedPreferences localStorages = await SharedPreferences.getInstance();
+    localStorages.setString('pro_image', image);
     //String image = base64Encode(fileImage.readAsBytesSync());
     //print(image);
 
     if (image == '') {
       verificationAlert("Photo not selected. Please select a photo.");
-    }else if (n == '') {
+    } else if (n == '') {
       verificationAlert("First Name field is blank");
     } else if (s == '') {
       verificationAlert("Surname field is blank");

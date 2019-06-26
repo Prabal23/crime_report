@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.crime_report">
 
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -10,7 +11,9 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
+        tools:replace="android:label"
         android:name="io.flutter.app.FlutterApplication"
+        android:label="CIRMS"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

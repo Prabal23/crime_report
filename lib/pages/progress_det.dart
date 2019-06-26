@@ -340,7 +340,7 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                               color: mainheader,
                               child: FlatButton(
                                 onPressed: () {
-                                  handleClick(widget.pID, widget.id, widget.notes);
+                                  handleClick(widget.pID, widget.id, widget.notes, widget.sit);
                                 },
                                 child: Text(
                                   "Follow up",
@@ -450,11 +450,11 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
     );
   }
 
-  void handleClick(String problem, int id, String notes) {
+  void handleClick(String problem, int id, String notes, String situ) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => FollowUpPage(
-        prob: problem, pID: id, desc: notes
+        prob: problem, pID: id, desc: notes, situat: situ
       )),
     );
   }

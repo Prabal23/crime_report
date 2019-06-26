@@ -23,9 +23,14 @@ class FollowUpPage extends StatefulWidget {
   final String prob;
   final int pID;
   final String desc;
+  final String situat;
 
   FollowUpPage(
-      {Key key, @required this.prob, @required this.pID, @required this.desc})
+      {Key key,
+      @required this.prob,
+      @required this.pID,
+      @required this.desc,
+      @required this.situat})
       : super(key: key);
   @override
   _FollowUpPageState createState() => new _FollowUpPageState();
@@ -72,7 +77,28 @@ class _FollowUpPageState extends State<FollowUpPage> {
     setState(() {
       userData = user;
     });
+    String sit = widget.situat;
+    if (sit == 'green') {
+      situationChange(true, false, false, false, '1');
+    }
+    if (sit == 'yellow') {
+      situationChange(false, true, false, false, '2');
+    }
+    if (sit == 'orange') {
+      situationChange(false, false, true, false, '3');
+    }
+    if (sit == 'red') {
+      situationChange(false, false, false, true, '4');
+    }
     //print("ID's : userData['id']");
+  }
+
+  void situationChange(bool gr, bool ye, bool ora, bool re, String sit) {
+    green = gr;
+    yellow = ye;
+    orange = ora;
+    red = re;
+    situation = sit;
   }
 
   initMultiPickUp() async {
@@ -492,7 +518,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         //mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text('${userData['first_name']}',
+                          Text('Name : ${userData['first_name']}',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 15)),
                         ],
@@ -504,7 +530,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         //mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text('${userData['last_name']}',
+                          Text('Surname : ${userData['last_name']}',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 15)),
                         ],
@@ -516,7 +542,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         //mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text('${userData['username']}',
+                          Text('Work Code : ${userData['username']}',
                               style:
                                   TextStyle(color: Colors.white, fontSize: 15)),
                         ],
@@ -729,6 +755,22 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         ),
                       ),
                     ),
+                    Center(
+                      child: (isImage == true && images == null)
+                          ? new Container(
+                              margin: EdgeInsets.only(left: 20, right: 20),
+                              color: Colors.white,
+                              height: 60.0,
+                              width: MediaQuery.of(context).size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: fileImage != null
+                                    ? new Image.file(fileImage)
+                                    : null,
+                              ),
+                            )
+                          : new Container(),
+                    ),
                     (isImage == true && images == null)
                         ? SizedBox(
                             height: 10,
@@ -748,7 +790,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                       color: Colors.white,
                                       fontStyle: FontStyle.italic),
                                 )
-                              : Text(''),
+                              : Container(),
                         ],
                       ),
                     ),
@@ -778,26 +820,32 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         ),
                       ),
                     ),
-                    images == null
-                        ? new Container()
-                        : new Container(
-                            margin: EdgeInsets.only(left: 20, right: 20),
-                            color: Colors.white,
-                            height: 50.0,
-                            width: MediaQuery.of(context).size.width,
-                            child: new ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (BuildContext context, int index) =>
-                                  new Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: new Image.file(
-                                      new File(images[index].toString()),
+                    Center(
+                      child: images == null
+                          ? new Container()
+                          : new Container(
+                              margin: EdgeInsets.only(left: 20, right: 20),
+                              color: Colors.white,
+                              height: 60.0,
+                              width: MediaQuery.of(context).size.width,
+                              child: new ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int index) =>
+                                    new Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: new Image.file(
+                                        new File(images[index].toString()),
+                                      ),
                                     ),
-                                  ),
-                              itemCount: images.length,
+                                itemCount: images.length,
+                              ),
                             ),
-                          ),
-                    SizedBox(height: 10),
+                    ),
+                    images == null
+                        ? SizedBox(
+                            height: 0,
+                          )
+                        : SizedBox(height: 10),
                     Container(
                       margin: EdgeInsets.only(left: 20, right: 20),
                       child: Row(
@@ -814,7 +862,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     Container(
                       margin: EdgeInsets.only(left: 20),
                       child: Row(
@@ -1202,9 +1250,9 @@ class _FollowUpPageState extends State<FollowUpPage> {
       }
 
       print(body1);
-      setState(() {
-        isAddLoading = false;
-      });
+      // setState(() {
+      //   isAddLoading = false;
+      // });
       // Navigator.push(
       //   context,
       //   MaterialPageRoute(builder: (context) => ProgressPage()),
@@ -1225,6 +1273,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
       var res1 = await CallApi().postData(data, 'insertflloupImage');
       var body1 = json.decode(res1.body);
       print(body1);
+      await Future.delayed(Duration(milliseconds: 10));
     }
     setState(() {
       isAddLoading = false;

@@ -121,6 +121,9 @@ class _LogRegPageState extends State<LogRegPage> {
         case 'male':
           //Fluttertoast.showToast(msg: 'Female',toastLength: Toast.LENGTH_SHORT);
           break;
+        case 'Non_binary':
+          //Fluttertoast.showToast(msg: 'Female',toastLength: Toast.LENGTH_SHORT);
+          break;
       }
       debugPrint(_radioGender);
     });
@@ -1089,24 +1092,24 @@ class _LogRegPageState extends State<LogRegPage> {
       ),
       bottomNavigationBar: BottomAppBar(
           child: GestureDetector(
-            onTap: (){
-              exit(0);
-            },
-            child: Container(
-        //alignment: Alignment.center,
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.all(20),
-        color: Colors.grey,
-        child: Text(
+        onTap: () {
+          exit(0);
+        },
+        child: Container(
+          //alignment: Alignment.center,
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.all(20),
+          color: Colors.grey,
+          child: Text(
             "EXIT",
             textAlign: TextAlign.center,
             style: TextStyle(
               fontSize: 22,
               color: Colors.white,
             ),
+          ),
         ),
-      ),
-          )),
+      )),
     );
   }
 
