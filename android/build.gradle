@@ -1,20 +1,14 @@
 buildscript {
     repositories {
-        // maven { 
-        //     url 'https://plugins.gradle.org/m2/' 
-        // }
         google()
         jcenter()
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        //classpath 'com.google.gms:google-services:4.2.0'
-        //classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.11.0, 0.99.99]'
+        classpath 'com.google.gms:google-services:4.2.0'
     }
 }
-
-//apply plugin: 'com.onesignal.androidsdk.onesignal-gradle-plugin'
 
 allprojects {
     repositories {
@@ -22,10 +16,6 @@ allprojects {
         jcenter()
     }
 }
-
-// repositories{
-//     maven { url 'https://maven.google.com' }
-// }
 
 rootProject.buildDir = '../build'
 subprojects {
@@ -39,13 +29,13 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-// subprojects {
-//     project.configurations.all {
-//         resolutionStrategy.eachDependency { details ->
-//             if (details.requested.group == 'com.android.support'
-//                     && !details.requested.name.contains('multidex') ) {
-//                 details.useVersion "26.1.0"
-//             }
-//         }
-//     }
-// }
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'com.android.support'
+                    && !details.requested.name.contains('multidex') ) {
+                details.useVersion "26.1.0"
+            }
+        }
+    }
+}

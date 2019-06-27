@@ -140,15 +140,15 @@ class _LogRegPageState extends State<LogRegPage> {
     _dropDownTypeItems = getDropDownTypeItems();
     type = _dropDownTypeItems[0].value;
 
-    curLocation['latitude'] = 0.0;
-    curLocation['longitude'] = 0.0;
+    // curLocation['latitude'] = 0.0;
+    // curLocation['longitude'] = 0.0;
 
-    mapState();
-    locSub = loc.onLocationChanged().listen((Map<String, double> result) {
-      setState(() {
-        curLocation = result;
-      });
-    });
+    // mapState();
+    // locSub = loc.onLocationChanged().listen((Map<String, double> result) {
+    //   setState(() {
+    //     curLocation = result;
+    //   });
+    // });
 
     var now = new DateTime.now();
     date = new DateFormat("yyyy-MM-dd").format(now);
@@ -491,7 +491,7 @@ class _LogRegPageState extends State<LogRegPage> {
                             Container(
                               width: 150,
                               child: RaisedButton(
-                                color: blackbutton,
+                                color: isLoginLoading ? Colors.grey : blackbutton,
                                 child: Text(
                                   isLoginLoading ? "Logging In..." : "Login",
                                   style: TextStyle(
@@ -1063,7 +1063,7 @@ class _LogRegPageState extends State<LogRegPage> {
                               child: Column(
                                 children: <Widget>[
                                   RaisedButton(
-                                    color: mainheader,
+                                    color: isRegLoading ? Colors.grey :  mainheader,
                                     child: Text(
                                       isRegLoading
                                           ? "Signing up..."
@@ -1292,8 +1292,8 @@ class _LogRegPageState extends State<LogRegPage> {
     try {
       my_loc = await loc.getLocation();
     } on PlatformException catch (e) {
-      if (e.code == 'PERMISSION_DENIED') {}
-      if (e.code == 'PERMISSION_DENIED_NEVER_ASKED') {}
+      // if (e.code == 'PERMISSION_DENIED') {}
+      // if (e.code == 'PERMISSION_DENIED_NEVER_ASKED') {}
       my_loc = null;
     }
     setState(() {

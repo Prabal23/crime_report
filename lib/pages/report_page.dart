@@ -724,7 +724,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         child: images == null
                             ? new Container()
                             : new Container(
-                                margin: EdgeInsets.only(left: 20, right: 20),
+                                margin: EdgeInsets.only(left: 0, right: 0),
                                 color: Colors.white,
                                 height: 60.0,
                                 width: MediaQuery.of(context).size.width,
