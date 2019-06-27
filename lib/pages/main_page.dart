@@ -37,6 +37,10 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     _getUserInfo();
     _getURL();
+
+    curLocation['latitude'] = 0.0;
+    curLocation['longitude'] = 0.0;
+    
     mapState();
     locSub = loc.onLocationChanged().listen((Map<String, double> result) {
       setState(() {
