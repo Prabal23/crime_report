@@ -12,6 +12,8 @@ import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/profile.dart';
 import 'package:crime_report/pages/progress_det.dart';
 import 'package:crime_report/pages/notify_page.dart';
+import 'package:crime_report/pages/main_page.dart';
+import 'package:crime_report/pages/rep_cat.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProgressPage extends StatefulWidget {
@@ -93,6 +95,32 @@ class _ProgressPageState extends State<ProgressPage> {
             ),
             ListTile(
               title: Text(
+                "Home",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPage()),
+                );
+              },
+              //trailing: Icon(Icons.arrow_forward),
+            ),
+            ListTile(
+              title: Text(
+                "Start Reporting",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RepCatPage()),
+                );
+              },
+              //trailing: Icon(Icons.arrow_forward),
+            ),
+            ListTile(
+              title: Text(
                 "Profile",
                 style: TextStyle(color: Colors.white, fontSize: 22),
               ),
@@ -152,14 +180,8 @@ class _ProgressPageState extends State<ProgressPage> {
             ),
             ListTile(
               title: GestureDetector(
-                onTap: () async {
-                  SharedPreferences localStorage =
-                      await SharedPreferences.getInstance();
-                  localStorage.remove('user');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LogRegPage()),
-                  );
+                onTap: () {
+                  logoutAlert("Do you want to logout?");
                 },
                 child: Text(
                   "Log Out",
@@ -372,72 +394,85 @@ class _ProgressPageState extends State<ProgressPage> {
       // ),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
-          : Container(
-              child: ListView.builder(
-                itemCount: prog.length,
-                //separatorBuilder: (context, index) => Divider(),
-                itemBuilder: (BuildContext context, int index) {
-                  Progress progRep = prog[index];
-                  String c = progRep.situation;
-                  return Container(
-                    margin: EdgeInsets.only(
-                        right: 20, left: 20, bottom: 10, top: 10),
-                    color: Colors.grey[400],
-                    child: ListTile(
-                      title: Container(
-                          margin: EdgeInsets.only(bottom: 10, top: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                '${index + 1}. Report/Complaint: "#${progRep.id}"',
-                                style: TextStyle(fontSize: 15),
-                              ),
-                              Row(
+          : prog == null
+              ? Center(
+                  child: Text(
+                  "No Report has been done yet. Go to 'Start Reporting' page to report a problem",
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(fontSize: 18),
+                ))
+              : Container(
+                  child: ListView.builder(
+                    itemCount: prog.length,
+                    //separatorBuilder: (context, index) => Divider(),
+                    itemBuilder: (BuildContext context, int index) {
+                      Progress progRep = prog[index];
+                      String c = progRep.situation;
+                      return Container(
+                        margin: EdgeInsets.only(
+                            right: 20, left: 20, bottom: 10, top: 10),
+                        color: Colors.grey[400],
+                        child: ListTile(
+                          title: Container(
+                              margin: EdgeInsets.only(bottom: 10, top: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
-                                  SizedBox(height: 5),
-                                  Text('Situation'),
-                                  SizedBox(width: 5),
-                                  (c == 'green')
-                                      ? CircleAvatar(
-                                          backgroundColor: Colors.green,
-                                          radius: 8,
-                                        )
-                                      : (c == 'red')
+                                  Text(
+                                    '${index + 1}. Report/Complaint: "#${progRep.id}"',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                  Row(
+                                    children: <Widget>[
+                                      SizedBox(height: 5),
+                                      Text('Situation'),
+                                      SizedBox(width: 5),
+                                      (c == 'green')
                                           ? CircleAvatar(
-                                              backgroundColor: Colors.red,
+                                              backgroundColor: Colors.green,
                                               radius: 8,
                                             )
-                                          : (c == 'yellow')
+                                          : (c == 'red')
                                               ? CircleAvatar(
-                                                  backgroundColor:
-                                                      Colors.yellow,
+                                                  backgroundColor: Colors.red,
                                                   radius: 8,
                                                 )
-                                              : (c == 'orange')
+                                              : (c == 'yellow')
                                                   ? CircleAvatar(
                                                       backgroundColor:
-                                                          Colors.orange,
+                                                          Colors.yellow,
                                                       radius: 8,
                                                     )
-                                                  : null
+                                                  : (c == 'orange')
+                                                      ? CircleAvatar(
+                                                          backgroundColor:
+                                                              Colors.orange,
+                                                          radius: 8,
+                                                        )
+                                                      : null
+                                    ],
+                                  ),
                                 ],
-                              ),
-                            ],
-                          )),
-                      subtitle: Container(
-                          margin: EdgeInsets.only(bottom: 7),
-                          child: Text("Read more...")),
-                      onTap: () {
-                        handleClick(progRep.id, progRep.lat, progRep.longi, c,
-                            progRep.problem_id, progRep.notes, progRep.address);
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
+                              )),
+                          subtitle: Container(
+                              margin: EdgeInsets.only(bottom: 7),
+                              child: Text("Read more...")),
+                          onTap: () {
+                            handleClick(
+                                progRep.id,
+                                progRep.lat,
+                                progRep.longi,
+                                c,
+                                progRep.problem_id,
+                                progRep.notes,
+                                progRep.address);
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
           padding: EdgeInsets.all(15),
@@ -468,6 +503,65 @@ class _ProgressPageState extends State<ProgressPage> {
               pID: problem_id,
               notes: note,
               add: address)),
+    );
+  }
+
+  void logoutAlert(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.white),
+          child: AlertDialog(
+            title: new Text(
+              "Logout",
+              style: TextStyle(color: Colors.black),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.black),
+            ),
+            actions: <Widget>[
+              Row(
+                children: <Widget>[
+                  new FlatButton(
+                    child: new Text(
+                      "Yes",
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      logoutConfirm();
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text(
+                      "No",
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void logoutConfirm() async {
+    Navigator.of(context).pop();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.remove('user');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LogRegPage()),
     );
   }
 }

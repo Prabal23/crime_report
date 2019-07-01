@@ -489,9 +489,10 @@ class _LogRegPageState extends State<LogRegPage> {
                               height: 20,
                             ),
                             Container(
-                              width: 150,
+                              width: 200,
                               child: RaisedButton(
-                                color: isLoginLoading ? Colors.grey : blackbutton,
+                                color:
+                                    isLoginLoading ? Colors.grey : blackbutton,
                                 child: Text(
                                   isLoginLoading ? "Logging In..." : "Login",
                                   style: TextStyle(
@@ -527,74 +528,78 @@ class _LogRegPageState extends State<LogRegPage> {
                         width: MediaQuery.of(context).size.width,
                         margin: EdgeInsets.only(left: 20, right: 20),
                         child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          //crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Container(
-                              //color: Colors.white,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  bottom: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  right: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  left: BorderSide(
-                                      width: 1.0, color: Colors.black26),
+                            Expanded(
+                              child: Container(
+                                //color: Colors.white,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    bottom: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    right: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    left: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
                                 ),
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                              width: 155,
-                              child: TextField(
-                                autofocus: false,
-                                controller: _textrNameController,
-                                decoration: InputDecoration(
-                                  hintText: "First name",
-                                  border: InputBorder.none,
-                                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                                  contentPadding: EdgeInsets.fromLTRB(
-                                      10.0, 10.0, 20.0, 10.0),
+                                //width: 155,
+                                child: TextField(
+                                  autofocus: false,
+                                  controller: _textrNameController,
+                                  decoration: InputDecoration(
+                                    hintText: "First name",
+                                    border: InputBorder.none,
+                                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        10.0, 10.0, 20.0, 10.0),
+                                  ),
+                                  onChanged: (value) {
+                                    rName = value;
+                                  },
                                 ),
-                                onChanged: (value) {
-                                  rName = value;
-                                },
                               ),
                             ),
                             SizedBox(
                               width: 10,
                             ),
-                            Container(
-                              //color: Colors.white,
-                              width: 155,
-                              decoration: BoxDecoration(
-                                border: Border(
-                                  top: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  bottom: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  right: BorderSide(
-                                      width: 1.0, color: Colors.black26),
-                                  left: BorderSide(
-                                      width: 1.0, color: Colors.black26),
+                            Expanded(
+                              child: Container(
+                                //color: Colors.white,
+                                //width: 155,
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    top: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    bottom: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    right: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                    left: BorderSide(
+                                        width: 1.0, color: Colors.black26),
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.white,
                                 ),
-                                borderRadius: BorderRadius.circular(5),
-                                color: Colors.white,
-                              ),
-                              child: TextField(
-                                autofocus: false,
-                                controller: _textrSurController,
-                                decoration: InputDecoration(
-                                  hintText: "Surname",
-                                  border: InputBorder.none,
-                                  //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                                  contentPadding: EdgeInsets.fromLTRB(
-                                      10.0, 10.0, 20.0, 10.0),
+                                child: TextField(
+                                  autofocus: false,
+                                  controller: _textrSurController,
+                                  decoration: InputDecoration(
+                                    hintText: "Surname",
+                                    border: InputBorder.none,
+                                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                                    contentPadding: EdgeInsets.fromLTRB(
+                                        10.0, 10.0, 20.0, 10.0),
+                                  ),
+                                  onChanged: (value) {
+                                    rSurname = value;
+                                  },
                                 ),
-                                onChanged: (value) {
-                                  rSurname = value;
-                                },
                               ),
                             ),
                           ],
@@ -906,6 +911,7 @@ class _LogRegPageState extends State<LogRegPage> {
                                     child: TextField(
                                       autofocus: false,
                                       controller: _textYearController,
+                                      keyboardType: TextInputType.number,
                                       decoration: InputDecoration(
                                         hintText: "2019",
                                         hintStyle: TextStyle(
@@ -1058,24 +1064,39 @@ class _LogRegPageState extends State<LogRegPage> {
                             SizedBox(
                               height: 20,
                             ),
+                            // Container(
+                            //   width: 250,
+                            //   child: Column(
+                            //     children: <Widget>[
+                            //       RaisedButton(
+                            //         color: isRegLoading ? Colors.grey :  mainheader,
+                            //         child: Text(
+                            //           isRegLoading
+                            //               ? "Signing up..."
+                            //               : "Sign Up",
+                            //           style: TextStyle(
+                            //               fontSize: 20, color: Colors.white),
+                            //         ),
+                            //         onPressed: () {
+                            //           isRegLoading ? null : userRegister();
+                            //         },
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             Container(
-                              width: 150,
-                              child: Column(
-                                children: <Widget>[
-                                  RaisedButton(
-                                    color: isRegLoading ? Colors.grey :  mainheader,
-                                    child: Text(
-                                      isRegLoading
-                                          ? "Signing up..."
-                                          : "Sign Up",
-                                      style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
-                                    ),
-                                    onPressed: () {
-                                      isRegLoading ? null : userRegister();
-                                    },
-                                  ),
-                                ],
+                              width: 200,
+                              margin: EdgeInsets.only(left: 20),
+                              child: RaisedButton(
+                                color: isRegLoading ? Colors.grey : mainheader,
+                                child: Text(
+                                  isRegLoading ? "Signing up..." : "Sign Up",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.white),
+                                ),
+                                onPressed: () {
+                                  isRegLoading ? null : userRegister();
+                                },
                               ),
                             ),
                             SizedBox(
@@ -1245,6 +1266,8 @@ class _LogRegPageState extends State<LogRegPage> {
       var body1 = json.decode(res1.body);
       print(body1);
 
+      verificationAlert1("Your Account has been created.\nPlease Login");
+
       setState(() {
         isRegLoading = false;
       });
@@ -1286,9 +1309,44 @@ class _LogRegPageState extends State<LogRegPage> {
     );
   }
 
+  void verificationAlert1(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            title: new Text(
+              "Alert",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LogRegPage()));
+                },
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   void mapState() async {
     Map<String, double> my_loc;
-
     try {
       my_loc = await loc.getLocation();
     } on PlatformException catch (e) {

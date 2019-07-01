@@ -99,10 +99,12 @@ class SplashScreenState extends State<MyHomePage>
 
   onDoneLoading() async {
     _isLoggedIn
-        ? Navigator.pushReplacement(context, SlideLeftRoute(page: MainPage()))
-        : Navigator.pushReplacement(
-            context, SlideLeftRoute(page: LogRegPage()));
+        ? Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => MainPage()))
+        : Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => LogRegPage()));
     //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LogRegPage()));
+    //_isLoggedIn ? Navigator.of(context).pop() : null;
   }
 
   @override

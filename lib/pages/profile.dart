@@ -21,6 +21,7 @@ import 'package:crime_report/pages/terms_con.dart';
 import 'package:crime_report/pages/notify_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:crime_report/pages/main_page.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -287,6 +288,32 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ListTile(
               title: Text(
+                "Home",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPage()),
+                );
+              },
+              //trailing: Icon(Icons.arrow_forward),
+            ),
+            ListTile(
+              title: Text(
+                "Start Reporting",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RepCatPage()),
+                );
+              },
+              //trailing: Icon(Icons.arrow_forward),
+            ),
+            ListTile(
+              title: Text(
                 "Profile",
                 style: TextStyle(color: Colors.white, fontSize: 22),
               ),
@@ -346,14 +373,8 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             ListTile(
               title: GestureDetector(
-                onTap: () async {
-                  SharedPreferences localStorage =
-                      await SharedPreferences.getInstance();
-                  localStorage.remove('user');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LogRegPage()),
-                  );
+                onTap: () {
+                  logoutAlert("Do you want to logout?");
                 },
                 child: Text(
                   "Log Out",
@@ -614,74 +635,78 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: MediaQuery.of(context).size.width,
                           margin: EdgeInsets.only(left: 20, right: 20),
                           child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            //crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Container(
-                                //color: Colors.white,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(
-                                        width: 1.0, color: Colors.black26),
-                                    bottom: BorderSide(
-                                        width: 1.0, color: Colors.black26),
-                                    right: BorderSide(
-                                        width: 1.0, color: Colors.black26),
-                                    left: BorderSide(
-                                        width: 1.0, color: Colors.black26),
+                              Expanded(
+                                child: Container(
+                                  //color: Colors.white,
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          width: 1.0, color: Colors.black26),
+                                      bottom: BorderSide(
+                                          width: 1.0, color: Colors.black26),
+                                      right: BorderSide(
+                                          width: 1.0, color: Colors.black26),
+                                      left: BorderSide(
+                                          width: 1.0, color: Colors.black26),
+                                    ),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
                                   ),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                width: 155,
-                                child: TextField(
-                                  autofocus: false,
-                                  controller: _textrNameController,
-                                  decoration: InputDecoration(
-                                    hintText: "First name",
-                                    border: InputBorder.none,
-                                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                                    contentPadding: EdgeInsets.fromLTRB(
-                                        10.0, 10.0, 20.0, 10.0),
+                                  //width: 155,
+                                  child: TextField(
+                                    autofocus: false,
+                                    controller: _textrNameController,
+                                    decoration: InputDecoration(
+                                      hintText: "First name",
+                                      border: InputBorder.none,
+                                      //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                                      contentPadding: EdgeInsets.fromLTRB(
+                                          10.0, 10.0, 20.0, 10.0),
+                                    ),
+                                    onChanged: (value) {
+                                      rName = value;
+                                    },
                                   ),
-                                  onChanged: (value) {
-                                    rName = value;
-                                  },
                                 ),
                               ),
                               SizedBox(
                                 width: 10,
                               ),
-                              Container(
-                                //color: Colors.white,
-                                width: 155,
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    top: BorderSide(
-                                        width: 1.0, color: Colors.black26),
-                                    bottom: BorderSide(
-                                        width: 1.0, color: Colors.black26),
-                                    right: BorderSide(
-                                        width: 1.0, color: Colors.black26),
-                                    left: BorderSide(
-                                        width: 1.0, color: Colors.black26),
+                              Expanded(
+                                child: Container(
+                                  //color: Colors.white,
+                                  //width: 155,
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                          width: 1.0, color: Colors.black26),
+                                      bottom: BorderSide(
+                                          width: 1.0, color: Colors.black26),
+                                      right: BorderSide(
+                                          width: 1.0, color: Colors.black26),
+                                      left: BorderSide(
+                                          width: 1.0, color: Colors.black26),
+                                    ),
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.white,
                                   ),
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.white,
-                                ),
-                                child: TextField(
-                                  autofocus: false,
-                                  controller: _textrSurController,
-                                  decoration: InputDecoration(
-                                    hintText: "Surname",
-                                    border: InputBorder.none,
-                                    //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
-                                    contentPadding: EdgeInsets.fromLTRB(
-                                        10.0, 10.0, 20.0, 10.0),
+                                  child: TextField(
+                                    autofocus: false,
+                                    controller: _textrSurController,
+                                    decoration: InputDecoration(
+                                      hintText: "Surname",
+                                      border: InputBorder.none,
+                                      //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5), borderSide: BorderSide(color: Colors.grey, width: 10.0)),
+                                      contentPadding: EdgeInsets.fromLTRB(
+                                          10.0, 10.0, 20.0, 10.0),
+                                    ),
+                                    onChanged: (value) {
+                                      rSurname = value;
+                                    },
                                   ),
-                                  onChanged: (value) {
-                                    rSurname = value;
-                                  },
                                 ),
                               ),
                             ],
@@ -1171,13 +1196,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 height: 20,
                               ),
                               Container(
-                                width: 150,
+                                width: 250,
                                 child: Column(
                                   children: <Widget>[
                                     RaisedButton(
                                       color: mainheader,
                                       child: Text(
-                                        isEditLoading ? "SENDING..." : "SEND",
+                                        isEditLoading ? "UPDATING..." : "UPDATE",
                                         style: TextStyle(
                                             fontSize: 20, color: Colors.white),
                                       ),
@@ -1232,7 +1257,7 @@ class _ProfilePageState extends State<ProfilePage> {
       List<int> imageBytes = fileImage.readAsBytesSync();
       image = base64.encode(imageBytes);
       image = 'data:image/png;base64,' + image;
-    }else{
+    } else {
       image = pImg;
     }
 
@@ -1326,6 +1351,65 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         );
       },
+    );
+  }
+
+  void logoutAlert(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.white),
+          child: AlertDialog(
+            title: new Text(
+              "Logout",
+              style: TextStyle(color: Colors.black),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.black),
+            ),
+            actions: <Widget>[
+              Row(
+                children: <Widget>[
+                  new FlatButton(
+                    child: new Text(
+                      "Yes",
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      logoutConfirm();
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text(
+                      "No",
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void logoutConfirm() async {
+    Navigator.of(context).pop();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.remove('user');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LogRegPage()),
     );
   }
 }

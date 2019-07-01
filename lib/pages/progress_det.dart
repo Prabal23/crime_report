@@ -11,6 +11,7 @@ import 'package:crime_report/pages/notify_page.dart';
 import 'package:crime_report/pages/notify_det.dart';
 import 'package:crime_report/pages/progress.dart';
 import 'package:crime_report/pages/follow_up.dart';
+import 'package:crime_report/pages/main_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProgressDetPage extends StatefulWidget {
@@ -60,6 +61,32 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                   ),
                 ],
               ),
+              //trailing: Icon(Icons.arrow_forward),
+            ),
+            ListTile(
+              title: Text(
+                "Home",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPage()),
+                );
+              },
+              //trailing: Icon(Icons.arrow_forward),
+            ),
+            ListTile(
+              title: Text(
+                "Start Reporting",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RepCatPage()),
+                );
+              },
               //trailing: Icon(Icons.arrow_forward),
             ),
             ListTile(
@@ -123,14 +150,8 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
             ),
             ListTile(
               title: GestureDetector(
-                onTap: () async {
-                  SharedPreferences localStorage =
-                      await SharedPreferences.getInstance();
-                  localStorage.remove('user');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LogRegPage()),
-                  );
+                onTap: () {
+                  logoutAlert("Do you want to logout?");
                 },
                 child: Text(
                   "Log Out",
@@ -247,71 +268,85 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Number of days in System",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Order Number : #${widget.id}",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Attending Person",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Internal Staff Appointed",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "External Supplier Appointed",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "3rd Party involvement",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Required Completion Date",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Actual Completion Date",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Late by Number of Days",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Early by Number of Days",
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Report Description : " + widget.notes,
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Address : " + widget.add,
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "GPS : " + widget.lat + ", " + widget.longi,
                           textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 15, color: Colors.black),
                         ),
+                        SizedBox(height: 10),
                         Text(
                           "Resolved (Yes/No)",
                           textAlign: TextAlign.justify,
@@ -319,7 +354,7 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 5),
+                    SizedBox(height: 25),
                     Text(
                       "*All relevant info related to report/complaint if anything missed above",
                       textAlign: TextAlign.justify,
@@ -340,7 +375,8 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                               color: mainheader,
                               child: FlatButton(
                                 onPressed: () {
-                                  handleClick(widget.pID, widget.id, widget.notes, widget.sit);
+                                  handleClick(widget.pID, widget.id,
+                                      widget.notes, widget.sit);
                                 },
                                 child: Text(
                                   "Follow up",
@@ -453,9 +489,68 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
   void handleClick(String problem, int id, String notes, String situ) {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => FollowUpPage(
-        prob: problem, pID: id, desc: notes, situat: situ
-      )),
+      MaterialPageRoute(
+          builder: (context) =>
+              FollowUpPage(prob: problem, pID: id, desc: notes, situat: situ)),
+    );
+  }
+
+  void logoutAlert(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.white),
+          child: AlertDialog(
+            title: new Text(
+              "Logout",
+              style: TextStyle(color: Colors.black),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.black),
+            ),
+            actions: <Widget>[
+              Row(
+                children: <Widget>[
+                  new FlatButton(
+                    child: new Text(
+                      "Yes",
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      logoutConfirm();
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text(
+                      "No",
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void logoutConfirm() async {
+    Navigator.of(context).pop();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.remove('user');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LogRegPage()),
     );
   }
 }

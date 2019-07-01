@@ -32,7 +32,7 @@ class _ReportScreenState extends State<ReportScreen> {
   //List<Asset> images = List<Asset>();
   List images;
   var img = [];
-  int maxImageNo = 5;
+  int maxImageNo = 4;
   bool selectSingleImage = false;
   String text = '',
       prob = '',
@@ -43,7 +43,11 @@ class _ReportScreenState extends State<ReportScreen> {
       problem_name = '',
       photo = '';
   int problem_id, imgNum = 0;
-  bool green = true, yellow = false, orange = false, red = false;
+  bool green = true,
+      yellow = false,
+      orange = false,
+      red = false,
+      isDialog = false;
   List _problems = ["Burst Pipe", "Flood"];
   List<DropdownMenuItem<String>> _dropDownProblemItems;
   List<Problem> probsList = const [];
@@ -74,7 +78,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
     setState(() {
       images = resultList;
-      isImage = false;
+      //isImage = false;
       photo = '1';
       //if (error == null) _platformMessage = 'No Error Dectected';
     });
@@ -116,11 +120,17 @@ class _ReportScreenState extends State<ReportScreen> {
 
   clickImagefromCamera() async {
     profileImage = await ImagePicker.pickImage(source: ImageSource.camera);
+    // String img = profileImage.readAsString();
+    // List _list;
+    // _list.add(img);
     setState(() {
       fileImage = profileImage;
       isImage = true;
-      images = null;
+      //images = null;
       photo = '1';
+      // images = _list;
+      // isImage = false;
+      // photo = '1';
     });
   }
 
@@ -237,6 +247,32 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
             ListTile(
               title: Text(
+                "Home",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainPage()),
+                );
+              },
+              //trailing: Icon(Icons.arrow_forward),
+            ),
+            ListTile(
+              title: Text(
+                "Start Reporting",
+                style: TextStyle(color: Colors.white, fontSize: 22),
+              ),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RepCatPage()),
+                );
+              },
+              //trailing: Icon(Icons.arrow_forward),
+            ),
+            ListTile(
+              title: Text(
                 "Profile",
                 style: TextStyle(color: Colors.white, fontSize: 22),
               ),
@@ -296,14 +332,8 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
             ListTile(
               title: GestureDetector(
-                onTap: () async {
-                  SharedPreferences localStorage =
-                      await SharedPreferences.getInstance();
-                  localStorage.remove('user');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LogRegPage()),
-                  );
+                onTap: () {
+                  logoutAlert("Do you want to logout?");
                 },
                 child: Text(
                   "Log Out",
@@ -658,14 +688,15 @@ class _ReportScreenState extends State<ReportScreen> {
                         ),
                       ),
                       Center(
-                        child: (isImage == true && images == null)
+                        child: (isImage == true)
                             ? new Container(
-                                margin: EdgeInsets.only(left: 20, right: 20),
+                                margin: EdgeInsets.only(left: 0, right: 0),
                                 color: Colors.white,
-                                height: 60.0,
+                                height: 150.0,
                                 width: MediaQuery.of(context).size.width,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
+                                child: Container(
+                                  // color: Colors.white,
+                                  padding: EdgeInsets.all(5),
                                   child: fileImage != null
                                       ? new Image.file(fileImage)
                                       : null,
@@ -673,7 +704,7 @@ class _ReportScreenState extends State<ReportScreen> {
                               )
                             : new Container(),
                       ),
-                      (isImage == true && images == null)
+                      (isImage == true)
                           ? SizedBox(
                               height: 10,
                             )
@@ -684,7 +715,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            (isImage == true && images == null)
+                            (isImage == true)
                                 ? Text(
                                     'Photo taken',
                                     style: TextStyle(
@@ -726,19 +757,39 @@ class _ReportScreenState extends State<ReportScreen> {
                             : new Container(
                                 margin: EdgeInsets.only(left: 0, right: 0),
                                 color: Colors.white,
-                                height: 60.0,
+                                height: 220.0,
                                 width: MediaQuery.of(context).size.width,
-                                child: new ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (BuildContext context,
-                                          int index) =>
-                                      new Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: new Image.file(
-                                          new File(images[index].toString()),
+                                // child: new ListView.builder(
+                                //   scrollDirection: Axis.horizontal,
+                                //   itemBuilder: (BuildContext context,
+                                //           int index) =>
+                                //       new Padding(
+                                //         padding: const EdgeInsets.all(5.0),
+                                //         child: new Image.file(
+                                //           new File(images[index].toString()),
+                                //         ),
+                                //       ),
+                                //   itemCount: images.length,
+                                // ),
+                                child: Container(
+                                  child: GridView.builder(
+                                    //semanticChildCount: 2,
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                            crossAxisCount: 3),
+                                    //crossAxisCount: 2,
+                                    itemBuilder: (BuildContext context,
+                                            int index) =>
+                                        new Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: new Image.file(
+                                            new File(images[index].toString()),
+                                            height: 20,
+                                            width: 20,
+                                          ),
                                         ),
-                                      ),
-                                  itemCount: images.length,
+                                    itemCount: images.length,
+                                  ),
                                 ),
                               ),
                       ),
@@ -753,7 +804,7 @@ class _ReportScreenState extends State<ReportScreen> {
                           children: <Widget>[
                             Text(
                                 //imgNum == 0 ? "No photos attached or" : "$imgNum" + " photos attached",
-                                (isImage == false && images != null)
+                                (images != null)
                                     ? "${images.length}" + " Photo attached"
                                     : "",
                                 style: TextStyle(
@@ -1294,6 +1345,8 @@ class _ReportScreenState extends State<ReportScreen> {
       verificationAlert("Address field is blank");
     } else if (pID == 0) {
       verificationAlert("Select your problem");
+    } else if (add == '' && locate == '') {
+      verificationAlert("Location is not ON/Detected");
     } else if (des == '') {
       verificationAlert("Notes field is blank");
     } else if (photo == '') {
@@ -1366,6 +1419,7 @@ class _ReportScreenState extends State<ReportScreen> {
     String situ = situation;
     setState(() {
       isAddLoading = true;
+      isDialog = true;
     });
     var data = {
       'manager_name': 'admin',
@@ -1386,11 +1440,21 @@ class _ReportScreenState extends State<ReportScreen> {
     var res1 = await CallApi().postData(data, 'insertReport');
     var body1 = json.decode(res1.body);
     int rID = body1['id'];
-    if (isImage == true && images == null) {
+    if (isImage == true) {
       sendCameraImage(rID);
-    } else {
+    }
+    if (images != null) {
       sendPhotos(rID);
     }
+    // if (isImage == true && images == null) {
+    //   sendCameraImage(rID);
+    // }
+    // if (isImage == false && images != null) {
+    //   sendPhotos(rID);
+    // }
+    // if (isImage == true && images != null) {
+    //   sendPhotos1(rID);
+    // }
     //print(body1);
 
     // Navigator.push(
@@ -1415,17 +1479,40 @@ class _ReportScreenState extends State<ReportScreen> {
       await Future.delayed(Duration(milliseconds: 10));
     }
 
-    // List<int> imageBytes = fileImage.readAsBytesSync();
-    // String image = base64.encode(imageBytes);
-    // image = 'data:image/png;base64,' + image;
-    // var data = {'report_id': rID, 'photo': image};
-    // var res1 = await CallApi().postData(data, 'insertReportImage');
-    // var body1 = json.decode(res1.body);
-    // print(body1);
     setState(() {
       isAddLoading = false;
+      //isDialog = false;
     });
-    verificationAlert("Good o go! Report has been sent to your manager");
+    verificationAlert2("Good to go! Report has been sent to your manager");
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(builder: (context) => ProgressPage()),
+    // );
+  }
+
+  void sendPhotos1(int id) async {
+    print('Report id : ' + '$id');
+    String rID = '$id';
+
+    for (int i = 0; i < images.length; i++) {
+      File file = new File(images[i].toString());
+      List<int> imageBytes = file.readAsBytesSync();
+      String image = base64.encode(imageBytes);
+      image = 'data:image/png;base64,' + image;
+      var data = {'report_id': rID, 'photo': image};
+      var res1 = await CallApi().postData(data, 'insertReportImage');
+      var body1 = json.decode(res1.body);
+      print(body1);
+      await Future.delayed(Duration(milliseconds: 10));
+    }
+
+    setState(() {
+      isAddLoading = false;
+      //isDialog = false;
+    });
+    
+    sendCameraImage(id);
+    //verificationAlert2("Good to go! Report has been sent to your manager");
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => ProgressPage()),
@@ -1445,8 +1532,10 @@ class _ReportScreenState extends State<ReportScreen> {
     print(body1);
     setState(() {
       isAddLoading = false;
+      //isDialog = false;
     });
-    verificationAlert("Good to go! Report has been sent to your manager");
+    //await Future.delayed(Duration(milliseconds: 10));
+    verificationAlert2("Good to go! Report has been sent to your manager");
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(builder: (context) => ProgressPage()),
@@ -1485,6 +1574,104 @@ class _ReportScreenState extends State<ReportScreen> {
           ),
         );
       },
+    );
+  }
+
+  void verificationAlert2(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          true, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            title: new Text(
+              "Alert",
+              style: TextStyle(color: Colors.white),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.white),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProgressPage()),
+                  );
+                  //Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void logoutAlert(String msg) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          false, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.white),
+          child: AlertDialog(
+            title: new Text(
+              "Logout",
+              style: TextStyle(color: Colors.black),
+            ),
+            content: new Text(
+              msg,
+              style: TextStyle(color: Colors.black),
+            ),
+            actions: <Widget>[
+              Row(
+                children: <Widget>[
+                  new FlatButton(
+                    child: new Text(
+                      "Yes",
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      logoutConfirm();
+                    },
+                  ),
+                  new FlatButton(
+                    child: new Text(
+                      "No",
+                      style: TextStyle(
+                          color: Theme.of(context).secondaryHeaderColor),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void logoutConfirm() async {
+    Navigator.of(context).pop();
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    localStorage.remove('user');
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => LogRegPage()),
     );
   }
 }
