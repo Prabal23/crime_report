@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:crime_report/api/api.dart';
+import 'package:crime_report/json_serialize/photo.dart';
 import 'package:crime_report/main.dart';
 import 'package:crime_report/pages/login_reg.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +44,50 @@ class ProgressDetPage extends StatefulWidget {
 class _ProgressDetPageState extends State<ProgressDetPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final formKey = GlobalKey<FormState>();
+  var userData;
+  bool isLoading = true;
+  List<Photo> prog = [];
+  String photo = '', proImage = '', ph = '0';
+
+  @override
+  void initState() {
+    _getUserInfo();
+    loadImageList();
+
+    super.initState();
+  }
+
+  void _getUserInfo() async {
+    SharedPreferences localStorage = await SharedPreferences.getInstance();
+    var userJson = localStorage.getString('user');
+    var user = json.decode(userJson);
+    setState(() {
+      userData = user;
+    });
+
+    proImage = await CallApi().getURL();
+    //print("ID's : userData['id']");
+  }
+
+  Future loadImageList() async {
+    await Future.delayed(Duration(seconds: 3));
+
+    /////    for content without json array value   ////////
+    String id = "${userData['id']}";
+    String proid = "${widget.id}";
+    var response = await CallApi().getData('getReportImageById/' + proid);
+    var content = response.body;
+    print("Content : " + content);
+    List collection = json.decode(content);
+
+    List<Photo> _list = collection.map((json) => Photo.fromJson(json)).toList();
+
+    setState(() {
+      prog = _list;
+      ph = prog.length.toString();
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -367,40 +415,117 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                       width: MediaQuery.of(context).size.width,
                       //height: 150,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          Container(
-                              padding: EdgeInsets.all(5),
-                              //width: 140,
-                              color: mainheader,
-                              child: FlatButton(
-                                onPressed: () {
-                                  handleClick(widget.pID, widget.id,
-                                      widget.notes, widget.sit);
-                                },
-                                child: Text(
-                                  "Follow up",
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
-                              )),
+                          Expanded(
+                            child: Container(
+                                padding: EdgeInsets.all(5),
+                                //width: 140,
+                                color: mainheader,
+                                child: FlatButton(
+                                  onPressed: () {
+                                    handleClick(widget.pID, widget.id,
+                                        widget.notes, widget.sit);
+                                  },
+                                  child: Text(
+                                    "Follow up",
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white),
+                                  ),
+                                )),
+                          ),
                           SizedBox(width: 10),
-                          Container(
-                              padding: EdgeInsets.all(5),
-                              //width: 140,
-                              color: mainheader,
-                              child: FlatButton(
-                                onPressed: () {},
-                                child: Text(
-                                  "Problem fixed,\nthank you",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.white),
-                                ),
-                              )),
+                          Expanded(
+                            child: Container(
+                                padding: EdgeInsets.all(5),
+                                //width: 140,
+                                color: mainheader,
+                                child: FlatButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    "Problem fixed,\nthank you",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 15, color: Colors.white),
+                                  ),
+                                )),
+                          ),
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(ph + " Image/s",
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.italic)),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    prog == null
+                        ? Container()
+                        : Container(
+                            margin: EdgeInsets.only(left: 0, right: 0),
+                            color: Colors.white,
+                            height: 270.0,
+                            width: MediaQuery.of(context).size.width,
+                            child: isLoading
+                                ? Center(
+                                    // child: Text(
+                                    //   "Please wait...\nImages are loading",
+                                    //   textAlign: TextAlign.center,
+                                    // )
+                                    child: CircularProgressIndicator())
+                                : GridView.count(
+                                    primary: true,
+                                    crossAxisCount: 3,
+                                    childAspectRatio: 0.80,
+                                    // mainAxisSpacing: 4,
+                                    // crossAxisSpacing: 4,
+                                    children:
+                                        List.generate(prog.length, (index) {
+                                      Photo photos = prog[index];
+                                      setState(() {
+                                        ph = '${prog.length}';
+                                      });
+                                      return Container(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: CircleAvatar(
+                                          radius: 20,
+                                          backgroundColor: subheader,
+                                          child: GestureDetector(
+                                            child: GridTile(
+                                              child: Container(
+                                                padding: EdgeInsets.all(5.0),
+                                                decoration: BoxDecoration(
+                                                    color: subheader,
+                                                    //shape: BoxShape.circle,
+                                                    image: new DecorationImage(
+                                                      image: new NetworkImage(
+                                                        proImage +
+                                                            '${photos.photo}',
+                                                      ),
+                                                      //fit: BoxFit.cover,
+                                                    )),
+                                              ),
+                                            ),
+                                            onLongPress: () {
+                                              //deleteDialog(photos.id);
+                                            },
+                                          ),
+                                        ),
+                                      );
+                                    }),
+                                  )),
                     SizedBox(
                       height: 30,
                     ),

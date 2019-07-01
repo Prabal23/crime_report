@@ -688,18 +688,23 @@ class _MainPageState extends State<MainPage> {
     var first = addresses.first;
     //address = "${first.featureName} & ${first.addressLine} & ${first.adminArea}";
     address = "${first.addressLine}";
-    add = "${first.addressLine}";
+    String addr = "${first.addressLine}";
     country = "${first.countryName}";
     location = curLocation['latitude'].toString() +
         ", " +
         curLocation['longitude'].toString();
 
-    locate = curLocation['latitude'].toString() +
+    String locates = curLocation['latitude'].toString() +
         ", " +
         curLocation['longitude'].toString();
 
     lat = curLocation['latitude'].toString();
     longi = curLocation['longitude'].toString();
+
+    setState(() {
+      add = addr;
+      locate = locates;
+    });
   }
 
   void logoutAlert(String msg) {

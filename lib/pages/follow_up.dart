@@ -50,7 +50,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
       runningdate = '',
       photo = '',
       proImage = '',
-      ph = '';
+      ph = '0';
   bool green = true, yellow = false, orange = false, red = false;
   bool not_fixed = true, adeq_fixed = false;
   var userData;
@@ -69,8 +69,8 @@ class _FollowUpPageState extends State<FollowUpPage> {
     _textController.text = widget.desc;
     _getUserInfo();
     loadImageList();
-    prog.length = 0;
-    photoIMG.length = 0;
+    //prog.length = 0;
+    //photoIMG.length = 0;
     runningTime = _formatDateTime(DateTime.now());
     Timer.periodic(Duration(seconds: 1), (Timer t) => _getTime());
     runningdate = _formatDateTime1(DateTime.now());
@@ -135,6 +135,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
     setState(() {
       prog = _list;
       isLoading = false;
+      photo = '1';
     });
   }
 
@@ -782,7 +783,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          Text(ph + " Image/s (Tap to delete an image)",
+                          Text(ph + " Image/s (Long Press to delete an image)",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontStyle: FontStyle.italic)),
@@ -792,7 +793,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                     SizedBox(
                       height: 15,
                     ),
-                    prog.length == 0
+                    prog == null
                         ? Container()
                         : Container(
                             margin: EdgeInsets.only(left: 20, right: 20),
@@ -845,7 +846,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                                     )),
                                               ),
                                             ),
-                                            onTap: () {
+                                            onLongPress: () {
                                               deleteDialog(photos.id);
                                             },
                                           ),
@@ -1401,14 +1402,46 @@ class _FollowUpPageState extends State<FollowUpPage> {
       var res1 = await CallApi().postData(data, 'followUp');
       var body1 = json.decode(res1.body);
       int rID = body1['id'];
-      if (isImage == true) {
+
+      //only camera image is available
+      if (isImage == true && images == null && prog == null) {
         sendCameraImage(rID);
+        nextPageRoute();
       }
-      if (images != null) {
-        sendPhotos(rID);
+      //only multi image picker is available
+      if (isImage == false && images != null && prog == null) {
+        sendMultiPhotos(rID);
+        nextPageRoute();
       }
-      if (prog.length != 0) {
+      //only old pictures are available
+      if (isImage == false && images == null && prog != null) {
         sendOldPics(rID);
+        nextPageRoute();
+      }
+      //camera & multi image picker is available
+      if (isImage == true && images != null && prog == null) {
+        sendCameraImage(rID);
+        sendMultiPhotos(rID);
+        nextPageRoute();
+      }
+      //camera & old pictures are available
+      if (isImage == true && images == null && prog != null) {
+        sendCameraImage(rID);
+        sendOldPics(rID);
+        nextPageRoute();
+      }
+      //multi image picker & old pictures are available
+      if (isImage == false && images != null && prog != null) {
+        sendMultiPhotos(rID);
+        sendOldPics(rID);
+        nextPageRoute();
+      }
+      //all 3 image sources are available
+      if (isImage == true && images != null && prog != null) {
+        sendCameraImage(rID);
+        sendMultiPhotos(rID);
+        sendOldPics(rID);
+        nextPageRoute();
       }
 
       print(body1);
@@ -1422,7 +1455,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
     }
   }
 
-  void sendPhotos(int id) async {
+  void sendMultiPhotos(int id) async {
     print('Follow id : ' + '$id');
     String fID = '$id';
 
@@ -1437,13 +1470,6 @@ class _FollowUpPageState extends State<FollowUpPage> {
       print(body1);
       await Future.delayed(Duration(milliseconds: 10));
     }
-    setState(() {
-      isAddLoading = false;
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProgressPage()),
-    );
   }
 
   void sendCameraImage(int id) async {
@@ -1457,13 +1483,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
     var res1 = await CallApi().postData(data, 'insertflloupImage');
     var body1 = json.decode(res1.body);
     print(body1);
-    setState(() {
-      isAddLoading = false;
-    });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProgressPage()),
-    );
+    await Future.delayed(Duration(milliseconds: 10));
   }
 
   void sendOldPics(int id) async {
@@ -1482,6 +1502,9 @@ class _FollowUpPageState extends State<FollowUpPage> {
       print(body1);
       await Future.delayed(Duration(milliseconds: 10));
     }
+  }
+
+  void nextPageRoute(){
     setState(() {
       isAddLoading = false;
     });

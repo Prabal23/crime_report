@@ -1342,15 +1342,15 @@ class _ReportScreenState extends State<ReportScreen> {
     String situ = situation;
 
     if (add == '') {
-      verificationAlert("Address field is blank");
+      verificationAlert("Address field is blank", "1");
     } else if (pID == 0) {
-      verificationAlert("Select your problem");
+      verificationAlert("Select your problem", "1");
     } else if (add == '' && locate == '') {
-      verificationAlert("Location is not ON/Detected");
+      verificationAlert("Location is not ON/Detected", "1");
     } else if (des == '') {
-      verificationAlert("Notes field is blank");
+      verificationAlert("Notes field is blank", "1");
     } else if (photo == '') {
-      verificationAlert("Photos not attached. Please attach photos.");
+      verificationAlert("Photos not attached. Please attach photos.", "1");
     } else {
       sendReportDialog();
     }
@@ -1440,30 +1440,26 @@ class _ReportScreenState extends State<ReportScreen> {
     var res1 = await CallApi().postData(data, 'insertReport');
     var body1 = json.decode(res1.body);
     int rID = body1['id'];
-    if (isImage == true) {
+
+    //only camera is available
+    if (isImage == true && images == null) {
       sendCameraImage(rID);
+      nextPageRoute();
     }
-    if (images != null) {
-      sendPhotos(rID);
+    //only multi image picker is available
+    if (isImage == false && images != null) {
+      sendMultiPhotos(rID);
+      nextPageRoute();
     }
-    // if (isImage == true && images == null) {
-    //   sendCameraImage(rID);
-    // }
-    // if (isImage == false && images != null) {
-    //   sendPhotos(rID);
-    // }
-    // if (isImage == true && images != null) {
-    //   sendPhotos1(rID);
-    // }
-    //print(body1);
-
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ProgressPage()),
-    // );
+    //all 2 sources are available
+    if (isImage == true && images != null) {
+      sendCameraImage(rID);
+      sendMultiPhotos(rID);
+      nextPageRoute();
+    }
   }
 
-  void sendPhotos(int id) async {
+  void sendMultiPhotos(int id) async {
     print('Report id : ' + '$id');
     String rID = '$id';
 
@@ -1478,45 +1474,6 @@ class _ReportScreenState extends State<ReportScreen> {
       print(body1);
       await Future.delayed(Duration(milliseconds: 10));
     }
-
-    setState(() {
-      isAddLoading = false;
-      //isDialog = false;
-    });
-    verificationAlert2("Good to go! Report has been sent to your manager");
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ProgressPage()),
-    // );
-  }
-
-  void sendPhotos1(int id) async {
-    print('Report id : ' + '$id');
-    String rID = '$id';
-
-    for (int i = 0; i < images.length; i++) {
-      File file = new File(images[i].toString());
-      List<int> imageBytes = file.readAsBytesSync();
-      String image = base64.encode(imageBytes);
-      image = 'data:image/png;base64,' + image;
-      var data = {'report_id': rID, 'photo': image};
-      var res1 = await CallApi().postData(data, 'insertReportImage');
-      var body1 = json.decode(res1.body);
-      print(body1);
-      await Future.delayed(Duration(milliseconds: 10));
-    }
-
-    setState(() {
-      isAddLoading = false;
-      //isDialog = false;
-    });
-    
-    sendCameraImage(id);
-    //verificationAlert2("Good to go! Report has been sent to your manager");
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ProgressPage()),
-    // );
   }
 
   void sendCameraImage(int id) async {
@@ -1530,19 +1487,16 @@ class _ReportScreenState extends State<ReportScreen> {
     var res1 = await CallApi().postData(data, 'insertReportImage');
     var body1 = json.decode(res1.body);
     print(body1);
-    setState(() {
-      isAddLoading = false;
-      //isDialog = false;
-    });
-    //await Future.delayed(Duration(milliseconds: 10));
-    verificationAlert2("Good to go! Report has been sent to your manager");
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) => ProgressPage()),
-    // );
   }
 
-  void verificationAlert(String msg) {
+  void nextPageRoute() {
+    setState(() {
+      isAddLoading = false;
+    });
+    verificationAlert("Good to go! Report has been sent to your manager", "2");
+  }
+
+  void verificationAlert(String msg, String number) {
     showDialog<String>(
       context: context,
       barrierDismissible:
@@ -1567,46 +1521,15 @@ class _ReportScreenState extends State<ReportScreen> {
                       TextStyle(color: Theme.of(context).secondaryHeaderColor),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void verificationAlert2(String msg) {
-    showDialog<String>(
-      context: context,
-      barrierDismissible:
-          true, // dialog is dismissible with a tap on the barrier
-      builder: (BuildContext context) {
-        return Theme(
-          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
-          child: AlertDialog(
-            title: new Text(
-              "Alert",
-              style: TextStyle(color: Colors.white),
-            ),
-            content: new Text(
-              msg,
-              style: TextStyle(color: Colors.white),
-            ),
-            actions: <Widget>[
-              new FlatButton(
-                child: new Text(
-                  "OK",
-                  style:
-                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProgressPage()),
-                  );
-                  //Navigator.of(context).pop();
+                  if (number == "2") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProgressPage()),
+                    );
+                    Navigator.of(context).pop();
+                  } else {
+                    Navigator.of(context).pop();
+                  }
                 },
               )
             ],
