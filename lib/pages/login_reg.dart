@@ -1168,7 +1168,7 @@ class _LogRegPageState extends State<LogRegPage> {
       if (body['success']) {
         SharedPreferences localStorage = await SharedPreferences.getInstance();
         localStorage.setString('user', json.encode(body['user']));
-
+        Navigator.pop(context);
         Navigator.push(context, SlideLeftRoute(page: MainPage()));
       } else {
         _showMsg(body['msg']);

@@ -1196,21 +1196,19 @@ class _ProfilePageState extends State<ProfilePage> {
                                 height: 20,
                               ),
                               Container(
-                                width: 250,
-                                child: Column(
-                                  children: <Widget>[
-                                    RaisedButton(
-                                      color: mainheader,
-                                      child: Text(
-                                        isEditLoading ? "UPDATING..." : "UPDATE",
-                                        style: TextStyle(
-                                            fontSize: 20, color: Colors.white),
-                                      ),
-                                      onPressed: () {
-                                        isEditLoading ? null : handleSubmit();
-                                      },
-                                    ),
-                                  ],
+                                width: 200,
+                                margin: EdgeInsets.only(left: 20),
+                                child: RaisedButton(
+                                  color:
+                                      isEditLoading ? Colors.grey : mainheader,
+                                  child: Text(
+                                    isEditLoading ? "UPDATING..." : "UPDATE",
+                                    style: TextStyle(
+                                        fontSize: 20, color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    isEditLoading ? null : handleSubmit();
+                                  },
                                 ),
                               ),
                               SizedBox(
@@ -1270,29 +1268,29 @@ class _ProfilePageState extends State<ProfilePage> {
     //print(image);
 
     if (image == '') {
-      verificationAlert("Photo not selected. Please select a photo.");
+      verificationAlert("Photo not selected. Please select a photo.", 1);
     } else if (n == '') {
-      verificationAlert("First Name field is blank");
+      verificationAlert("First Name field is blank", 1);
     } else if (s == '') {
-      verificationAlert("Surname field is blank");
+      verificationAlert("Surname field is blank", 1);
     } else if (e == '') {
-      verificationAlert("Email field is blank");
+      verificationAlert("Email field is blank", 1);
     } else if (p == '') {
-      verificationAlert("Password field is blank");
+      verificationAlert("Password field is blank", 1);
     } else if (cp == '') {
-      verificationAlert("Confirm Password field is blank");
+      verificationAlert("Confirm Password field is blank", 1);
     } else if (cp != p) {
-      verificationAlert("Password doesn't match");
+      verificationAlert("Password doesn't match", 1);
     } else if (dd == '') {
-      verificationAlert("Day not chosen");
+      verificationAlert("Day not chosen", 1);
     } else if (mm == '') {
-      verificationAlert("Month not chosen");
+      verificationAlert("Month not chosen", 1);
     } else if (yy == '') {
-      verificationAlert("Year field is blank");
+      verificationAlert("Year field is blank", 1);
     } else if (g == '') {
-      verificationAlert("Gender not chosen");
+      verificationAlert("Gender not chosen", 1);
     } else if (t == '') {
-      verificationAlert("Type not chosen");
+      verificationAlert("Type not chosen", 1);
     } else {
       setState(() {
         isEditLoading = true;
@@ -1316,10 +1314,14 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         isEditLoading = false;
       });
+
+      verificationAlert(
+          "Your profile has been updated. Please login again to see the changes.",
+          2);
     }
   }
 
-  void verificationAlert(String msg) {
+  void verificationAlert(String msg, int numbers) {
     showDialog<String>(
       context: context,
       barrierDismissible:
@@ -1344,7 +1346,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       TextStyle(color: Theme.of(context).secondaryHeaderColor),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  if (numbers == 2) {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                    );
+                  } else {
+                    Navigator.of(context).pop();
+                  }
                 },
               )
             ],

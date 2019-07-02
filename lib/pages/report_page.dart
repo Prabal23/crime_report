@@ -1506,7 +1506,7 @@ class _ReportScreenState extends State<ReportScreen> {
           data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
           child: AlertDialog(
             title: new Text(
-              "Alert",
+              "Success!",
               style: TextStyle(color: Colors.white),
             ),
             content: new Text(
@@ -1522,11 +1522,11 @@ class _ReportScreenState extends State<ReportScreen> {
                 ),
                 onPressed: () {
                   if (number == "2") {
+                    Navigator.of(context).pop();
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => ProgressPage()),
                     );
-                    Navigator.of(context).pop();
                   } else {
                     Navigator.of(context).pop();
                   }
