@@ -1331,7 +1331,7 @@ class _ProfilePageState extends State<ProfilePage> {
           data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
           child: AlertDialog(
             title: new Text(
-              "Alert",
+              numbers == 2 ? "Success!" : "Alert",
               style: TextStyle(color: Colors.white),
             ),
             content: new Text(

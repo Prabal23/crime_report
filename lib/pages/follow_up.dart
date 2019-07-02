@@ -855,7 +855,9 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                     }),
                                   )),
                     //Text(ph),
-                    SizedBox(height: 10,),
+                    SizedBox(
+                      height: 10,
+                    ),
                     GestureDetector(
                       onTap: () {
                         clickImagefromCamera();
@@ -1025,7 +1027,8 @@ class _FollowUpPageState extends State<FollowUpPage> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text("Address : "+address, style: TextStyle(color: Colors.white)),
+                          Text("Address : " + address,
+                              style: TextStyle(color: Colors.white)),
                         ],
                       ),
                     ),
@@ -1377,11 +1380,11 @@ class _FollowUpPageState extends State<FollowUpPage> {
     String situ = situation;
 
     if (des == '') {
-      verificationAlert("Notes field is blank");
+      verificationAlert("Notes field is blank", 1);
     } else if (add == '' && locate == '') {
-      verificationAlert("Location is not ON/Detected");
+      verificationAlert("Location is not ON/Detected", 1);
     } else if (photo == '') {
-      verificationAlert("Photos not attached. Please attach photos.");
+      verificationAlert("Photos not attached. Please attach photos.", 1);
     } else {
       setState(() {
         isAddLoading = true;
@@ -1504,17 +1507,14 @@ class _FollowUpPageState extends State<FollowUpPage> {
     }
   }
 
-  void nextPageRoute(){
+  void nextPageRoute() {
     setState(() {
       isAddLoading = false;
     });
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ProgressPage()),
-    );
+    verificationAlert("Follow Up Report has been sent to the manager.", 2);
   }
 
-  void verificationAlert(String msg) {
+  void verificationAlert(String msg, int number) {
     showDialog<String>(
       context: context,
       barrierDismissible:
@@ -1524,7 +1524,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
           data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
           child: AlertDialog(
             title: new Text(
-              "Alert",
+              number == 2 ? "Success!" : "Alert",
               style: TextStyle(color: Colors.white),
             ),
             content: new Text(
@@ -1539,7 +1539,15 @@ class _FollowUpPageState extends State<FollowUpPage> {
                       TextStyle(color: Theme.of(context).secondaryHeaderColor),
                 ),
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  if (number == 2) {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ProgressPage()),
+                    );
+                  } else {
+                    Navigator.of(context).pop();
+                  }
                 },
               )
             ],

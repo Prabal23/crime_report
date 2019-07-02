@@ -1506,7 +1506,7 @@ class _ReportScreenState extends State<ReportScreen> {
           data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
           child: AlertDialog(
             title: new Text(
-              "Success!",
+              number == "2" ? "Success!" : "Alert",
               style: TextStyle(color: Colors.white),
             ),
             content: new Text(
