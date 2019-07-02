@@ -18,6 +18,7 @@ import 'package:crime_report/pages/progress.dart';
 import 'package:crime_report/pages/main_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter_multiple_image_picker/flutter_multiple_image_picker.dart';
 
 class FollowUpPage extends StatefulWidget {
@@ -834,16 +835,34 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                             child: GridTile(
                                               child: Container(
                                                 padding: EdgeInsets.all(5.0),
+                                                // child: Stack(
+                                                //   children: <Widget>[
+                                                //     Center(
+                                                //         child:
+                                                //             CircularProgressIndicator()),
+                                                //     Center(
+                                                //       child: FadeInImage
+                                                //           .memoryNetwork(
+                                                //         placeholder:
+                                                //             kTransparentImage,
+                                                //         image: proImage +
+                                                //             '${photos.photo}',
+                                                //             fit: BoxFit.cover
+                                                //       ),
+                                                //     ),
+                                                //   ],
+                                                // ),
                                                 decoration: BoxDecoration(
-                                                    color: subheader,
-                                                    //shape: BoxShape.circle,
-                                                    image: new DecorationImage(
-                                                      image: new NetworkImage(
-                                                        proImage +
-                                                            '${photos.photo}',
-                                                      ),
-                                                      //fit: BoxFit.cover,
-                                                    )),
+                                                  color: subheader,
+                                                  shape: BoxShape.circle,
+                                                  image: new DecorationImage(
+                                                    image: new NetworkImage(
+                                                      proImage +
+                                                          '${photos.photo}',
+                                                    ),
+                                                    //fit: BoxFit.cover,
+                                                  )
+                                                ),
                                               ),
                                             ),
                                             onLongPress: () {
