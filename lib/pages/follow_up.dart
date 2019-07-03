@@ -19,6 +19,7 @@ import 'package:crime_report/pages/main_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:flutter_multiple_image_picker/flutter_multiple_image_picker.dart';
 
 class FollowUpPage extends StatefulWidget {
@@ -799,7 +800,7 @@ class _FollowUpPageState extends State<FollowUpPage> {
                         : Container(
                             margin: EdgeInsets.only(left: 20, right: 20),
                             color: Colors.white,
-                            height: 270.0,
+                            height: 220.0,
                             width: MediaQuery.of(context).size.width,
                             child: isLoading
                                 ? Center(
@@ -853,20 +854,25 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                                 //   ],
                                                 // ),
                                                 decoration: BoxDecoration(
-                                                  color: subheader,
-                                                  shape: BoxShape.circle,
-                                                  image: new DecorationImage(
-                                                    image: new NetworkImage(
-                                                      proImage +
-                                                          '${photos.photo}',
-                                                    ),
-                                                    //fit: BoxFit.cover,
-                                                  )
-                                                ),
+                                                    color: subheader,
+                                                    border: Border.all(
+                                                        width: 0.5,
+                                                        color: Colors.grey),
+                                                    //shape: BoxShape.circle,
+                                                    image: new DecorationImage(
+                                                      image: new NetworkImage(
+                                                        proImage +
+                                                            '${photos.photo}',
+                                                      ),
+                                                      fit: BoxFit.fill,
+                                                    )),
                                               ),
                                             ),
                                             onLongPress: () {
                                               deleteDialog(photos.id);
+                                            },
+                                            onTap: () {
+                                              viewImage(photos.photo, 1);
                                             },
                                           ),
                                         ),
@@ -922,9 +928,16 @@ class _FollowUpPageState extends State<FollowUpPage> {
                               child: Container(
                                 // color: Colors.white,
                                 padding: EdgeInsets.all(5),
-                                child: fileImage != null
-                                    ? new Image.file(fileImage)
-                                    : null,
+                                child: Container(
+                                  child: fileImage != null
+                                      ? new GestureDetector(
+                                          child: Image.file(fileImage),
+                                          onTap: () {
+                                            viewImage(fileImage, 2);
+                                          },
+                                        )
+                                      : null,
+                                ),
                               ),
                             )
                           : new Container(),
@@ -1008,10 +1021,25 @@ class _FollowUpPageState extends State<FollowUpPage> {
                                           int index) =>
                                       new Container(
                                         padding: const EdgeInsets.all(5.0),
-                                        child: new Image.file(
-                                          new File(images[index].toString()),
-                                          height: 20,
-                                          width: 20,
+                                        child: Container(
+                                          padding: const EdgeInsets.all(5.0),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                                width: 0.5, color: Colors.grey),
+                                          ),
+                                          child: GestureDetector(
+                                            child: GridTile(
+                                              child: new Image.file(
+                                                new File(
+                                                    images[index].toString()),
+                                                height: 20,
+                                                width: 20,
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              viewImage(images[index], 3);
+                                            },
+                                          ),
                                         ),
                                       ),
                                   itemCount: images.length,
@@ -1703,5 +1731,60 @@ class _FollowUpPageState extends State<FollowUpPage> {
       ph = phtID;
       loadImageList();
     });
+  }
+
+  void viewImage(var photo, int number) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          true, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            // title: new Text(
+            //   proImage + '$photo',
+            //   style: TextStyle(color: Colors.white),
+            // ),
+            content: Container(
+              padding: EdgeInsets.all(5.0),
+              child: number == 1
+                  ? PhotoView(
+                      imageProvider: NetworkImage(
+                        proImage + '$photo',
+                      ),
+                      minScale: PhotoViewComputedScale.contained * 1.2,
+                      maxScale: 4.0,
+                    )
+                  : number == 2
+                      ? PhotoView(
+                          imageProvider: FileImage(photo),
+                          minScale: PhotoViewComputedScale.contained * 1.2,
+                          maxScale: 4.0,
+                        )
+                      : number == 3
+                          ? PhotoView(
+                              imageProvider: FileImage(new File(photo)),
+                              minScale: PhotoViewComputedScale.contained * 1.2,
+                              maxScale: 4.0,
+                            )
+                          : null,
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
+    );
   }
 }

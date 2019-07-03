@@ -16,6 +16,7 @@ import 'package:crime_report/pages/notify_det.dart';
 import 'package:crime_report/pages/progress.dart';
 import 'package:crime_report/pages/follow_up.dart';
 import 'package:crime_report/pages/main_page.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProgressDetPage extends StatefulWidget {
@@ -508,18 +509,24 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
                                                 padding: EdgeInsets.all(5.0),
                                                 decoration: BoxDecoration(
                                                     color: subheader,
+                                                    border: Border.all(
+                                                        width: 0.5,
+                                                        color: Colors.grey),
                                                     //shape: BoxShape.circle,
                                                     image: new DecorationImage(
                                                       image: new NetworkImage(
                                                         proImage +
                                                             '${photos.photo}',
                                                       ),
-                                                      //fit: BoxFit.cover,
+                                                      fit: BoxFit.fill,
                                                     )),
                                               ),
                                             ),
                                             onLongPress: () {
                                               //deleteDialog(photos.id);
+                                            },
+                                            onTap: () {
+                                              viewImage(photos.photo, 1);
                                             },
                                           ),
                                         ),
@@ -676,6 +683,49 @@ class _ProgressDetPageState extends State<ProgressDetPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => LogRegPage()),
+    );
+  }
+
+  void viewImage(var photo, int number) {
+    showDialog<String>(
+      context: context,
+      barrierDismissible:
+          true, // dialog is dismissible with a tap on the barrier
+      builder: (BuildContext context) {
+        return Theme(
+          data: Theme.of(context).copyWith(dialogBackgroundColor: Colors.black),
+          child: AlertDialog(
+            // title: new Text(
+            //   proImage + '$photo',
+            //   style: TextStyle(color: Colors.white),
+            // ),
+            content: Container(
+              padding: EdgeInsets.all(5.0),
+              child: number == 1
+                  ? PhotoView(
+                      imageProvider: NetworkImage(
+                        proImage + '$photo',
+                      ),
+                      minScale: PhotoViewComputedScale.contained * 1.2,
+                      maxScale: 4.0,
+                    )
+                  : null,
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "OK",
+                  style:
+                      TextStyle(color: Theme.of(context).secondaryHeaderColor),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }
