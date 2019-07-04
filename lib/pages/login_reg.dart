@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 import 'package:crime_report/pages/main_page.dart';
 import 'package:crime_report/pages/routeAnimation.dart';
 import 'package:crime_report/pages/profile.dart';
+import 'package:connectivity/connectivity.dart';
 //import 'package:firebase_messaging/firebase_messaging.dart';
 
 class LogRegPage extends StatefulWidget {
@@ -1145,43 +1146,49 @@ class _LogRegPageState extends State<LogRegPage> {
     } else if (p == "") {
       verificationAlert("Password field is blank");
     } else {
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => MainPage()),
-      // );
-      //Navigator.push(context, SlideRightRoute(page: MainPage()));
-      // setState(() {
-      //   Navigator.push( context, SlideLeftRoute(page: MainPage()));
-      // });
-      setState(() {
-        isLoginLoading = true;
-      });
-      var data = {
-        'first_name': _textNameController.text,
-        'last_name': _textSurNameController.text,
-        'username': _textPassController.text
-      };
-
-      var res = await CallApi().postData(data, 'login');
-      var body = json.decode(res.body);
-      print(body);
-      if (body['success']) {
-        SharedPreferences localStorage = await SharedPreferences.getInstance();
-        localStorage.setString('user', json.encode(body['user']));
-        Navigator.pop(context);
-        Navigator.push(context, SlideLeftRoute(page: MainPage()));
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.mobile) {
+        print("Connected to Mobile Network");
+        sendReq();
+      } else if (connectivityResult == ConnectivityResult.wifi) {
+        print("Connected to WiFi");
+        sendReq();
       } else {
-        _showMsg(body['msg']);
+        verificationAlert(
+            "Unable to connect. Please Check Internet Connection");
       }
-
-      setState(() {
-        isLoginLoading = false;
-      });
     }
   }
 
+  void sendReq() async {
+    setState(() {
+      isLoginLoading = true;
+    });
+    
+    var data = {
+      'first_name': _textNameController.text,
+      'last_name': _textSurNameController.text,
+      'username': _textPassController.text
+    };
+
+    var res = await CallApi().postData(data, 'login');
+    var body = json.decode(res.body);
+    print(body);
+    if (body['success']) {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.setString('user', json.encode(body['user']));
+      Navigator.pop(context);
+      Navigator.push(context, SlideLeftRoute(page: MainPage()));
+    } else {
+      _showMsg(body['msg']);
+    }
+
+    setState(() {
+      isLoginLoading = false;
+    });
+  }
+
   void _showMsg(msg) {
-    //
     showDialog<String>(
       context: context,
       barrierDismissible:
@@ -1249,29 +1256,43 @@ class _LogRegPageState extends State<LogRegPage> {
     } else if (t == '') {
       verificationAlert("Type not chosen");
     } else {
-      setState(() {
-        isRegLoading = true;
-      });
-      var data = {
-        'first_name': _textrNameController.text,
-        'last_name': _textrSurController.text,
-        'email': _textrEmailController.text,
-        'password_text': _textrNewPassController.text,
-        'dob': year + "-" + month + "-" + day,
-        'gender': _radioGender,
-        'user_type': type
-      };
-
-      var res1 = await CallApi().postData(data, 'register');
-      var body1 = json.decode(res1.body);
-      print(body1);
-
-      verificationAlert1("Your Account has been created.\nPlease Login");
-
-      setState(() {
-        isRegLoading = false;
-      });
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      if (connectivityResult == ConnectivityResult.mobile) {
+        print("Connected to Mobile Network");
+        sendReq1();
+      } else if (connectivityResult == ConnectivityResult.wifi) {
+        print("Connected to WiFi");
+        sendReq1();
+      } else {
+        verificationAlert(
+            "Unable to connect. Please Check Internet Connection");
+      }
     }
+  }
+
+  void sendReq1() async {
+    setState(() {
+      isRegLoading = true;
+    });
+    var data = {
+      'first_name': _textrNameController.text,
+      'last_name': _textrSurController.text,
+      'email': _textrEmailController.text,
+      'password_text': _textrNewPassController.text,
+      'dob': year + "-" + month + "-" + day,
+      'gender': _radioGender,
+      'user_type': type
+    };
+
+    var res1 = await CallApi().postData(data, 'register');
+    var body1 = json.decode(res1.body);
+    print(body1);
+
+    verificationAlert1("Your Account has been created.\nPlease Login");
+
+    setState(() {
+      isRegLoading = false;
+    });
   }
 
   void verificationAlert(String msg) {
@@ -1378,55 +1399,3 @@ class _LogRegPageState extends State<LogRegPage> {
     longi = curLocation['longitude'].toString();
   }
 }
-
-// class SlideRightRoute extends PageRouteBuilder {
-//   final Widget page;
-//   SlideRightRoute({this.page})
-//       : super(
-//           pageBuilder: (
-//             BuildContext context,
-//             Animation<double> animation,
-//             Animation<double> secondaryAnimation,
-//           ) =>
-//               page,
-//           transitionsBuilder: (
-//             BuildContext context,
-//             Animation<double> animation,
-//             Animation<double> secondaryAnimation,
-//             Widget child,
-//           ) =>
-//               SlideTransition(
-//                 position: Tween<Offset>(
-//                   begin: const Offset(-1, 0),
-//                   end: Offset.zero,
-//                 ).animate(animation),
-//                 child: child,
-//               ),
-//         );
-// }
-
-// class SlideLeftRoute extends PageRouteBuilder {
-//   final Widget page;
-//   SlideLeftRoute({this.page})
-//       : super(
-//           pageBuilder: (
-//             BuildContext context,
-//             Animation<double> animation,
-//             Animation<double> secondaryAnimation,
-//           ) =>
-//               page,
-//           transitionsBuilder: (
-//             BuildContext context,
-//             Animation<double> animation,
-//             Animation<double> secondaryAnimation,
-//             Widget child,
-//           ) =>
-//               SlideTransition(
-//                 position: Tween<Offset>(
-//                   begin: const Offset(1, 0),
-//                   end: Offset.zero,
-//                 ).animate(animation),
-//                 child: child,
-//               ),
-//         );
-// }

@@ -45,6 +45,7 @@ dependencies:
   onesignal: ^1.0.0
   transparent_image:
   photo_view:
+  connectivity:
   #geolocator: 
   #location: ^1.4.1
 
