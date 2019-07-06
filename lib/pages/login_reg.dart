@@ -4,6 +4,7 @@ import 'package:crime_report/api/api.dart';
 import 'package:crime_report/main.dart';
 import 'package:geocoder/geocoder.dart';
 import 'dart:async';
+import '../main.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -1164,11 +1165,12 @@ class _LogRegPageState extends State<LogRegPage> {
     setState(() {
       isLoginLoading = true;
     });
-    
+
     var data = {
       'first_name': _textNameController.text,
       'last_name': _textSurNameController.text,
-      'username': _textPassController.text
+      'username': _textPassController.text,
+      'player_id': playerID
     };
 
     var res = await CallApi().postData(data, 'login');
@@ -1281,7 +1283,8 @@ class _LogRegPageState extends State<LogRegPage> {
       'password_text': _textrNewPassController.text,
       'dob': year + "-" + month + "-" + day,
       'gender': _radioGender,
-      'user_type': type
+      'user_type': type,
+      'player_id': playerID
     };
 
     var res1 = await CallApi().postData(data, 'register');

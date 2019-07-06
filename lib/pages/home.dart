@@ -41,6 +41,7 @@ class SplashScreenState extends State<MyHomePage>
     _checkIfLoggedIn();
 
     OneSignal.shared.init("fe0695b7-f1d5-4475-bc53-083517f95589");
+    oneUserID();
 //in case of iOS --- see below
 //OneSignal.shared.init("your_app_id_here", {
 //	OSiOSSettings.autoPrompt: false,
@@ -64,8 +65,7 @@ class SplashScreenState extends State<MyHomePage>
 
     OneSignal.shared
         .setSubscriptionObserver((OSSubscriptionStateChanges changes) {
-      // will be called whenever the subscription changes
-      //(ie. user gets registered with OneSignal and gets a user ID)
+      //String userId= OneSignal.shared.getUserId()
     });
 
     OneSignal.shared.setEmailSubscriptionObserver(
@@ -105,6 +105,17 @@ class SplashScreenState extends State<MyHomePage>
             MaterialPageRoute(builder: (context) => LogRegPage()));
     //Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LogRegPage()));
     //_isLoggedIn ? Navigator.of(context).pop() : null;
+  }
+
+  void oneUserID() async {
+    var status = await OneSignal.shared.getPermissionSubscriptionState();
+
+// the user's ID with OneSignal
+    String onesignalUserId = status.subscriptionStatus.userId;
+    playerID = onesignalUserId;
+    print("Player ID : " + playerID);
+// the user's APNS or FCM/GCM push token
+    String token = status.subscriptionStatus.pushToken;
   }
 
   @override

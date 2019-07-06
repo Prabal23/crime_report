@@ -21,7 +21,8 @@ String name = '',
     locate = '',
     add = '',
     lat = '',
-    longi = '';
+    longi = '',
+    playerID = '';
 String date = '', time = '', prob = '';
 String _urls = 'http://192.168.0.108:8000/api/';
 
