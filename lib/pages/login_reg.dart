@@ -970,7 +970,7 @@ class _LogRegPageState extends State<LogRegPage> {
                                       onChanged: _handleRadioValueChange),
                                   Container(
                                     transform: Matrix4.translationValues(
-                                        -10.0, 0.0, 0.0),
+                                        0.0, 0.0, 0.0),
                                     child: Text(
                                       "Female",
                                       style: TextStyle(
@@ -992,7 +992,7 @@ class _LogRegPageState extends State<LogRegPage> {
                                   ),
                                   Container(
                                     transform: Matrix4.translationValues(
-                                        -20.0, 0.0, 0.0),
+                                        0.0, 0.0, 0.0),
                                     child: Text(
                                       "Male",
                                       style: TextStyle(
@@ -1014,7 +1014,7 @@ class _LogRegPageState extends State<LogRegPage> {
                                   ),
                                   Container(
                                     transform: Matrix4.translationValues(
-                                        -20.0, 0.0, 0.0),
+                                        0.0, 0.0, 0.0),
                                     child: Text(
                                       "Non-binary",
                                       style: TextStyle(

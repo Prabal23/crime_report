@@ -1,4 +1,5 @@
 import 'package:crime_report/pages/main_page.dart';
+import 'package:crime_report/pages/notify_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -56,6 +57,10 @@ class SplashScreenState extends State<MyHomePage>
     OneSignal.shared
         .setNotificationOpenedHandler((OSNotificationOpenedResult result) {
       // will be called whenever a notification is opened/button pressed.
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => NotifyPage()),
+      );
     });
 
     OneSignal.shared.setPermissionObserver((OSPermissionStateChanges changes) {

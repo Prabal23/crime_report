@@ -122,22 +122,26 @@ class _ProfilePageState extends State<ProfilePage> {
 
   clickImagefromCamera() async {
     profileImage = await ImagePicker.pickImage(source: ImageSource.camera);
-    setState(() {
-      fileImage = profileImage;
-      isPicked = true;
-      isImage = false;
-      pImg = '';
-    });
+    if (profileImage != null) {
+      setState(() {
+        fileImage = profileImage;
+        isPicked = true;
+        isImage = false;
+        pImg = '';
+      });
+    }
   }
 
   pickImagefromGallery() async {
     profileImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      fileImage = profileImage;
-      isPicked = true;
-      isImage = false;
-      pImg = '';
-    });
+    if (profileImage != null) {
+      setState(() {
+        fileImage = profileImage;
+        isPicked = true;
+        isImage = false;
+        pImg = '';
+      });
+    }
   }
 
   void _handleRadioValueChange(String value) {
@@ -1099,7 +1103,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         onChanged: _handleRadioValueChange),
                                     Container(
                                       transform: Matrix4.translationValues(
-                                          -10.0, 0.0, 0.0),
+                                          0.0, 0.0, 0.0),
                                       child: Text(
                                         "Female",
                                         style: TextStyle(
@@ -1121,7 +1125,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     Container(
                                       transform: Matrix4.translationValues(
-                                          -20.0, 0.0, 0.0),
+                                          0.0, 0.0, 0.0),
                                       child: Text(
                                         "Male",
                                         style: TextStyle(
@@ -1143,7 +1147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     Container(
                                       transform: Matrix4.translationValues(
-                                          -20.0, 0.0, 0.0),
+                                          0.0, 0.0, 0.0),
                                       child: Text(
                                         "Non-binary",
                                         style: TextStyle(
